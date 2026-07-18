@@ -1,0 +1,207 @@
+{
+  "common": {
+    "name": "goodwe-sems",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "первый выпуск",
+        "pt": "lançamento inicial",
+        "nl": "eerste release",
+        "fr": "version initiale",
+        "it": "versione iniziale",
+        "es": "versión inicial",
+        "pl": "pierwsze wydanie",
+        "uk": "перший випуск",
+        "zh-cn": "首次发布"
+      }
+    },
+    "title": "GoodWe SEMS Portal",
+    "titleLang": {
+      "en": "GoodWe SEMS Portal",
+      "de": "GoodWe SEMS Portal",
+      "ru": "GoodWe SEMS Portal",
+      "pt": "GoodWe SEMS Portal",
+      "nl": "GoodWe SEMS Portal",
+      "fr": "GoodWe SEMS Portal",
+      "it": "GoodWe SEMS Portal",
+      "es": "GoodWe SEMS Portal",
+      "pl": "GoodWe SEMS Portal",
+      "uk": "GoodWe SEMS Portal",
+      "zh-cn": "GoodWe SEMS 门户"
+    },
+    "desc": {
+      "en": "Reads inverter, battery and power-flow data from the GoodWe SEMS Portal cloud for installations that have no local/LAN access to the inverter.",
+      "de": "Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem GoodWe-SEMS-Portal (Cloud) für Anlagen ohne lokalen/LAN-Zugriff auf den Wechselrichter.",
+      "ru": "Считывает данные инвертора, батареи и потоков энергии из облачного портала GoodWe SEMS для установок без локального доступа к инвертору.",
+      "pt": "Lê dados do inversor, bateria e fluxo de energia do portal SEMS da GoodWe na nuvem para instalações sem acesso local/LAN ao inversor.",
+      "nl": "Leest omvormer-, batterij- en energiestroomgegevens uit het GoodWe SEMS-portaal (cloud) voor installaties zonder lokale/LAN-toegang tot de omvormer.",
+      "fr": "Lit les données de l'onduleur, de la batterie et des flux d'énergie depuis le portail cloud GoodWe SEMS pour les installations sans accès local/LAN à l'onduleur.",
+      "it": "Legge i dati dell'inverter, della batteria e del flusso di energia dal portale cloud GoodWe SEMS per impianti senza accesso locale/LAN all'inverter.",
+      "es": "Lee datos del inversor, la batería y el flujo de energía desde el portal en la nube GoodWe SEMS para instalaciones sin acceso local/LAN al inversor.",
+      "pl": "Odczytuje dane falownika, baterii i przepływu energii z chmury portalu GoodWe SEMS dla instalacji bez lokalnego dostępu do falownika.",
+      "uk": "Зчитує дані інвертора, батареї та потоків енергії з хмарного порталу GoodWe SEMS для установок без локального доступу до інвертора.",
+      "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
+    },
+    "authors": [
+      "bueste <bueste@users.noreply.github.com>"
+    ],
+    "keywords": ["goodwe", "sems", "semsportal", "inverter", "solar", "pv", "photovoltaik", "battery"],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "goodwe-sems.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
+    "readme": "https://github.com/bueste/ioBroker.goodwe-sems/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "energy",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "tier": 3,
+    "adminUI": {
+      "config": "json"
+    },
+    "encryptedNative": ["password", "pushoverApiToken"],
+    "protectedNative": ["password", "pushoverApiToken"],
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
+      }
+    ]
+  },
+  "native": {
+    "account": "",
+    "password": "",
+    "powerStationId": "",
+    "pollInterval": 300,
+    "requestTimeout": 15,
+    "maxConsecutiveErrors": 3,
+    "pushoverMode": "none",
+    "pushoverInstance": "pushover.0",
+    "pushoverUserKey": "",
+    "pushoverApiToken": "",
+    "pushoverPriority": 0,
+    "notifyOnLoginFailure": true,
+    "notifyOnRateLimit": true,
+    "notifyOnStationOffline": true,
+    "notifyOnAdapterError": true,
+    "stationOfflineMinutes": 30,
+    "debugRawResponse": false
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "SEMS Portal reachable",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastSuccess",
+      "type": "state",
+      "common": {
+        "role": "value.time",
+        "name": "Timestamp of last successful poll",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastError",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Last error message",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.consecutiveErrors",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of consecutive failed polls",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.rateLimited",
+      "type": "state",
+      "common": {
+        "role": "indicator",
+        "name": "SEMS Portal is currently rate-limiting this account",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.activePollInterval",
+      "type": "state",
+      "common": {
+        "role": "value.interval",
+        "name": "Currently active poll interval (seconds, incl. backoff)",
+        "type": "number",
+        "unit": "s",
+        "read": true,
+        "write": false,
+        "def": 300
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.rawResponse",
+      "type": "state",
+      "common": {
+        "role": "json",
+        "name": "Raw last SEMS API response (debug, disabled by default)",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": "",
+        "expert": true
+      },
+      "native": {}
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+node_modules/
+npm-debug.log*
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.DS_Store
+/log
+*.log
+coverage/
+.nyc_output
+tsconfig.tsbuildinfo
+.dev-server/
+.build/

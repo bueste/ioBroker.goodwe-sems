@@ -1,0 +1,211 @@
+{
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "_login": {
+            "type": "panel",
+            "label": "SEMS-Login",
+            "items": {
+                "_hintLogin": {
+                    "type": "staticText",
+                    "text": "hintLoginText",
+                    "newLine": true
+                },
+                "account": {
+                    "type": "text",
+                    "label": "semsAccount",
+                    "help": "semsAccountHelp",
+                    "newLine": true,
+                    "trim": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "password": {
+                    "type": "password",
+                    "label": "semsPassword",
+                    "help": "semsPasswordHelp",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "powerStationId": {
+                    "type": "text",
+                    "label": "powerStationId",
+                    "help": "powerStationIdHelp",
+                    "newLine": true,
+                    "trim": true,
+                    "xs": 12,
+                    "sm": 8,
+                    "md": 6
+                }
+            }
+        },
+        "_polling": {
+            "type": "panel",
+            "label": "pollingTab",
+            "items": {
+                "_hintPolling": {
+                    "type": "staticText",
+                    "text": "hintPollingText",
+                    "newLine": true
+                },
+                "pollInterval": {
+                    "type": "number",
+                    "label": "pollInterval",
+                    "help": "pollIntervalHelp",
+                    "min": 60,
+                    "max": 3600,
+                    "step": 30,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "requestTimeout": {
+                    "type": "number",
+                    "label": "requestTimeout",
+                    "help": "requestTimeoutHelp",
+                    "min": 5,
+                    "max": 60,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "maxConsecutiveErrors": {
+                    "type": "number",
+                    "label": "maxConsecutiveErrors",
+                    "help": "maxConsecutiveErrorsHelp",
+                    "min": 1,
+                    "max": 20,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "stationOfflineMinutes": {
+                    "type": "number",
+                    "label": "stationOfflineMinutes",
+                    "help": "stationOfflineMinutesHelp",
+                    "min": 5,
+                    "max": 720,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "debugRawResponse": {
+                    "type": "checkbox",
+                    "label": "debugRawResponse",
+                    "help": "debugRawResponseHelp",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 8,
+                    "md": 6
+                }
+            }
+        },
+        "_pushover": {
+            "type": "panel",
+            "label": "pushoverTab",
+            "items": {
+                "_hintPushover": {
+                    "type": "staticText",
+                    "text": "hintPushoverText",
+                    "newLine": true
+                },
+                "pushoverMode": {
+                    "type": "select",
+                    "label": "pushoverMode",
+                    "help": "pushoverModeHelp",
+                    "newLine": true,
+                    "options": [
+                        { "value": "none", "label": "pushoverModeNone" },
+                        { "value": "instance", "label": "pushoverModeInstance" },
+                        { "value": "direct", "label": "pushoverModeDirect" },
+                        { "value": "both", "label": "pushoverModeBoth" }
+                    ],
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "pushoverPriority": {
+                    "type": "select",
+                    "label": "pushoverPriority",
+                    "newLine": true,
+                    "options": [
+                        { "value": -1, "label": "priorityLow" },
+                        { "value": 0, "label": "priorityNormal" },
+                        { "value": 1, "label": "priorityHigh" },
+                        { "value": 2, "label": "priorityEmergency" }
+                    ],
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "pushoverInstance": {
+                    "type": "instance",
+                    "label": "pushoverInstance",
+                    "help": "pushoverInstanceHelp",
+                    "adapter": "pushover",
+                    "newLine": true,
+                    "hidden": "data.pushoverMode !== 'instance' && data.pushoverMode !== 'both'",
+                    "xs": 12,
+                    "sm": 8,
+                    "md": 6
+                },
+                "pushoverUserKey": {
+                    "type": "text",
+                    "label": "pushoverUserKey",
+                    "newLine": true,
+                    "hidden": "data.pushoverMode !== 'direct' && data.pushoverMode !== 'both'",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "pushoverApiToken": {
+                    "type": "password",
+                    "label": "pushoverApiToken",
+                    "hidden": "data.pushoverMode !== 'direct' && data.pushoverMode !== 'both'",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "_notifyHeader": {
+                    "type": "header",
+                    "text": "notifyHeader",
+                    "newLine": true
+                },
+                "notifyOnLoginFailure": {
+                    "type": "checkbox",
+                    "label": "notifyOnLoginFailure",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "notifyOnRateLimit": {
+                    "type": "checkbox",
+                    "label": "notifyOnRateLimit",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "notifyOnStationOffline": {
+                    "type": "checkbox",
+                    "label": "notifyOnStationOffline",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                },
+                "notifyOnAdapterError": {
+                    "type": "checkbox",
+                    "label": "notifyOnAdapterError",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3
+                }
+            }
+        }
+    }
+}

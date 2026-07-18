@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "target": "es2020",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "noEmit": true
+    },
+    "include": ["**/*.js"],
+    "exclude": ["node_modules", "admin/build", "test"]
+}
