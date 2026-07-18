@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "news": {
       "0.1.2": {
         "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
@@ -80,6 +80,19 @@
         "pl": "poprawka: poprawiono link do darowizny PayPal w README",
         "uk": "виправлення: виправлено посилання для пожертв PayPal у README",
         "zh-cn": "修复:更正 README 中的 PayPal 捐赠链接"
+      },
+      "0.1.6": {
+        "en": "security/quality audit: sanitize inverter serials used in state IDs, survive broken inverter array entries, validate server-provided API base URL (HTTPS + GoodWe domains only), fix scientific-notation number parsing, reject invalid portal timestamps, filter stations without id",
+        "de": "Sicherheits-/Qualitätsaudit: Wechselrichter-Seriennummern für State-IDs bereinigt, defekte Einträge im Inverter-Array abgefangen, vom Server gelieferte API-Basis-URL validiert (nur HTTPS + GoodWe-Domains), Zahlen-Parsing für Exponentialschreibweise korrigiert, ungültige Portal-Zeitstempel verworfen, Anlagen ohne ID gefiltert",
+        "ru": "аудит безопасности/качества: очистка серийных номеров инверторов в ID состояний, устойчивость к повреждённым записям, проверка базового URL API, исправлен разбор чисел, отклонение неверных меток времени",
+        "pt": "auditoria de segurança/qualidade: sanitização de números de série, tolerância a entradas corrompidas, validação da URL base da API, correção do parsing numérico, rejeição de timestamps inválidos",
+        "nl": "beveiligings-/kwaliteitsaudit: serienummers gesaneerd voor state-IDs, bestand tegen kapotte inverter-items, API-basis-URL gevalideerd, wetenschappelijke notatie gecorrigeerd, ongeldige tijdstempels afgewezen",
+        "fr": "audit sécurité/qualité : assainissement des numéros de série, tolérance aux entrées corrompues, validation de l URL de base de l API, correction de l analyse numérique, rejet des horodatages invalides",
+        "it": "audit di sicurezza/qualità: sanificazione dei numeri di serie, tolleranza a voci corrotte, validazione dell URL base API, correzione del parsing numerico, rifiuto di timestamp non validi",
+        "es": "auditoría de seguridad/calidad: saneamiento de números de serie, tolerancia a entradas corruptas, validación de la URL base de la API, corrección del análisis numérico, rechazo de marcas de tiempo inválidas",
+        "pl": "audyt bezpieczeństwa/jakości: sanityzacja numerów seryjnych, odporność na uszkodzone wpisy, walidacja bazowego URL API, poprawka parsowania liczb, odrzucanie nieprawidłowych znaczników czasu",
+        "uk": "аудит безпеки/якості: очищення серійних номерів, стійкість до пошкоджених записів, перевірка базової URL API, виправлення розбору чисел, відхилення недійсних міток часу",
+        "zh-cn": "安全/质量审计:清理用于状态ID的逆变器序列号、容忍损坏的数组条目、验证服务器提供的API基础URL、修复科学计数法解析、拒绝无效时间戳、过滤无ID电站"
       }
     },
     "title": "GoodWe SEMS Portal",

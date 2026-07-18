@@ -145,6 +145,9 @@ class GoodweSems extends utils.Adapter {
         try {
             await this._resolveStationId();
             const detail = await this.api.getMonitorDetail(this.stationId);
+            if (this.destroyed) {
+                return;
+            }
             await this._applyMonitorDetail(detail);
 
             this.consecutiveErrors = 0;
@@ -153,6 +156,7 @@ class GoodweSems extends utils.Adapter {
             this.notifier.resetDedupe("stationOffline");
             this.notifier.resetDedupe("loginFailure");
             this.notifier.resetDedupe("rateLimit");
+            this.notifier.resetDedupe("adapterError");
 
             await this.setStateAsync("info.connection", true, true);
             await this.setStateAsync(

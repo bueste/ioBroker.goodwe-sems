@@ -144,6 +144,19 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
+### 0.1.6 (2026-07-18)
+
+Sicherheits-/Qualitätsaudit (Security-Tester, Maintainer-Review, Fuzzing der Mapping-Schicht):
+
+- (Stefan Bühler) **Security:** Wechselrichter-Seriennummern aus der (nicht vertrauenswürdigen) Portal-Antwort werden bereinigt, bevor sie Teil von ioBroker-Objekt-IDs werden (verhindert kaputte/unerwartet verschachtelte Objektbäume durch Sonderzeichen wie `.` `*` `]`)
+- (Stefan Bühler) **Security:** die vom Login-Server gelieferte API-Basis-URL wird validiert - nur HTTPS auf GoodWe-eigenen Domains (`*.semsportal.com`, `*.goodwe.com`), sonst Fallback auf die bekannte Regional-URL. Eine manipulierte Login-Antwort kann das Session-Token damit nicht mehr an fremde Hosts umleiten
+- (Stefan Bühler) **Fix:** `null`/defekte Einträge im `inverter[]`-Array des Portals ließen den kompletten Poll-Zyklus abstürzen - werden jetzt übersprungen, gesunde Wechselrichter derselben Antwort werden weiter verarbeitet
+- (Stefan Bühler) **Fix:** Zahlen in Exponentialschreibweise (`"1e5"`) wurden falsch geparst (ergab 15 statt 100000)
+- (Stefan Bühler) **Fix:** offensichtlich ungültige Portal-Zeitstempel (`99/99/9999 …`) erzeugten durch JS-Date-Rollover absurde Epochen-Werte - werden jetzt verworfen
+- (Stefan Bühler) **Fix:** automatische Anlagen-Erkennung filtert Einträge ohne verwertbare ID (verhinderte sonst dauerhafte Fehlzyklen)
+- (Stefan Bühler) **Robustheit:** keine State-Writes mehr nach Adapter-Unload; `adapterError`-Dedupe wird nach Erholung ebenfalls zurückgesetzt
+- (Stefan Bühler) 14 neue Regressionstests (42 Unit-Tests gesamt); `npm audit`: 0 Schwachstellen in Produktions-Dependencies (verbleibende betreffen ausschließlich Dev-Toolchain)
+
 ### 0.1.5 (2026-07-18)
 
 - (Stefan Bühler) fix: PayPal-Spendenlink im README korrigiert (Button-Link statt Donate-Link)
