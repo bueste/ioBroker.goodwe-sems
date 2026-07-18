@@ -57,6 +57,11 @@ jobs:
         with:
           node-version: "22" # trusted publishing requires npm CLI >=11.5.1 / Node >=22.14
           registry-url: "https://registry.npmjs.org"
+      # Node 22 currently bundles npm 10.9.x, which is BELOW the npm CLI
+      # version required for OIDC trusted publishing (>=11.5.1). Force an
+      # upgrade of the npm CLI itself before installing/publishing.
+      - run: npm install -g npm@latest
+      - run: npm --version
       - run: npm ci
       # No NPM_TOKEN needed: npm CLI exchanges the GitHub Actions OIDC token
       # for a short-lived publish credential once the trusted publisher is

@@ -143,6 +143,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
+### 0.1.3 (2026-07-18)
+
+- (Stefan Bühler) CI: OIDC Trusted Publishing repariert - Node 22 Runner bringt npm 10.9.x mit, was unter der für Trusted Publishing benötigten Version (>=11.5.1) liegt. Release-Job aktualisiert npm jetzt explizit vor `npm publish`.
+
 ### 0.1.2 (2026-07-18)
 
 - (Stefan Bühler) CI: npm-Publish von langlebigem `NPM_TOKEN` auf OIDC Trusted Publishing umgestellt (kein Secret mehr im Repo nötig)

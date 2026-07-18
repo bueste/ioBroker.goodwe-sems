@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "news": {
       "0.1.2": {
         "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
@@ -41,6 +41,19 @@
         "pl": "pierwsze wydanie",
         "uk": "перший випуск",
         "zh-cn": "首次发布"
+      },
+      "0.1.3": {
+        "en": "CI: fix OIDC trusted publishing (upgrade bundled npm CLI to >=11.5.1 before publish)",
+        "de": "CI: OIDC Trusted Publishing behoben (npm-CLI vor dem Publish auf >=11.5.1 aktualisiert)",
+        "ru": "CI: исправлена доверенная публикация OIDC (обновление npm CLI до >=11.5.1 перед публикацией)",
+        "pt": "CI: correção da publicação confiável OIDC (atualiza a CLI do npm para >=11.5.1 antes de publicar)",
+        "nl": "CI: OIDC trusted publishing gerepareerd (npm-CLI bijgewerkt naar >=11.5.1 vóór publiceren)",
+        "fr": "CI : correction de la publication de confiance OIDC (mise à jour du CLI npm vers >=11.5.1 avant publication)",
+        "it": "CI: risolta la pubblicazione affidabile OIDC (aggiornamento della CLI npm a >=11.5.1 prima della pubblicazione)",
+        "es": "CI: se corrige la publicación de confianza OIDC (se actualiza la CLI de npm a >=11.5.1 antes de publicar)",
+        "pl": "CI: naprawiono zaufaną publikację OIDC (aktualizacja CLI npm do >=11.5.1 przed publikacją)",
+        "uk": "CI: виправлено довірену публікацію OIDC (оновлення npm CLI до >=11.5.1 перед публікацією)",
+        "zh-cn": "CI:修复 OIDC 可信发布(发布前将 npm CLI 升级到 >=11.5.1)"
       }
     },
     "title": "GoodWe SEMS Portal",
