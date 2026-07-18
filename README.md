@@ -143,7 +143,13 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
-- (bueste) initial release: SEMS-Portal-Login (SEMS+ mit Legacy-Fallback), automatische Anlagen-Erkennung, vollständiges Monitoring (Station/KPI/PowerFlow/Battery/EV-Charger/pro Wechselrichter), Rate-Limit-Handling, Backoff, Pushover-Alarmierung, Admin6-JSON-Config, i18n (11 Sprachen), Unit-Tests.
+### 0.1.1 (2026-07-18)
+
+- (Stefan Bühler) fix `repository.url` field format in package.json (removed npm-publish normalization warning)
+
+### 0.1.0 (2026-07-18)
+
+- (Stefan Bühler) initial release: SEMS-Portal-Login (SEMS+ mit Legacy-Fallback), automatische Anlagen-Erkennung, vollständiges Monitoring (Station/KPI/PowerFlow/Battery/EV-Charger/pro Wechselrichter), Rate-Limit-Handling, Backoff, Pushover-Alarmierung, Admin6-JSON-Config, i18n (11 Sprachen), Unit-Tests.
 
 ## Lizenz
 

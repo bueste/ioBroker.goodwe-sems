@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "fix package.json repository URL normalization warning on npm publish",
+        "de": "Warnung bei npm publish wegen repository-URL-Format behoben",
+        "ru": "исправлено предупреждение о формате URL репозитория при npm publish",
+        "pt": "corrigido aviso de formato de URL do repositório no npm publish",
+        "nl": "waarschuwing over repository-URL-formaat bij npm publish opgelost",
+        "fr": "correction de l'avertissement de format d'URL du dépôt lors de npm publish",
+        "it": "corretto avviso sul formato URL del repository durante npm publish",
+        "es": "corregida advertencia de formato de URL del repositorio en npm publish",
+        "pl": "poprawiono ostrzeżenie o formacie URL repozytorium przy npm publish",
+        "uk": "виправлено попередження про формат URL репозиторію під час npm publish",
+        "zh-cn": "修复 npm publish 时仓库 URL 格式警告"
+      },
       "0.1.0": {
         "en": "initial release",
         "de": "Erstveröffentlichung",
@@ -47,7 +60,16 @@
     "authors": [
       "bueste <bueste@users.noreply.github.com>"
     ],
-    "keywords": ["goodwe", "sems", "semsportal", "inverter", "solar", "pv", "photovoltaik", "battery"],
+    "keywords": [
+      "goodwe",
+      "sems",
+      "semsportal",
+      "inverter",
+      "solar",
+      "pv",
+      "photovoltaik",
+      "battery"
+    ],
     "licenseInformation": {
       "type": "free",
       "license": "MIT"
@@ -68,8 +90,14 @@
     "adminUI": {
       "config": "json"
     },
-    "encryptedNative": ["password", "pushoverApiToken"],
-    "protectedNative": ["password", "pushoverApiToken"],
+    "encryptedNative": [
+      "password",
+      "pushoverApiToken"
+    ],
+    "protectedNative": [
+      "password",
+      "pushoverApiToken"
+    ],
     "dependencies": [
       {
         "js-controller": ">=5.0.19"
