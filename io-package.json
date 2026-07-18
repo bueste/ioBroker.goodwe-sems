@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
+        "de": "npm-Veröffentlichung von langlebigem Token auf OIDC Trusted Publishing umgestellt (kein gespeichertes Secret mehr)",
+        "ru": "публикация в npm переведена с долгоживущего токена на доверенную публикацию OIDC (без хранимого секрета)",
+        "pt": "publicação no npm migrada de token de longa duração para publicação confiável OIDC (sem segredo armazenado)",
+        "nl": "npm-publicatie omgezet van een langlevend token naar OIDC trusted publishing (geen opgeslagen secret meer)",
+        "fr": "publication npm passée d'un jeton longue durée à la publication de confiance OIDC (plus de secret stocké)",
+        "it": "pubblicazione npm passata da token a lunga durata a trusted publishing OIDC (nessun segreto memorizzato)",
+        "es": "publicación en npm migrada de un token de larga duración a la publicación de confianza OIDC (sin secreto almacenado)",
+        "pl": "publikację npm zmieniono z długotrwałego tokenu na zaufaną publikację OIDC (bez przechowywanego sekretu)",
+        "uk": "публікацію в npm переведено з довготривалого токена на довірену публікацію OIDC (без збереженого секрету)",
+        "zh-cn": "将 npm 发布从长期令牌改为 OIDC 可信发布方式（不再存储密钥）"
+      },
       "0.1.1": {
         "en": "fix package.json repository URL normalization warning on npm publish",
         "de": "Warnung bei npm publish wegen repository-URL-Format behoben",

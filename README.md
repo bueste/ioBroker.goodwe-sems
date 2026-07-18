@@ -143,6 +143,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
+### 0.1.2 (2026-07-18)
+
+- (Stefan Bühler) CI: npm-Publish von langlebigem `NPM_TOKEN` auf OIDC Trusted Publishing umgestellt (kein Secret mehr im Repo nötig)
+
 ### 0.1.1 (2026-07-18)
 
 - (Stefan Bühler) fix `repository.url` field format in package.json (removed npm-publish normalization warning)
