@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "news": {
       "0.1.2": {
         "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
@@ -67,6 +67,19 @@
         "pl": "docs: dodano link do darowizny PayPal w README",
         "uk": "документація: додано посилання для пожертв PayPal у README",
         "zh-cn": "文档:在 README 中添加 PayPal 捐赠链接"
+      },
+      "0.1.5": {
+        "en": "fix: correct PayPal donation link in README",
+        "de": "Fix: PayPal-Spendenlink im README korrigiert",
+        "ru": "исправление: исправлена ссылка для пожертвований PayPal в README",
+        "pt": "correção: link de doação PayPal corrigido no README",
+        "nl": "fix: PayPal-donatielink in README gecorrigeerd",
+        "fr": "correction : lien de don PayPal corrigé dans le README",
+        "it": "correzione: link di donazione PayPal corretto nel README",
+        "es": "corrección: se corrigió el enlace de donación de PayPal en el README",
+        "pl": "poprawka: poprawiono link do darowizny PayPal w README",
+        "uk": "виправлення: виправлено посилання для пожертв PayPal у README",
+        "zh-cn": "修复:更正 README 中的 PayPal 捐赠链接"
       }
     },
     "title": "GoodWe SEMS Portal",

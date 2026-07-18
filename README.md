@@ -5,7 +5,7 @@
 [![NPM version](https://img.shields.io/npm/v/iobroker.goodwe-sems.svg)](https://www.npmjs.com/package/iobroker.goodwe-sems)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.goodwe-sems.svg)](https://www.npmjs.com/package/iobroker.goodwe-sems)
 ![Test and Release](https://github.com/bueste/ioBroker.goodwe-sems/actions/workflows/test-and-release.yml/badge.svg)
-[![Donate](https://img.shields.io/badge/Spenden-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=8QZKPB9JEVWKY)
+[![Donate](https://img.shields.io/badge/Spenden-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/ncp/payment/TT6MTBLXX9L9U)
 
 Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem **GoodWe SEMS Portal (Cloud)** – für Anlagen, die (z. B. weil kein LAN-Zugriff auf den Wechselrichter besteht) **nicht** mit dem lokalen [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)-Adapter (Modbus/UDP, Port 8899) abgefragt werden können.
 
@@ -143,6 +143,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 ## Changelog
 
 ### **WORK IN PROGRESS**
+
+### 0.1.5 (2026-07-18)
+
+- (Stefan Bühler) fix: PayPal-Spendenlink im README korrigiert (Button-Link statt Donate-Link)
 
 ### 0.1.4 (2026-07-18)
 
