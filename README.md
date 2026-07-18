@@ -144,6 +144,8 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
+- (Stefan Bühler) Dev-Toolchain aktualisiert: mocha 11, sinon 22, @alcalzone/release-script 5, @iobroker/eslint-config 2; verbleibende transitive CVEs (adm-zip, diff, esbuild, serialize-javascript) per npm-`overrides` erzwungen behoben - `npm audit`: 0 Schwachstellen (auch inkl. Dev-Dependencies)
+
 ### 0.1.6 (2026-07-18)
 
 Sicherheits-/Qualitätsaudit (Security-Tester, Maintainer-Review, Fuzzing der Mapping-Schicht):
