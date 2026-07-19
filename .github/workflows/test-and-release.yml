@@ -19,73 +19,62 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Performs quick checks (lint) before the expensive test runs
+  # Performs quick checks before the expensive test runs
   check-and-lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - run: npm ci
-      - run: npm run lint
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
 
-  # Runs unit + package tests on all supported node versions and OSes
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ioBroker/testing-action-check@v1
+        with:
+          node-version: "22.x"
+          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
+          # install-command: 'npm install'
+          lint: true
+
+  # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
-    name: Unit + package tests (Node ${{ matrix.node-version }}, ${{ matrix.os }})
-    needs: [check-and-lint]
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
         node-version: [20.x, 22.x, 24.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: ioBroker/testing-action-adapter@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm test
+          os: ${{ matrix.os }}
+          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
+          # install-command: 'npm install'
 
-  adapter-check:
-    name: ioBroker repository checker
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - run: npx --yes @iobroker/repochecker "https://github.com/${{ github.repository }}" "${{ github.ref_name }}"
-
-  # Deploys the final package to npm
+  # Deploys the final package to NPM
   deploy:
-    name: Publish to npm on tag (OIDC trusted publishing)
-    needs: [check-and-lint, adapter-tests, adapter-check]
+    needs: [check-and-lint, adapter-tests]
+
+    # Trigger this step only when a commit on any branch is tagged with a version number
     if: |
       contains(github.event.head_commit.message, '[skip ci]') == false &&
       github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/v')
+
     runs-on: ubuntu-latest
-    # Write permissions are required for npm OIDC trusted publishing and to
-    # create a GitHub release
+
+    # Write permissions are required to create Github releases
     permissions:
       id-token: write
       contents: write
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: ioBroker/testing-action-deploy@v1
         with:
-          node-version: "24" # trusted publishing requires npm CLI >=11.5.1 / Node >=22.14, 24 is recommended
-          registry-url: "https://registry.npmjs.org"
-      # Belt-and-suspenders: make sure the npm CLI itself is new enough for
-      # OIDC trusted publishing, regardless of what the runner bundles.
-      - run: npm install -g npm@latest
-      - run: npm ci
-      # No NPM_TOKEN needed: npm CLI exchanges the GitHub Actions OIDC token
-      # for a short-lived publish credential once the trusted publisher is
-      # configured for this package on npmjs.com (org=bueste, repo=ioBroker.goodwe-sems,
-      # workflow filename=test-and-release.yml). Trusted publishing is
-      # incompatible with an npm-token parameter, so none is set here.
-      - run: npm publish
+          node-version: "24.x"
+          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
+          # install-command: 'npm install'
+          # npm-token is omitted on purpose: this repo uses npm OIDC trusted publishing
+          # (see https://docs.npmjs.com/trusted-publishers), configured on npmjs.com for
+          # this GitHub Actions workflow/environment. No long-lived NPM_TOKEN secret needed.
+          github-token: ${{ secrets.GITHUB_TOKEN }}

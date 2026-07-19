@@ -1,34 +1,8 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "news": {
-      "0.1.0": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "первый выпуск",
-        "pt": "lançamento inicial",
-        "nl": "eerste release",
-        "fr": "version initiale",
-        "it": "versione iniziale",
-        "es": "versión inicial",
-        "pl": "pierwsze wydanie",
-        "uk": "перший випуск",
-        "zh-cn": "首次发布"
-      },
-      "0.1.3": {
-        "en": "CI: fix OIDC trusted publishing (upgrade bundled npm CLI to >=11.5.1 before publish)",
-        "de": "CI: OIDC Trusted Publishing behoben (npm-CLI vor dem Publish auf >=11.5.1 aktualisiert)",
-        "ru": "CI: исправлена доверенная публикация OIDC (обновление npm CLI до >=11.5.1 перед публикацией)",
-        "pt": "CI: correção da publicação confiável OIDC (atualiza a CLI do npm para >=11.5.1 antes de publicar)",
-        "nl": "CI: OIDC trusted publishing gerepareerd (npm-CLI bijgewerkt naar >=11.5.1 vóór publiceren)",
-        "fr": "CI : correction de la publication de confiance OIDC (mise à jour du CLI npm vers >=11.5.1 avant publication)",
-        "it": "CI: risolta la pubblicazione affidabile OIDC (aggiornamento della CLI npm a >=11.5.1 prima della pubblicazione)",
-        "es": "CI: se corrige la publicación de confianza OIDC (se actualiza la CLI de npm a >=11.5.1 antes de publicar)",
-        "pl": "CI: naprawiono zaufaną publikację OIDC (aktualizacja CLI npm do >=11.5.1 przed publikacją)",
-        "uk": "CI: виправлено довірену публікацію OIDC (оновлення npm CLI до >=11.5.1 перед публікацією)",
-        "zh-cn": "CI:修复 OIDC 可信发布(发布前将 npm CLI 升级到 >=11.5.1)"
-      },
       "0.1.4": {
         "en": "docs: add PayPal donation link to README",
         "de": "Doku: PayPal-Spendenlink im README ergänzt",
@@ -106,6 +80,19 @@
         "pl": "rozwiązano bardziej rygorystyczne kontrole PR ioBroker.repositories: encryptedNative/protectedNative przeniesiono do katalogu głównego io-package.json, zaktualizowano zależności, przepisano CI, README przetłumaczono na angielski (wymagane)",
         "uk": "усунено суворіші перевірки PR ioBroker.repositories: encryptedNative/protectedNative перенесено в корінь io-package.json, оновлено залежності, переписано CI, README перекладено англійською (обов'язково)",
         "zh-cn": "解决更严格的 ioBroker.repositories PR 检查:将 encryptedNative/protectedNative 移至 io-package.json 根目录,更新依赖项,重写 CI,将 README 翻译为英文(必需)"
+      },
+      "0.1.10": {
+        "en": "address second round of stricter repochecker findings: engines.node >=22, remove devDependencies already provided by @iobroker/testing, add @types/node/@tsconfig/node22/tsconfig.json, use official ioBroker/testing-action-check|adapter|deploy@v1 reusable GitHub Actions, add integration tests, trim common.news to 7 entries, add required \"size\" to admin header, migrate i18n to short {lang}.json format, add .vscode/settings.json and .github/dependabot.yml",
+        "de": "zweite Runde strengerer repochecker-Befunde behoben: engines.node >=22, von @iobroker/testing bereitgestellte devDependencies entfernt, @types/node/@tsconfig/node22/tsconfig.json ergänzt, offizielle ioBroker/testing-action-check|adapter|deploy@v1 Actions verwendet, Integrationstests ergänzt, common.news auf 7 Einträge gekürzt, fehlendes \"size\" bei Admin-Header ergänzt, i18n auf Kurzformat {lang}.json migriert, .vscode/settings.json und .github/dependabot.yml ergänzt",
+        "ru": "устранена вторая волна более строгих замечаний repochecker: engines.node >=22, использованы официальные GitHub Actions ioBroker/testing-action-*, добавлены интеграционные тесты, common.news сокращён до 7 записей, i18n переведён в короткий формат",
+        "pt": "resolvida segunda ronda de constatações mais rigorosas do repochecker: engines.node >=22, usadas as GitHub Actions oficiais ioBroker/testing-action-*, testes de integração adicionados, common.news reduzido para 7 entradas, i18n migrado para formato curto",
+        "nl": "tweede ronde strengere repochecker-bevindingen opgelost: engines.node >=22, officiële ioBroker/testing-action-* GitHub Actions gebruikt, integratietests toegevoegd, common.news teruggebracht tot 7 items, i18n gemigreerd naar kort formaat",
+        "fr": "deuxième série de constats repochecker plus stricts corrigée : engines.node >=22, utilisation des GitHub Actions officielles ioBroker/testing-action-*, ajout de tests d'intégration, common.news réduit à 7 entrées, i18n migré vers le format court",
+        "it": "risolto il secondo giro di rilievi più severi di repochecker: engines.node >=22, utilizzate le GitHub Actions ufficiali ioBroker/testing-action-*, aggiunti test di integrazione, common.news ridotto a 7 voci, i18n migrato al formato breve",
+        "es": "se resolvió la segunda ronda de hallazgos más estrictos de repochecker: engines.node >=22, se usaron las GitHub Actions oficiales ioBroker/testing-action-*, se agregaron pruebas de integración, common.news reducido a 7 entradas, i18n migrado al formato corto",
+        "pl": "rozwiązano drugą rundę bardziej rygorystycznych ustaleń repochecker: engines.node >=22, użyto oficjalnych GitHub Actions ioBroker/testing-action-*, dodano testy integracyjne, common.news skrócono do 7 wpisów, i18n zmigrowano do krótkiego formatu",
+        "uk": "усунено другу хвилю суворіших зауважень repochecker: engines.node >=22, використано офіційні GitHub Actions ioBroker/testing-action-*, додано інтеграційні тести, common.news скорочено до 7 записів, i18n перенесено у короткий формат",
+        "zh-cn": "解决第二轮更严格的 repochecker 问题:engines.node >=22,使用官方 ioBroker/testing-action-* GitHub Actions,添加集成测试,common.news 精简至 7 条,i18n 迁移为短格式"
       }
     },
     "titleLang": {

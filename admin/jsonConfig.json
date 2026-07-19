@@ -213,6 +213,7 @@
                 },
                 "_notifyHeader": {
                     "type": "header",
+                    "size": 4,
                     "text": "notifyHeader",
                     "newLine": true,
                     "xs": 12,
