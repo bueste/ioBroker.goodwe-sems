@@ -144,6 +144,16 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 
 ### **WORK IN PROGRESS**
 
+### 0.1.8 (2026-07-19)
+
+ioBroker-Adapter-Check-Befunde behoben:
+
+- (Stefan Bühler) **[E254]** News-Einträge für 0.1.1/0.1.2 entfernt - diese Tags wurden zwar gepusht, aber der zugehörige npm-Publish-Job schlug damals fehl (fehlendes NPM_TOKEN bzw. zu alte npm-CLI für OIDC), die Versionen existieren nie auf npm
+- (Stefan Bühler) **[W132]** dadurch automatisch unter dem 7-Einträge-Limit des Repository-Builders für `common.news`
+- (Stefan Bühler) **[W184]** veraltetes `common.title` entfernt (durch `common.titleLang` ersetzt) und veraltetes/ignoriertes `common.main` entfernt (Entry-Point kommt aus `package.json`)
+- (Stefan Bühler) **[W034]** `@iobroker/adapter-core` von ^3.1.6 auf ^3.2.2 angehoben (installiert 3.4.3)
+- (Stefan Bühler) **[W173]/[W174]/[E999]/[W401]**: `password` ist bereits korrekt in `encryptedNative`/`protectedNative` gelistet (per Tarball-Inspektion verifiziert) - diese Meldungen sowie der globale Axios-404-Fehler beim Abruf von `sources-dist-latest.json` sind Nebenwirkungen davon, dass der Adapter noch nicht im offiziellen ioBroker-Repository gelistet ist; sollten nach der Aufnahme verschwinden
+
 ### 0.1.7 (2026-07-19)
 
 - (Stefan Bühler) Branding: Platzhalter-Icon durch das offizielle GoodWe-Logo ersetzt (mit Genehmigung von GoodWe verwendet)

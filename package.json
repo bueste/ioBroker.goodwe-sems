@@ -1,6 +1,6 @@
 {
   "name": "iobroker.goodwe-sems",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "ioBroker adapter to read GoodWe inverter data from the SEMS Portal cloud API (for installations without local/LAN access to the inverter).",
   "author": {
     "name": "bueste",
@@ -51,7 +51,7 @@
     "release": "release-script"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.1.6"
+    "@iobroker/adapter-core": "^3.2.2"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.2.1",

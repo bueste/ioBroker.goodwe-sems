@@ -1,34 +1,8 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "news": {
-      "0.1.2": {
-        "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
-        "de": "npm-Veröffentlichung von langlebigem Token auf OIDC Trusted Publishing umgestellt (kein gespeichertes Secret mehr)",
-        "ru": "публикация в npm переведена с долгоживущего токена на доверенную публикацию OIDC (без хранимого секрета)",
-        "pt": "publicação no npm migrada de token de longa duração para publicação confiável OIDC (sem segredo armazenado)",
-        "nl": "npm-publicatie omgezet van een langlevend token naar OIDC trusted publishing (geen opgeslagen secret meer)",
-        "fr": "publication npm passée d'un jeton longue durée à la publication de confiance OIDC (plus de secret stocké)",
-        "it": "pubblicazione npm passata da token a lunga durata a trusted publishing OIDC (nessun segreto memorizzato)",
-        "es": "publicación en npm migrada de un token de larga duración a la publicación de confianza OIDC (sin secreto almacenado)",
-        "pl": "publikację npm zmieniono z długotrwałego tokenu na zaufaną publikację OIDC (bez przechowywanego sekretu)",
-        "uk": "публікацію в npm переведено з довготривалого токена на довірену публікацію OIDC (без збереженого секрету)",
-        "zh-cn": "将 npm 发布从长期令牌改为 OIDC 可信发布方式（不再存储密钥）"
-      },
-      "0.1.1": {
-        "en": "fix package.json repository URL normalization warning on npm publish",
-        "de": "Warnung bei npm publish wegen repository-URL-Format behoben",
-        "ru": "исправлено предупреждение о формате URL репозитория при npm publish",
-        "pt": "corrigido aviso de formato de URL do repositório no npm publish",
-        "nl": "waarschuwing over repository-URL-formaat bij npm publish opgelost",
-        "fr": "correction de l'avertissement de format d'URL du dépôt lors de npm publish",
-        "it": "corretto avviso sul formato URL del repository durante npm publish",
-        "es": "corregida advertencia de formato de URL del repositorio en npm publish",
-        "pl": "poprawiono ostrzeżenie o formacie URL repozytorium przy npm publish",
-        "uk": "виправлено попередження про формат URL репозиторію під час npm publish",
-        "zh-cn": "修复 npm publish 时仓库 URL 格式警告"
-      },
       "0.1.0": {
         "en": "initial release",
         "de": "Erstveröffentlichung",
@@ -106,9 +80,21 @@
         "pl": "branding: zastąpiono ikonę zastępczą oficjalnym logo GoodWe (używane za zgodą GoodWe)",
         "uk": "брендинг: замінено іконку-заповнювач на офіційний логотип GoodWe (використовується з дозволу GoodWe)",
         "zh-cn": "品牌:将占位图标替换为 GoodWe 官方标志(经 GoodWe 许可使用)"
+      },
+      "0.1.8": {
+        "en": "address ioBroker adapter-check findings: remove news entries for versions that were never actually published to npm (0.1.1, 0.1.2), remove deprecated common.title/common.main fields, update @iobroker/adapter-core to ^3.2.2",
+        "de": "ioBroker-Adapter-Check-Befunde behoben: News-Einträge für nie tatsächlich auf npm veröffentlichte Versionen entfernt (0.1.1, 0.1.2), veraltete Felder common.title/common.main entfernt, @iobroker/adapter-core auf ^3.2.2 aktualisiert",
+        "ru": "устранены замечания adapter-check: удалены записи news для версий, никогда не публиковавшихся в npm (0.1.1, 0.1.2), удалены устаревшие поля common.title/common.main, обновлён @iobroker/adapter-core до ^3.2.2",
+        "pt": "resolvidas as constatações do adapter-check: removidas entradas de news de versões nunca publicadas no npm (0.1.1, 0.1.2), removidos campos obsoletos common.title/common.main, @iobroker/adapter-core atualizado para ^3.2.2",
+        "nl": "adapter-check bevindingen opgelost: news-items voor nooit op npm gepubliceerde versies verwijderd (0.1.1, 0.1.2), verouderde velden common.title/common.main verwijderd, @iobroker/adapter-core bijgewerkt naar ^3.2.2",
+        "fr": "corrections des remarques adapter-check : suppression des entrées news pour des versions jamais publiées sur npm (0.1.1, 0.1.2), suppression des champs obsolètes common.title/common.main, mise à jour de @iobroker/adapter-core vers ^3.2.2",
+        "it": "risolti i rilievi di adapter-check: rimosse le voci news per versioni mai pubblicate su npm (0.1.1, 0.1.2), rimossi i campi deprecati common.title/common.main, aggiornato @iobroker/adapter-core a ^3.2.2",
+        "es": "se resolvieron los hallazgos de adapter-check: se eliminaron entradas de news de versiones nunca publicadas en npm (0.1.1, 0.1.2), se eliminaron los campos obsoletos common.title/common.main, se actualizó @iobroker/adapter-core a ^3.2.2",
+        "pl": "rozwiązano uwagi adapter-check: usunięto wpisy news dla wersji nigdy niepublikowanych na npm (0.1.1, 0.1.2), usunięto przestarzałe pola common.title/common.main, zaktualizowano @iobroker/adapter-core do ^3.2.2",
+        "uk": "усунено зауваження adapter-check: видалено записи news для версій, які ніколи не публікувалися в npm (0.1.1, 0.1.2), видалено застарілі поля common.title/common.main, оновлено @iobroker/adapter-core до ^3.2.2",
+        "zh-cn": "解决 adapter-check 发现的问题:移除从未真正发布到 npm 的版本的 news 条目(0.1.1、0.1.2),移除已弃用的 common.title/common.main 字段,将 @iobroker/adapter-core 更新至 ^3.2.2"
       }
     },
-    "title": "GoodWe SEMS Portal",
     "titleLang": {
       "en": "GoodWe SEMS Portal",
       "de": "GoodWe SEMS Portal",
@@ -153,7 +139,6 @@
       "license": "MIT"
     },
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "goodwe-sems.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
