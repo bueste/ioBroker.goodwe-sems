@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "news": {
       "0.1.2": {
         "en": "switch npm publishing from a long-lived token to OIDC trusted publishing (no stored secret)",
@@ -93,6 +93,19 @@
         "pl": "audyt bezpieczeństwa/jakości: sanityzacja numerów seryjnych, odporność na uszkodzone wpisy, walidacja bazowego URL API, poprawka parsowania liczb, odrzucanie nieprawidłowych znaczników czasu",
         "uk": "аудит безпеки/якості: очищення серійних номерів, стійкість до пошкоджених записів, перевірка базової URL API, виправлення розбору чисел, відхилення недійсних міток часу",
         "zh-cn": "安全/质量审计:清理用于状态ID的逆变器序列号、容忍损坏的数组条目、验证服务器提供的API基础URL、修复科学计数法解析、拒绝无效时间戳、过滤无ID电站"
+      },
+      "0.1.7": {
+        "en": "branding: replace placeholder icon with the official GoodWe logo (used with permission from GoodWe)",
+        "de": "Branding: Platzhalter-Icon durch das offizielle GoodWe-Logo ersetzt (mit Genehmigung von GoodWe verwendet)",
+        "ru": "брендинг: заменена иконка-заполнитель на официальный логотип GoodWe (используется с разрешения GoodWe)",
+        "pt": "marca: ícone substituído pelo logótipo oficial da GoodWe (usado com autorização da GoodWe)",
+        "nl": "branding: placeholder-icoon vervangen door het officiële GoodWe-logo (gebruikt met toestemming van GoodWe)",
+        "fr": "image de marque : icône remplacée par le logo officiel GoodWe (utilisé avec l autorisation de GoodWe)",
+        "it": "branding: icona sostituita con il logo ufficiale GoodWe (utilizzato con l autorizzazione di GoodWe)",
+        "es": "marca: icono sustituido por el logotipo oficial de GoodWe (utilizado con permiso de GoodWe)",
+        "pl": "branding: zastąpiono ikonę zastępczą oficjalnym logo GoodWe (używane za zgodą GoodWe)",
+        "uk": "брендинг: замінено іконку-заповнювач на офіційний логотип GoodWe (використовується з дозволу GoodWe)",
+        "zh-cn": "品牌:将占位图标替换为 GoodWe 官方标志(经 GoodWe 许可使用)"
       }
     },
     "title": "GoodWe SEMS Portal",
