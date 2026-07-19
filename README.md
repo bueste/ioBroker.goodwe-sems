@@ -123,7 +123,7 @@ Triggered on: SEMS login failure, SEMS rate limit, a prolonged outage, unexpecte
 
 - The SEMS password and the Pushover API token are marked as `encryptedNative`/`protectedNative` at the root of `io-package.json` and are stored encrypted by ioBroker, never logged in plain text (the account name is masked in log messages, e.g. `st***@gmail.com`).
 - The adapter performs **read-only** access only (`GetMonitorDetailByPowerstationId`, `GetPowerStationIdByOwner`). There is deliberately **no** remote-control/write function (`SaveRemoteControlInverter`) - that would be a considerably larger security and liability risk and was not part of the requirement.
-- No third-party dependency for HTTP access: the built-in `fetch` of Node.js >=20 is used instead of an additional HTTP library - a smaller attack surface, less supply-chain risk.
+- No third-party dependency for HTTP access: the built-in `fetch` of Node.js >=22 is used instead of an additional HTTP library - a smaller attack surface, less supply-chain risk.
 - The API base URL returned by the login response is validated (HTTPS on GoodWe-owned domains only) before any further request uses it, so a manipulated login response cannot redirect the session token to a foreign host.
 - All network errors are caught in a typed way; no unchecked data from the API response is ever executed (`eval`, `Function`, and similar are not used anywhere).
 
@@ -150,6 +150,16 @@ Pull requests are welcome, especially to add further fields delivered by the por
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+
+### 0.1.12 (2026-07-19)
+
+Further fixes from a repochecker recheck on the `ioBroker.repositories` listing PR:
+
+- (Stefan Bühler) **[E2004]** removed the `0.1.10` entry from `common.news` in `io-package.json` - that version's CI failed before the deploy step, so it was never actually published to npm
+- (Stefan Bühler) **[S3014]** declared `needs: check-and-lint` on the `adapter-tests` job so it only runs after linting succeeds
+- (Stefan Bühler) **[W0066]** pinned `@types/node` to `^22` (was the open-ended `>=22`, which could resolve to a newer major with mismatched typings)
+- (Stefan Bühler) **[W4040]/[W4042]** fixed the JSON schema associations in `.vscode/settings.json`: `fileMatch` entries must not have a leading slash, and the jsonConfig schema must also match `admin/jsonCustom.json` and `admin/jsonTab.json`
+- (Stefan Bühler) **[S8913]** added `.github/workflows/automerge-dependabot.yml` (using `iobroker-bot-orga/action-automerge-dependabot@v1`) and `.github/auto-merge.yml` so patch updates (and minor updates for dev dependencies) from Dependabot are merged automatically
 
 ### 0.1.11 (2026-07-19)
 

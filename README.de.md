@@ -9,9 +9,9 @@
 ![Test and Release](https://github.com/bueste/ioBroker.goodwe-sems/actions/workflows/test-and-release.yml/badge.svg)
 [![Donate](https://img.shields.io/badge/Spenden-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/ncp/payment/TT6MTBLXX9L9U)
 
-Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem **GoodWe SEMS Portal (Cloud)** – für Anlagen, die (z. B. weil kein LAN-Zugriff auf den Wechselrichter besteht) **nicht** mit dem lokalen [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)-Adapter (Modbus/UDP, Port 8899) abgefragt werden können.
+Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem **[GoodWe](https://www.goodwe.com) [SEMS Portal](https://www.semsportal.com) (Cloud)** – für Anlagen, die (z. B. weil kein LAN-Zugriff auf den Wechselrichter besteht) **nicht** mit dem lokalen [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)-Adapter (Modbus/UDP, Port 8899) abgefragt werden können.
 
-Login erfolgt mit dem **ganz normalen SEMS-Portal-Konto** (dasselbe wie unter semsportal.com / in der SEMS-App). Ein GoodWe-"Organization"/OpenAPI-Konto wird **nicht** benötigt.
+Login erfolgt mit dem **ganz normalen SEMS-Portal-Konto** (dasselbe wie unter semsportal.com / in der SEMS-App). Ein GoodWe-„Organization“/OpenAPI-Konto wird **nicht** benötigt.
 
 ## Inhaltsverzeichnis
 
@@ -29,7 +29,7 @@ Login erfolgt mit dem **ganz normalen SEMS-Portal-Konto** (dasselbe wie unter se
 
 ## Warum dieser Adapter?
 
-GoodWe ET/EH/BH/BT-Wechselrichter lassen sich normalerweise lokal per Modbus/UDP auslesen (siehe [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)). Steht kein LAN-Zugriff auf den Wechselrichter zur Verfügung (z. B. weil nur ein WLAN/LTE-Stick mit dem SEMS-Portal verbunden ist und das Zielnetz nicht erreichbar ist), bleibt nur der Umweg über die Cloud: das **SEMS Portal** (semsportal.com), über das die Anlage ohnehin schon überwacht wird.
+GoodWe ET/EH/BH/BT-Wechselrichter lassen sich normalerweise lokal per Modbus/UDP auslesen (siehe [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)). Steht kein LAN-Zugriff auf den Wechselrichter zur Verfügung (z. B. weil nur ein WLAN/LTE-Stick mit dem SEMS-Portal verbunden ist und das Zielnetz nicht erreichbar ist), bleibt nur der Umweg über die Cloud: das **[SEMS Portal](https://www.semsportal.com)** ([GoodWe](https://www.goodwe.com)), über das die Anlage ohnehin schon überwacht wird.
 
 ## API-Herkunft und Grenzen (bitte lesen)
 
@@ -54,12 +54,12 @@ Für ein **normales** SEMS-Portal-Konto (wie es die meisten Privatanwender haben
 
 ## Installation
 
-Solange der Adapter noch nicht im offiziellen ioBroker-Repository gelistet ist:
+Sobald dieser Adapter im offiziellen ioBroker-Adapter-Repository gelistet ist, wird er ganz normal installiert: **Admin -> Adapter -> nach „goodwe-sems“ suchen -> installieren**.
+
+Bis dahin kann ein ioBroker-Administrator ihn manuell auf dem ioBroker-Host hinzufügen:
 
 ```
-cd /opt/iobroker
-npm install https://github.com/bueste/ioBroker.goodwe-sems/tarball/main
-iobroker add goodwe-sems
+iobroker url iobroker.goodwe-sems
 ```
 
 ## Konfiguration
@@ -106,7 +106,7 @@ Felder, die das Portal liefert, aber dieser Adapter (noch) nicht kennt, gehen ni
   - **Rate-Limit (`GY0429`)** → sofortige Pause (Default 300 s), `info.rateLimited = true`.
   - **Login-Fehler** → exponentielles Backoff (bis 1 h Deckel), damit falsche Zugangsdaten das Konto nicht zusätzlich belasten.
   - **Netzwerk-/Protokollfehler** → moderates Backoff.
-- Nach konfigurierbar vielen aufeinanderfolgenden Fehlversuchen (Default 3) gilt die Anlage als "offline" und es wird - falls aktiviert - eine Pushover-Meldung ausgelöst.
+- Nach konfigurierbar vielen aufeinanderfolgenden Fehlversuchen (Default 3) gilt die Anlage als „offline“ und es wird - falls aktiviert - eine Pushover-Meldung ausgelöst.
 - Alles wird zusätzlich strukturiert ins ioBroker-Log geschrieben (`error`/`warn`/`debug` je nach Schweregrad).
 
 ## Pushover-Benachrichtigungen
@@ -121,9 +121,10 @@ Ausgelöst wird bei: SEMS-Login-Fehler, SEMS-Rate-Limit, länger andauerndem Aus
 
 ## Sicherheit & Datenschutz
 
-- SEMS-Passwort und Pushover-API-Token sind in `io-package.json` als `encryptedNative`/`protectedNative` markiert und werden von ioBroker verschlüsselt abgelegt, nicht im Klartext geloggt (Kontoname wird in Log-Meldungen maskiert, z. B. `st***@gmail.com`).
+- SEMS-Passwort und Pushover-API-Token sind an der Wurzel von `io-package.json` als `encryptedNative`/`protectedNative` markiert und werden von ioBroker verschlüsselt abgelegt, nicht im Klartext geloggt (Kontoname wird in Log-Meldungen maskiert, z. B. `st***@gmail.com`).
 - Der Adapter führt **ausschließlich lesende** Zugriffe aus (`GetMonitorDetailByPowerstationId`, `GetPowerStationIdByOwner`). Es gibt bewusst **keine** Fernsteuerungs-/Schreibfunktion (`SaveRemoteControlInverter`) - das wäre ein deutlich größeres Sicherheits- und Haftungsrisiko und war nicht Teil der Anforderung.
-- Keine Drittanbieter-Abhängigkeiten für den HTTP-Zugriff: Es wird das in Node.js ≥18 eingebaute `fetch` verwendet statt einer zusätzlichen HTTP-Bibliothek - kleinere Angriffsfläche, weniger Supply-Chain-Risiko.
+- Keine Drittanbieter-Abhängigkeiten für den HTTP-Zugriff: Es wird das in Node.js ≥22 eingebaute `fetch` verwendet statt einer zusätzlichen HTTP-Bibliothek - kleinere Angriffsfläche, weniger Supply-Chain-Risiko.
+- Die vom Login-Server gelieferte API-Basis-URL wird validiert (nur HTTPS auf GoodWe-eigenen Domains), bevor sie für weitere Anfragen genutzt wird - eine manipulierte Login-Antwort kann das Session-Token dadurch nicht an einen fremden Host umleiten.
 - Alle Netzwerkfehler werden typisiert abgefangen; es werden keine ungeprüften Daten aus der API-Antwort ausgeführt (`eval`, `Function`, o. ä. werden nirgends verwendet).
 
 ## Entwicklung
@@ -137,14 +138,64 @@ npm test          # Unit-Tests (lib/mapping.js, lib/semsApi.js, lib/notify.js) +
 Empfehlung vor jedem Release zusätzlich lokal:
 
 ```
-npx @iobroker/adapter-checker@latest .
+npx @iobroker/repochecker@latest .
 ```
 
 Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Felder zu ergänzen (siehe `info.rawResponse` mit aktivierter Debug-Option) oder Übersetzungen zu verbessern.
 
 ## Changelog
 
+<!--
+    Platzhalter für die nächste Version (am Zeilenanfang):
+    ### **WORK IN PROGRESS**
+-->
 ### **WORK IN PROGRESS**
+
+### 0.1.12 (2026-07-19)
+
+Weitere Fixes aus einem Repochecker-Recheck der `ioBroker.repositories`-Listing-PR:
+
+- (Stefan Bühler) **[E2004]** Eintrag `0.1.10` aus `common.news` in `io-package.json` entfernt - die CI dieser Version schlug vor dem Deploy-Schritt fehl, sie wurde also nie tatsächlich auf npm veröffentlicht
+- (Stefan Bühler) **[S3014]** `needs: check-and-lint` beim `adapter-tests`-Job ergänzt, damit dieser erst nach erfolgreichem Linting läuft
+- (Stefan Bühler) **[W0066]** `@types/node` auf `^22` fixiert (war das offene `>=22`, das auf eine neuere Major-Version mit unpassenden Typdefinitionen auflösen könnte)
+- (Stefan Bühler) **[W4040]/[W4042]** JSON-Schema-Zuordnungen in `.vscode/settings.json` korrigiert: `fileMatch`-Einträge dürfen keinen führenden Slash haben, und das jsonConfig-Schema muss zusätzlich auf `admin/jsonCustom.json` und `admin/jsonTab.json` passen
+- (Stefan Bühler) **[S8913]** `.github/workflows/automerge-dependabot.yml` (mit `iobroker-bot-orga/action-automerge-dependabot@v1`) und `.github/auto-merge.yml` ergänzt, damit Patch-Updates (und Minor-Updates bei Dev-Dependencies) von Dependabot automatisch gemerged werden
+
+### 0.1.11 (2026-07-19)
+
+- (Stefan Bühler) einen echten CI-Fehler aus 0.1.10 behoben: Node.js 20.x aus der `adapter-tests`-Matrix in `.github/workflows/test-and-release.yml` entfernt. Diese Version ist inkompatibel mit `engines.node >=22` (ebenfalls seit 0.1.10), sobald die offizielle `ioBroker/testing-action-adapter@v1`-Action `npm ci` mit aktiviertem `engine-strict` ausführt - das ließ diesen Matrix-Job abstürzen und brach per Fail-Fast alle anderen Jobs ab
+
+### 0.1.10 (2026-07-19)
+
+Zweite Runde von Fixes für weitere Befunde eines strengeren automatisierten `@iobroker/repochecker`-Rechecks der `ioBroker.repositories`-Listing-PR:
+
+- (Stefan Bühler) **[W0028]** `engines.node` auf `>=22` angehoben
+- (Stefan Bühler) **[W0063]** `chai`, `chai-as-promised`, `mocha`, `sinon` aus devDependencies entfernt (bereits in `@iobroker/testing` enthalten)
+- (Stefan Bühler) **[S0065]/[S0085]/[S0087]** `@types/node`, `@tsconfig/node22` und `/tsconfig.json` für Editor-Typprüfung ergänzt
+- (Stefan Bühler) **[S5026]** Release-Plugin `@alcalzone/release-script-plugin-manual-review` ergänzt
+- (Stefan Bühler) **[W3013]/[W3015]/[W3017]** `.github/workflows/test-and-release.yml` neu geschrieben: nutzt jetzt die offiziellen geteilten Actions `ioBroker/testing-action-check@v1`, `ioBroker/testing-action-adapter@v1` und `ioBroker/testing-action-deploy@v1` statt handgeschriebener Steps
+- (Stefan Bühler) `test/integration.js` ergänzt (Adapter-Start-Smoke-Test über den Integrations-Harness von `@iobroker/testing`), damit `npm run test:integration` erfolgreich läuft
+- (Stefan Bühler) **[E1032]** `common.news` in `io-package.json` auf die vom Repository-Builder verwendeten 7 Einträge gekürzt
+- (Stefan Bühler) **[E5512]** fehlende Pflicht-Eigenschaft `size` beim Pushover-Abschnitts-Header in `admin/jsonConfig.json` ergänzt
+- (Stefan Bühler) **[S5601]** `admin/i18n` vom langen `{lang}/translations.json`-Format auf das kurze `{lang}.json`-Format migriert
+- (Stefan Bühler) **[S4036]** `.vscode/settings.json` mit JSON-Schema-Zuordnungen für `io-package.json` und `admin/jsonConfig.json` ergänzt
+- (Stefan Bühler) **[S8901]** `.github/dependabot.yml` ergänzt (npm + github-actions, wöchentlich, mit Cooldown und einer Ignore-Regel für Major-/Minor-Updates von `@types/node`)
+
+### 0.1.9 (2026-07-19)
+
+Behebt die strengeren Befunde des automatisierten `@iobroker/repochecker`, die bei der `ioBroker.repositories`-Listing-PR aufgetreten sind:
+
+- (Stefan Bühler) **[E1057]** `encryptedNative`/`protectedNative` von `common` an die Wurzel von `io-package.json` verschoben, entsprechend dem aktuellen Schema
+- (Stefan Bühler) **[E3009]/[E3010]/[E3011]/[E3012]** `engines.node` auf `>=20`, `@iobroker/adapter-core` auf `^3.4.1`, die `js-controller`-Abhängigkeit auf `>=6.0.11`, die `admin`-GlobalDependency auf `>=7.6.20` angehoben
+- (Stefan Bühler) **[E3040]** devDependencies aktualisiert (`@iobroker/adapter-dev`, `@iobroker/testing`, mocha, esbuild u. a.) auf aktuelle Major-Versionen
+- (Stefan Bühler) **[E3000er-Serie]** `.github/workflows/test-and-release.yml` auf das aktuelle offizielle Template umgestellt: Jobs umbenannt (`check-and-lint`, `adapter-tests`, `adapter-check`, `deploy`), volle OS/Node-Testmatrix (ubuntu/windows/macos x 20/22/24), `concurrency`-Gruppe, Deploy-Job auf Node 24 fixiert
+- (Stefan Bühler) **[E5005]** globale `setTimeout`/`clearTimeout` durch adapter-verwaltete Timer (`adapter.setTimeout`/`adapter.clearTimeout`) in `lib/notify.js` und `lib/semsApi.js` ersetzt
+- (Stefan Bühler) **[E5043]** auf `require("node:crypto")` umgestellt
+- (Stefan Bühler) **[E5507]/[E5510]/[E5512]/[E5612]** `admin/jsonConfig.json` korrigiert: fehlende `lg`/`xl`-Responsive-Größen bei allen Items ergänzt, einen literalen Label-String durch einen echten i18n-Key ersetzt (`loginTab`, in allen 11 Übersetzungsdateien ergänzt)
+- (Stefan Bühler) **[E6004]/[E6015]/[W0037]/[W0076]** `README.md` ins Englische übersetzt (Pflichtsprache), bisherigen deutschen Inhalt nach `README.de.md` verschoben, `CHANGELOG_OLD.md` für ältere Einträge ergänzt
+- (Stefan Bühler) **[W9501]** überflüssige `.npmignore` entfernt (durch `files` in package.json ersetzt)
+- (Stefan Bühler) **[E9006]** `.commitinfo` zur `.gitignore` ergänzt
+- (Stefan Bühler) **[S4036]/[S5026]** `prettier.config.mjs` ergänzt, Codebasis neu formatiert, `jsdoc/reject-any-type` für den opaken Node-Timer-Handle-Typ mit begründendem Kommentar deaktiviert
 
 ### 0.1.8 (2026-07-19)
 
@@ -153,8 +204,8 @@ ioBroker-Adapter-Check-Befunde behoben:
 - (Stefan Bühler) **[E254]** News-Einträge für 0.1.1/0.1.2 entfernt - diese Tags wurden zwar gepusht, aber der zugehörige npm-Publish-Job schlug damals fehl (fehlendes NPM_TOKEN bzw. zu alte npm-CLI für OIDC), die Versionen existieren nie auf npm
 - (Stefan Bühler) **[W132]** dadurch automatisch unter dem 7-Einträge-Limit des Repository-Builders für `common.news`
 - (Stefan Bühler) **[W184]** veraltetes `common.title` entfernt (durch `common.titleLang` ersetzt) und veraltetes/ignoriertes `common.main` entfernt (Entry-Point kommt aus `package.json`)
-- (Stefan Bühler) **[W034]** `@iobroker/adapter-core` von ^3.1.6 auf ^3.2.2 angehoben (installiert 3.4.3)
-- (Stefan Bühler) **[W173]/[W174]/[E999]/[W401]**: `password` ist bereits korrekt in `encryptedNative`/`protectedNative` gelistet (per Tarball-Inspektion verifiziert) - diese Meldungen sowie der globale Axios-404-Fehler beim Abruf von `sources-dist-latest.json` sind Nebenwirkungen davon, dass der Adapter noch nicht im offiziellen ioBroker-Repository gelistet ist; sollten nach der Aufnahme verschwinden
+- (Stefan Bühler) **[W034]** `@iobroker/adapter-core` von ^3.1.6 auf ^3.2.2 angehoben
+- (Stefan Bühler) **[W173]/[W174]/[E999]/[W401]**: `password` ist bereits korrekt in `encryptedNative`/`protectedNative` gelistet (per Tarball-Inspektion verifiziert) - diese Meldungen sowie der globale Axios-404-Fehler beim Abruf von `sources-dist-latest.json` sind Nebenwirkungen davon, dass der Adapter noch nicht im offiziellen ioBroker-Repository gelistet war
 
 ### 0.1.7 (2026-07-19)
 
@@ -179,25 +230,7 @@ Sicherheits-/Qualitätsaudit (Security-Tester, Maintainer-Review, Fuzzing der Ma
 
 - (Stefan Bühler) fix: PayPal-Spendenlink im README korrigiert (Button-Link statt Donate-Link)
 
-### 0.1.4 (2026-07-18)
-
-- (Stefan Bühler) docs: PayPal-Spendenlink im README ergänzt
-
-### 0.1.3 (2026-07-18)
-
-- (Stefan Bühler) CI: OIDC Trusted Publishing repariert - Node 22 Runner bringt npm 10.9.x mit, was unter der für Trusted Publishing benötigten Version (>=11.5.1) liegt. Release-Job aktualisiert npm jetzt explizit vor `npm publish`.
-
-### 0.1.2 (2026-07-18)
-
-- (Stefan Bühler) CI: npm-Publish von langlebigem `NPM_TOKEN` auf OIDC Trusted Publishing umgestellt (kein Secret mehr im Repo nötig)
-
-### 0.1.1 (2026-07-18)
-
-- (Stefan Bühler) fix `repository.url` field format in package.json (removed npm-publish normalization warning)
-
-### 0.1.0 (2026-07-18)
-
-- (Stefan Bühler) initial release: SEMS-Portal-Login (SEMS+ mit Legacy-Fallback), automatische Anlagen-Erkennung, vollständiges Monitoring (Station/KPI/PowerFlow/Battery/EV-Charger/pro Wechselrichter), Rate-Limit-Handling, Backoff, Pushover-Alarmierung, Admin6-JSON-Config, i18n (11 Sprachen), Unit-Tests.
+Ältere Changelog-Einträge stehen in [CHANGELOG_OLD.md](CHANGELOG_OLD.md) (Englisch).
 
 ## Lizenz
 

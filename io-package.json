@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.11",
+    "version": "0.1.12",
     "news": {
       "0.1.5": {
         "en": "fix: correct PayPal donation link in README",
@@ -68,19 +68,6 @@
         "uk": "усунено суворіші перевірки PR ioBroker.repositories: encryptedNative/protectedNative перенесено в корінь io-package.json, оновлено залежності, переписано CI, README перекладено англійською (обов'язково)",
         "zh-cn": "解决更严格的 ioBroker.repositories PR 检查:将 encryptedNative/protectedNative 移至 io-package.json 根目录,更新依赖项,重写 CI,将 README 翻译为英文(必需)"
       },
-      "0.1.10": {
-        "en": "address second round of stricter repochecker findings: engines.node >=22, remove devDependencies already provided by @iobroker/testing, add @types/node/@tsconfig/node22/tsconfig.json, use official ioBroker/testing-action-check|adapter|deploy@v1 reusable GitHub Actions, add integration tests, trim common.news to 7 entries, add required \"size\" to admin header, migrate i18n to short {lang}.json format, add .vscode/settings.json and .github/dependabot.yml",
-        "de": "zweite Runde strengerer repochecker-Befunde behoben: engines.node >=22, von @iobroker/testing bereitgestellte devDependencies entfernt, @types/node/@tsconfig/node22/tsconfig.json ergänzt, offizielle ioBroker/testing-action-check|adapter|deploy@v1 Actions verwendet, Integrationstests ergänzt, common.news auf 7 Einträge gekürzt, fehlendes \"size\" bei Admin-Header ergänzt, i18n auf Kurzformat {lang}.json migriert, .vscode/settings.json und .github/dependabot.yml ergänzt",
-        "ru": "устранена вторая волна более строгих замечаний repochecker: engines.node >=22, использованы официальные GitHub Actions ioBroker/testing-action-*, добавлены интеграционные тесты, common.news сокращён до 7 записей, i18n переведён в короткий формат",
-        "pt": "resolvida segunda ronda de constatações mais rigorosas do repochecker: engines.node >=22, usadas as GitHub Actions oficiais ioBroker/testing-action-*, testes de integração adicionados, common.news reduzido para 7 entradas, i18n migrado para formato curto",
-        "nl": "tweede ronde strengere repochecker-bevindingen opgelost: engines.node >=22, officiële ioBroker/testing-action-* GitHub Actions gebruikt, integratietests toegevoegd, common.news teruggebracht tot 7 items, i18n gemigreerd naar kort formaat",
-        "fr": "deuxième série de constats repochecker plus stricts corrigée : engines.node >=22, utilisation des GitHub Actions officielles ioBroker/testing-action-*, ajout de tests d'intégration, common.news réduit à 7 entrées, i18n migré vers le format court",
-        "it": "risolto il secondo giro di rilievi più severi di repochecker: engines.node >=22, utilizzate le GitHub Actions ufficiali ioBroker/testing-action-*, aggiunti test di integrazione, common.news ridotto a 7 voci, i18n migrato al formato breve",
-        "es": "se resolvió la segunda ronda de hallazgos más estrictos de repochecker: engines.node >=22, se usaron las GitHub Actions oficiales ioBroker/testing-action-*, se agregaron pruebas de integración, common.news reducido a 7 entradas, i18n migrado al formato corto",
-        "pl": "rozwiązano drugą rundę bardziej rygorystycznych ustaleń repochecker: engines.node >=22, użyto oficjalnych GitHub Actions ioBroker/testing-action-*, dodano testy integracyjne, common.news skrócono do 7 wpisów, i18n zmigrowano do krótkiego formatu",
-        "uk": "усунено другу хвилю суворіших зауважень repochecker: engines.node >=22, використано офіційні GitHub Actions ioBroker/testing-action-*, додано інтеграційні тести, common.news скорочено до 7 записів, i18n перенесено у короткий формат",
-        "zh-cn": "解决第二轮更严格的 repochecker 问题:engines.node >=22,使用官方 ioBroker/testing-action-* GitHub Actions,添加集成测试,common.news 精简至 7 条,i18n 迁移为短格式"
-      },
       "0.1.11": {
         "en": "fix broken CI: remove Node.js 20.x from the adapter-tests matrix - it is incompatible with engines.node >=22 (introduced in 0.1.10) under the official action's engine-strict npm ci, which crashed that matrix job and cancelled all others",
         "de": "defekte CI behoben: Node.js 20.x aus der adapter-tests-Matrix entfernt - inkompatibel mit engines.node >=22 (seit 0.1.10) unter dem engine-strict npm ci der offiziellen Action, wodurch dieser Matrix-Job abstürzte und alle anderen abgebrochen wurden",
@@ -93,6 +80,19 @@
         "pl": "naprawiono uszkodzone CI: usunięto Node.js 20.x z macierzy adapter-tests - niekompatybilne z engines.node >=22 (wprowadzone w 0.1.10)",
         "uk": "виправлено зламаний CI: видалено Node.js 20.x з матриці adapter-tests - несумісний з engines.node >=22 (введено в 0.1.10)",
         "zh-cn": "修复损坏的 CI:从 adapter-tests 矩阵中移除 Node.js 20.x - 与 engines.node >=22(0.1.10 中引入)不兼容"
+      },
+      "0.1.12": {
+        "en": "further recheck fixes: remove news entry for 0.1.10 (never published to npm - its CI failed before the deploy step), declare \"needs: check-and-lint\" on the adapter-tests job, pin @types/node to \"^22\" (was open-ended \">=22\"), fix .vscode/settings.json schema fileMatch patterns (drop leading slash, add jsonCustom.json/jsonTab.json), add dependabot auto-merge workflow + config",
+        "de": "weitere Recheck-Fixes: News-Eintrag fuer 0.1.10 entfernt (nie auf npm veroeffentlicht - CI schlug vor dem Deploy-Schritt fehl), \"needs: check-and-lint\" beim adapter-tests-Job ergaenzt, @types/node auf \"^22\" fixiert (war offenes \">=22\"), Schema-fileMatch in .vscode/settings.json korrigiert (kein fuehrender Slash, jsonCustom.json/jsonTab.json ergaenzt), Dependabot-Automerge-Workflow + Konfiguration ergaenzt",
+        "ru": "дальнейшие исправления: удалена запись news для 0.1.10 (никогда не публиковалась в npm), needs: check-and-lint для adapter-tests, @types/node зафиксирован на ^22, исправлены схемы в .vscode/settings.json, добавлен automerge для dependabot",
+        "pt": "mais correcoes: removida a entrada de news para 0.1.10 (nunca publicada no npm), needs: check-and-lint no job adapter-tests, @types/node fixado em ^22, esquemas corrigidos em .vscode/settings.json, automerge do dependabot adicionado",
+        "nl": "verdere fixes: news-item voor 0.1.10 verwijderd (nooit op npm gepubliceerd), needs: check-and-lint toegevoegd aan adapter-tests, @types/node vastgezet op ^22, schema's in .vscode/settings.json gecorrigeerd, dependabot automerge toegevoegd",
+        "fr": "autres corrections : entree news pour 0.1.10 supprimee (jamais publiee sur npm), needs: check-and-lint ajoute au job adapter-tests, @types/node fixe a ^22, schemas corriges dans .vscode/settings.json, automerge dependabot ajoute",
+        "it": "ulteriori correzioni: rimossa la voce news per 0.1.10 (mai pubblicata su npm), aggiunto needs: check-and-lint al job adapter-tests, @types/node fissato a ^22, schemi corretti in .vscode/settings.json, aggiunto automerge per dependabot",
+        "es": "mas correcciones: se elimino la entrada de news para 0.1.10 (nunca publicada en npm), se agrego needs: check-and-lint al job adapter-tests, @types/node fijado en ^22, esquemas corregidos en .vscode/settings.json, se agrego automerge de dependabot",
+        "pl": "kolejne poprawki: usunieto wpis news dla 0.1.10 (nigdy nie opublikowano na npm), dodano needs: check-and-lint do zadania adapter-tests, @types/node ustalono na ^22, poprawiono schematy w .vscode/settings.json, dodano automerge dependabot",
+        "uk": "подальші виправлення: видалено запис news для 0.1.10 (ніколи не публікувався на npm), додано needs: check-and-lint для adapter-tests, @types/node зафіксовано на ^22, виправлено схеми в .vscode/settings.json, додано automerge для dependabot",
+        "zh-cn": "进一步修复:移除 0.1.10 的 news 条目(从未发布到 npm),为 adapter-tests 任务添加 needs: check-and-lint,将 @types/node 固定为 ^22,修复 .vscode/settings.json 中的 schema 匹配,添加 dependabot 自动合并"
       }
     },
     "titleLang": {
