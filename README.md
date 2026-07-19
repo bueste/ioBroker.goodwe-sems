@@ -151,6 +151,11 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.18 (2026-07-19)
+
+- (Stefan Bühler) fix: SEMS+ login still got rejected with `code=C0602 "account_login_abnormal"` even after the host fix in 0.1.17, because the adapter identified itself as the iOS app (`User-Agent: PVMaster/...`, token `client: "ios"`) - but the called endpoint (`eu-semsplus.goodwe.com`) is, per the real browser capture, only ever used by the SEMS+ *web* client, sending `client: "semsPlusWeb"`, a browser User-Agent, and `Origin`/`Referer` headers. The login call now builds its own matching header identity for just that one request; every other (classic/legacy) endpoint keeps using the established iOS identity, unchanged
+- (Stefan Bühler) 1 tightened regression test verifying the login call's client identity and headers
+
 ### 0.1.17 (2026-07-19)
 
 - (Stefan Bühler) fix: SEMS+ login failed for some accounts (`code=C0602 "account_login_abnormal"`) because the adapter called the global endpoint (`semsplus.goodwe.com`) instead of the EU-regional one (`eu-semsplus.goodwe.com`). Confirmed via a real browser HAR capture: the identical request body and password hash succeeded against the regional host. Deliberately implemented **without** a host-fallback loop - repeatedly retrying the same credentials against multiple hosts looks like credential stuffing to the backend and risks a real account lockout

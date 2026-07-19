@@ -55,9 +55,16 @@ describe("lib/semsApi SemsApi", () => {
         expect(fetchStub.firstCall.args[0]).to.equal(
             "https://eu-semsplus.goodwe.com/web/sems/sems-user/api/v1/auth/cross-login",
         );
-        // Must carry an x-signature header even on the login call itself,
-        // matching real browser traffic exactly.
-        expect(fetchStub.firstCall.args[1].headers).to.have.property("x-signature");
+        // Must identify as the real semsPlusWeb browser client (not the
+        // iOS-app identity used for the classic/legacy endpoints) and carry
+        // an x-signature header, matching real browser traffic exactly -
+        // sending the wrong client identity to this web-only endpoint is a
+        // plausible cause of real "C0602 account_login_abnormal" rejections.
+        const headers = fetchStub.firstCall.args[1].headers;
+        expect(headers).to.have.property("x-signature");
+        expect(headers["User-Agent"]).to.not.include("PVMaster");
+        const tokenHeader = JSON.parse(headers.token);
+        expect(tokenHeader.client).to.equal("semsPlusWeb");
     });
 
     it("falls back to the legacy CrossLogin endpoint if the new one fails", async () => {

@@ -151,6 +151,11 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.18 (2026-07-19)
+
+- (Stefan Bühler) Fix: Der SEMS+-Login wurde trotz des Host-Fixes in 0.1.17 weiterhin mit `code=C0602 "account_login_abnormal"` abgelehnt, weil sich der Adapter als iOS-App ausgab (`User-Agent: PVMaster/...`, Token-`client: "ios"`) - der aufgerufene Endpunkt (`eu-semsplus.goodwe.com`) wird laut echtem Browser-Mitschnitt aber ausschließlich vom SEMS+-*Web*-Client genutzt, der `client: "semsPlusWeb"`, einen Browser-User-Agent sowie `Origin`/`Referer`-Header sendet. Der Login-Call baut jetzt eine eigene, passende Header-Identität nur für diesen einen Aufruf; alle anderen (klassischen/Legacy-)Endpunkte nutzen unverändert weiterhin die etablierte iOS-Identität
+- (Stefan Bühler) 1 verschärfter Regressionstest, der die Client-Identität und Header des Login-Calls prüft
+
 ### 0.1.17 (2026-07-19)
 
 - (Stefan Bühler) Fix: Der SEMS+-Login schlug für manche Konten fehl (`code=C0602 "account_login_abnormal"`), weil der Adapter den globalen Endpunkt (`semsplus.goodwe.com`) statt des EU-regionalen (`eu-semsplus.goodwe.com`) aufrief. Bestätigt durch einen echten Browser-HAR-Mitschnitt: derselbe Request-Body und Passwort-Hash war gegen den regionalen Host erfolgreich. Bewusst **ohne** Host-Fallback-Schleife umgesetzt - mehrere Login-Versuche mit denselben Zugangsdaten gegen verschiedene Hosts sehen für das Backend wie Credential-Stuffing aus und riskieren eine echte Kontosperre
