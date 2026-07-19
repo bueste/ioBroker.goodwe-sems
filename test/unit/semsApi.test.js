@@ -178,4 +178,56 @@ describe("lib/semsApi SemsApi", () => {
         const stations = await api.getOwnedPowerStations();
         expect(stations).to.deep.equal([{ id: "id-1", name: "Anlage 1" }]);
     });
+
+    it("getMonitorDetail() falls back from the v3 to the v2 API path on a 404 (legacy-backend accounts)", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu.semsportal.com/api",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        // v3 path: this backend doesn't know it, responds with a bare {"error_msg": ...} 404 envelope
+        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        // v2 path: succeeds
+        fetchStub.onCall(2).resolves(
+            jsonResponse(200, { code: 0, msg: "success", data: { info: { stationname: "OK" } } }),
+        );
+
+        const api = newApi();
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        expect(detail.info.stationname).to.equal("OK");
+        expect(fetchStub.callCount).to.equal(3);
+        expect(fetchStub.getCall(1).args[0]).to.include("/v3/PowerStation/GetMonitorDetailByPowerstationId");
+        expect(fetchStub.getCall(2).args[0]).to.include("/v2/PowerStation/GetMonitorDetailByPowerstationId");
+    });
+
+    it("getMonitorDetail() surfaces error_msg from a 404 envelope if the v2 fallback also fails", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu.semsportal.com/api",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+
+        const api = newApi();
+        await api.login();
+
+        let caught;
+        try {
+            await api.getMonitorDetail("station-1");
+        } catch (error) {
+            caught = error;
+        }
+        expect(caught).to.be.instanceOf(SemsProtocolError);
+        expect(caught.message).to.include("404 Route Not Found");
+        expect(fetchStub.callCount).to.equal(3);
+    });
 });

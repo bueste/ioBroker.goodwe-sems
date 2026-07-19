@@ -151,6 +151,12 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.14 (2026-07-19)
+
+- (Stefan Bühler) Fix: `GetMonitorDetailByPowerstationId` lieferte `404 Route Not Found` für Konten, deren SEMS+-Login abgelehnt wird (beobachtet: `code=C0602`) und die auf die Legacy-CrossLogin-API zurückfallen - dieses Backend stellt den Endpunkt unter dem `v2`-API-Pfad bereit, nicht `v3`. Root Cause gefunden anhand des Debug-Logs eines echten Kontos sowie der Referenzimplementierung [pygoodwe](https://github.com/yaleman/pygoodwe), deren rein-legacy-Client den `v2`-Pfad fest verdrahtet. `getMonitorDetail()` versucht jetzt zuerst `v3` und wiederholt bei erkanntem 404 automatisch einmal mit `v2` - beide Backend-Varianten funktionieren damit ohne jede Konfigurationsänderung durch den Nutzer
+- (Stefan Bühler) Fix: Fehlermeldungen zeigen jetzt auch das `error_msg`-Feld der API an (wurde bisher stillschweigend verworfen, was selbst bei aussagekräftiger Fehlerbeschreibung in der Antwort nur zu einem nichtssagenden „unbekannter Fehler" führte)
+- (Stefan Bühler) 2 neue Regressionstests (44 Unit-Tests gesamt) für den v3→v2-Fallback sowie den Fall, dass beide Pfade fehlschlagen
+
 ### 0.1.13 (2026-07-19)
 
 - (Stefan Bühler) Diagnose: rohe JSON-Antwort jedes SEMS-API-Aufrufs wird jetzt auf Debug-Level geloggt, nicht mehr nur beim Monitor-Detail-Aufruf. Tests mit einem echten Konto zeigten eine Meldung `SEMS-API-Fehler: ... GetPowerStationIdByOwner ... unbekannter Fehler (code=undefined)` - die vom Adapter angenommene Erfolgs-/Fehler-Code-Konvention (`code: 0`/`"0"`/`"00000"`) wurde bisher nur gegen selbst geschriebene Testfixtures geprüft, nicht gegen diesen konkreten Endpunkt auf einem echten Konto. Dieses Logging ist der schnellste Weg, die tatsächliche Antwortstruktur zu sehen und den echten Fehler zu beheben, ohne dass Zugangsdaten von irgendjemandem benötigt werden

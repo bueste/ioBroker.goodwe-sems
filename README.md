@@ -151,6 +151,12 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.14 (2026-07-19)
+
+- (Stefan Bühler) fix: `GetMonitorDetailByPowerstationId` returned `404 Route Not Found` for accounts whose SEMS+ login is rejected (observed: `code=C0602`) and that fall back to the legacy CrossLogin API - that backend serves the endpoint under the `v2` API path, not `v3`. Root cause found via a real account's debug log plus the community reference implementation [pygoodwe](https://github.com/yaleman/pygoodwe), whose legacy-only client hardcodes the `v2` path. `getMonitorDetail()` now tries `v3` first and automatically retries once with `v2` on a detected 404, so both backend variants work without any user-facing configuration change
+- (Stefan Bühler) fix: error messages now also surface the API's `error_msg` field (previously silently dropped, resulting in an uninformative "unbekannter Fehler" even when the response body contained a clear error description)
+- (Stefan Bühler) 2 new regression tests (44 unit tests in total) covering the v3→v2 fallback and the case where both paths fail
+
 ### 0.1.13 (2026-07-19)
 
 - (Stefan Bühler) diagnostics: log the raw JSON envelope of every SEMS API call at debug level, not just the monitor-detail call. Real-account testing surfaced a `SEMS-API-Fehler: ... GetPowerStationIdByOwner ... unbekannter Fehler (code=undefined)` report - the success/error code convention this adapter assumes (`code: 0`/`"0"`/`"00000"`) was only ever validated against test fixtures, not this specific endpoint on a live account. This logging is the fastest way to see the actual response shape and fix the real bug without needing access to anyone's SEMS credentials
