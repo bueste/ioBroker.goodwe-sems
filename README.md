@@ -151,6 +151,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.11 (2026-07-19)
+
+- (Stefan Bühler) fixed a real CI break introduced in 0.1.10: removed Node.js 20.x from the `adapter-tests` matrix in `.github/workflows/test-and-release.yml`. It is incompatible with `engines.node >=22` (also introduced in 0.1.10) once the official `ioBroker/testing-action-adapter@v1` action runs `npm ci` with `engine-strict` enabled, which crashed that matrix job and cancelled every other job via fail-fast
+
 ### 0.1.10 (2026-07-19)
 
 Second round of fixes, addressing further findings from a stricter automated `@iobroker/repochecker` recheck on the `ioBroker.repositories` listing PR:
