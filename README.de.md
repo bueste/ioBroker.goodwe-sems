@@ -151,6 +151,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.13 (2026-07-19)
+
+- (Stefan Bühler) Diagnose: rohe JSON-Antwort jedes SEMS-API-Aufrufs wird jetzt auf Debug-Level geloggt, nicht mehr nur beim Monitor-Detail-Aufruf. Tests mit einem echten Konto zeigten eine Meldung `SEMS-API-Fehler: ... GetPowerStationIdByOwner ... unbekannter Fehler (code=undefined)` - die vom Adapter angenommene Erfolgs-/Fehler-Code-Konvention (`code: 0`/`"0"`/`"00000"`) wurde bisher nur gegen selbst geschriebene Testfixtures geprüft, nicht gegen diesen konkreten Endpunkt auf einem echten Konto. Dieses Logging ist der schnellste Weg, die tatsächliche Antwortstruktur zu sehen und den echten Fehler zu beheben, ohne dass Zugangsdaten von irgendjemandem benötigt werden
+
 ### 0.1.12 (2026-07-19)
 
 Weitere Fixes aus einem Repochecker-Recheck der `ioBroker.repositories`-Listing-PR:

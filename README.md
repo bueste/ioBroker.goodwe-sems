@@ -151,6 +151,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.13 (2026-07-19)
+
+- (Stefan Bühler) diagnostics: log the raw JSON envelope of every SEMS API call at debug level, not just the monitor-detail call. Real-account testing surfaced a `SEMS-API-Fehler: ... GetPowerStationIdByOwner ... unbekannter Fehler (code=undefined)` report - the success/error code convention this adapter assumes (`code: 0`/`"0"`/`"00000"`) was only ever validated against test fixtures, not this specific endpoint on a live account. This logging is the fastest way to see the actual response shape and fix the real bug without needing access to anyone's SEMS credentials
+
 ### 0.1.12 (2026-07-19)
 
 Further fixes from a repochecker recheck on the `ioBroker.repositories` listing PR:
