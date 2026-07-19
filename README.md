@@ -151,6 +151,14 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.16 (2026-07-19)
+
+- (Stefan Bühler) major finding: some accounts whose SEMS+ login is rejected and fall back to the legacy CrossLogin API do not end up on the classic `semsportal.com`-style backend at all - they get a session for a completely different, modern microservice API ("SEMS+ gateway", `eu-gateway.semsportal.com`), which explains why `GetMonitorDetailByPowerstationId` could never succeed under any of the `v1`/`v2`/`v3` paths tried in 0.1.14/0.1.15. Confirmed via a real account's browser HAR capture (`eu-semsplus.goodwe.com`) showing the actual endpoints in use (`sems-plant/api/stations/...`, `sems-plant/api/equipments/<sn>/telemetry`, etc.)
+- (Stefan Bühler) the gateway API additionally requires every request to carry a computed `x-signature` header or it is silently rejected. The signature scheme (`base64(sha256(`${ts}@${uid}@${token}`) + "@" + ts)`) was reverse-engineered empirically from ~230 real request/response pairs captured from the web app - 100% match, no exceptions
+- (Stefan Bühler) `getMonitorDetail()` now automatically falls back to this gateway API (station basic info, device list, per-device telemetry/telecounting) when all three classic paths 404, and reshapes the result into the same `info`/`kpi`/`inverter[]` shape the rest of the adapter already expects - no changes needed in the mapping/state-creation layer
+- (Stefan Bühler) deliberately conservative first version: only fields with a confirmed unit/shape are populated (current power, today's/total generation, per-inverter AC/PV/temperature values); the station-level power-flow split (PV/load/grid/battery) is not populated yet, since every real-account capture so far happened at night and returned an empty object for it
+- (Stefan Bühler) 2 new regression tests (47 unit tests in total), including one that verifies the actual signature computation against the real, reverse-engineered formula
+
 ### 0.1.15 (2026-07-19)
 
 - (Stefan Bühler) fix: 0.1.14's v3→v2 fallback for `GetMonitorDetailByPowerstationId` was insufficient - a real-world account's legacy-login backend returned `404 Route Not Found` for **both** the `v2` and `v3` paths. Community references disagree on which version is correct (pygoodwe hardcodes `v2`, a separate 2023 write-up uses `v1`, our own traffic inspection observed `v3`), so `getMonitorDetail()` now tries all three versions in sequence (`v3` → `v2` → `v1`) and uses whichever one doesn't 404

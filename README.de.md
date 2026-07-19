@@ -151,6 +151,14 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.16 (2026-07-19)
+
+- (Stefan Bühler) Großer Fund: Manche Konten, deren SEMS+-Login abgelehnt wird und die auf die Legacy-CrossLogin-API zurückfallen, landen gar nicht auf dem klassischen `semsportal.com`-artigen Backend - sie bekommen eine Session für eine komplett andere, moderne Microservice-API ("SEMS+-Gateway", `eu-gateway.semsportal.com`). Das erklärt, warum `GetMonitorDetailByPowerstationId` unter keinem der in 0.1.14/0.1.15 versuchten Pfade (`v1`/`v2`/`v3`) je funktionieren konnte. Bestätigt durch einen echten Browser-HAR-Mitschnitt (`eu-semsplus.goodwe.com`), der die tatsächlich genutzten Endpunkte zeigt (`sems-plant/api/stations/...`, `sems-plant/api/equipments/<sn>/telemetry` usw.)
+- (Stefan Bühler) Die Gateway-API verlangt zusätzlich einen berechneten `x-signature`-Header bei jedem Request, sonst wird er stillschweigend abgelehnt. Das Signatur-Schema (`base64(sha256(`${ts}@${uid}@${token}`) + "@" + ts)`) wurde empirisch aus ~230 echten Request/Response-Paaren rekonstruiert - 100 % Treffer, keine Ausnahmen
+- (Stefan Bühler) `getMonitorDetail()` fällt jetzt automatisch auf diese Gateway-API zurück (Stations-Basisdaten, Geräteliste, Telemetrie/Telecounting pro Gerät), wenn alle drei klassischen Pfade 404 liefern, und wandelt das Ergebnis in dieselbe `info`/`kpi`/`inverter[]`-Struktur um, die der Rest des Adapters bereits erwartet - keine Änderungen in der Mapping-/State-Erzeugungs-Schicht nötig
+- (Stefan Bühler) Bewusst konservative erste Version: Nur Felder mit gesichertem Einheiten-/Format-Nachweis werden befüllt (aktuelle Leistung, Tages-/Gesamtertrag, Wechselrichter-Werte für AC/PV/Temperatur); der stationsweite Leistungsfluss (PV/Verbrauch/Netz/Batterie) wird noch nicht befüllt, da alle bisherigen Mitschnitte nachts erfolgten und dafür ein leeres Objekt lieferten
+- (Stefan Bühler) 2 neue Regressionstests (47 Unit-Tests insgesamt), darunter einer, der die tatsächliche Signaturberechnung gegen die echte, reverse-engineerte Formel verifiziert
+
 ### 0.1.15 (2026-07-19)
 
 - (Stefan Bühler) Fix: Der v3→v2-Fallback aus 0.1.14 für `GetMonitorDetailByPowerstationId` reichte nicht aus - bei einem echten Konto lieferte das Legacy-Login-Backend `404 Route Not Found` für **beide** Pfade, `v2` und `v3`. Community-Referenzen widersprechen sich, welche Version korrekt ist (pygoodwe verwendet fest `v2`, ein separater Artikel von 2023 nutzt `v1`, unsere eigene Traffic-Analyse beobachtete `v3`) - `getMonitorDetail()` probiert jetzt alle drei Versionen der Reihe nach durch (`v3` → `v2` → `v1`) und nutzt die erste, die keinen 404 liefert

@@ -1,5 +1,6 @@
 "use strict";
 
+const crypto = require("node:crypto");
 const { expect } = require("chai");
 const sinon = require("sinon");
 const { SemsApi } = require("../../lib/semsApi");
@@ -231,7 +232,7 @@ describe("lib/semsApi SemsApi", () => {
         expect(fetchStub.getCall(3).args[0]).to.include("/v1/PowerStation/GetMonitorDetailByPowerstationId");
     });
 
-    it("getMonitorDetail() surfaces error_msg from a 404 envelope if all version fallbacks fail", async () => {
+    it("getMonitorDetail() surfaces error_msg from a 404 envelope if all version fallbacks AND the gateway fallback fail", async () => {
         fetchStub.onCall(0).resolves(
             jsonResponse(200, {
                 code: 0,
@@ -243,6 +244,10 @@ describe("lib/semsApi SemsApi", () => {
         fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
         fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
         fetchStub.onCall(3).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        // After all 3 classic paths 404, getMonitorDetail() also tries the SEMS+
+        // gateway fallback (basic/info) - make that fail too, so the ORIGINAL
+        // classic error still surfaces to the caller instead of being masked.
+        fetchStub.onCall(4).resolves(jsonResponse(200, { code: "40004", description: "station not found" }));
 
         const api = newApi();
         await api.login();
@@ -255,6 +260,88 @@ describe("lib/semsApi SemsApi", () => {
         }
         expect(caught).to.be.instanceOf(SemsProtocolError);
         expect(caught.message).to.include("404 Route Not Found");
-        expect(fetchStub.callCount).to.equal(4);
+        expect(fetchStub.callCount).to.equal(5);
+        expect(fetchStub.getCall(4).args[0]).to.include("/sems-plant/api/portal/stations/basic/info");
+    });
+
+    it("getMonitorDetail() falls back to the SEMS+ gateway API when all classic paths 404, using the real signature scheme", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u1", token: "t1", timestamp: 1784490221381 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(3).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(4).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: { name: "Test Station", pvCapacity: 12.18, googleAddress: "Somewhere 1", status: "0" },
+            }),
+        );
+        fetchStub.onCall(5).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: {
+                    total: 1,
+                    deviceDetailList: [
+                        {
+                            deviceType: "INVERTER",
+                            statusDetailList: [
+                                {
+                                    detailMap: {
+                                        SN123: { sn: "SN123", name: "Garage", deviceType: "INVERTER", status: 0 },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }),
+        );
+        fetchStub.onCall(6).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: [{ code: "ac", factors: [{ code: "pAc", data: "2.5", unit: "kW" }] }],
+            }),
+        );
+        fetchStub.onCall(7).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: [{ code: "telecounting_today", factors: [{ code: "proPvStatsToday", data: "12.3" }] }],
+            }),
+        );
+
+        const api = newApi();
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        expect(detail.info.stationname).to.equal("Test Station");
+        expect(detail.info.capacity).to.equal(12.18);
+        expect(detail.kpi.pac).to.equal(2500);
+        expect(detail.kpi.power).to.equal(12.3);
+        expect(detail.inverter).to.have.lengthOf(1);
+        expect(detail.inverter[0].sn).to.equal("SN123");
+        expect(detail.inverter[0].pac).to.equal(2500);
+
+        // Verify the x-signature header on the gateway calls matches the
+        // real, empirically reverse-engineered formula (see GATEWAY_CLIENT
+        // comment in lib/semsApi.js): base64(sha256(`${ts}@${uid}@${token}`) + "@" + ts).
+        const basicInfoCall = fetchStub.getCall(4);
+        const headers = basicInfoCall.args[1].headers;
+        expect(headers).to.have.property("x-signature");
+        const decoded = Buffer.from(headers["x-signature"], "base64").toString("utf8");
+        const [hash, ts] = decoded.split("@");
+        const expectedHash = crypto.createHash("sha256").update(`${ts}@u1@t1`).digest("hex");
+        expect(hash).to.equal(expectedHash);
+        const tokenHeader = JSON.parse(headers.token);
+        expect(tokenHeader).to.include({ uid: "u1", token: "t1", client: "semsPlusWeb" });
     });
 });
