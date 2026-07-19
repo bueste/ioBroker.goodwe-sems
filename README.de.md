@@ -151,6 +151,12 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.17 (2026-07-19)
+
+- (Stefan Bühler) Fix: Der SEMS+-Login schlug für manche Konten fehl (`code=C0602 "account_login_abnormal"`), weil der Adapter den globalen Endpunkt (`semsplus.goodwe.com`) statt des EU-regionalen (`eu-semsplus.goodwe.com`) aufrief. Bestätigt durch einen echten Browser-HAR-Mitschnitt: derselbe Request-Body und Passwort-Hash war gegen den regionalen Host erfolgreich. Bewusst **ohne** Host-Fallback-Schleife umgesetzt - mehrere Login-Versuche mit denselben Zugangsdaten gegen verschiedene Hosts sehen für das Backend wie Credential-Stuffing aus und riskieren eine echte Kontosperre
+- (Stefan Bühler) Der Login-Request sendet jetzt zusätzlich den `x-signature`-Header (exakt wie im echten Browser-Traffic), und ein echtes SEMS+-Session-Token wird von der in 0.1.16 eingeführten Gateway-API jetzt korrekt akzeptiert - zuvor bekam der Gateway-Fallback nur ein aus dem Legacy-CrossLogin abgeleitetes Token, das vom Gateway mit demselben C0602-Fehler abgelehnt wurde, da es keine echte SEMS+-Session ist
+- (Stefan Bühler) 1 aktualisierter Regressionstest, der die exakte Login-URL und das Vorhandensein des Signatur-Headers beim Login prüft
+
 ### 0.1.16 (2026-07-19)
 
 - (Stefan Bühler) Großer Fund: Manche Konten, deren SEMS+-Login abgelehnt wird und die auf die Legacy-CrossLogin-API zurückfallen, landen gar nicht auf dem klassischen `semsportal.com`-artigen Backend - sie bekommen eine Session für eine komplett andere, moderne Microservice-API ("SEMS+-Gateway", `eu-gateway.semsportal.com`). Das erklärt, warum `GetMonitorDetailByPowerstationId` unter keinem der in 0.1.14/0.1.15 versuchten Pfade (`v1`/`v2`/`v3`) je funktionieren konnte. Bestätigt durch einen echten Browser-HAR-Mitschnitt (`eu-semsplus.goodwe.com`), der die tatsächlich genutzten Endpunkte zeigt (`sems-plant/api/stations/...`, `sems-plant/api/equipments/<sn>/telemetry` usw.)

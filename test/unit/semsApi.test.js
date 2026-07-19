@@ -34,7 +34,7 @@ describe("lib/semsApi SemsApi", () => {
         expect(() => new SemsApi({ account: "", password: "", log: noopLog })).to.throw(SemsAuthError);
     });
 
-    it("logs in via the new SEMS+ endpoint when it succeeds", async () => {
+    it("logs in via the new SEMS+ endpoint (EU-regional host, not the global one) when it succeeds", async () => {
         fetchStub.resolves(
             jsonResponse(200, {
                 code: 0,
@@ -49,7 +49,15 @@ describe("lib/semsApi SemsApi", () => {
 
         expect(session.token).to.equal("t1");
         expect(fetchStub.calledOnce).to.equal(true);
-        expect(fetchStub.firstCall.args[0]).to.include("semsplus.goodwe.com");
+        // Must be the EU-regional host - the global "semsplus.goodwe.com" host
+        // (without the "eu-" prefix) has been confirmed to reject valid
+        // credentials for real accounts (see comment above NEW_LOGIN_URL).
+        expect(fetchStub.firstCall.args[0]).to.equal(
+            "https://eu-semsplus.goodwe.com/web/sems/sems-user/api/v1/auth/cross-login",
+        );
+        // Must carry an x-signature header even on the login call itself,
+        // matching real browser traffic exactly.
+        expect(fetchStub.firstCall.args[1].headers).to.have.property("x-signature");
     });
 
     it("falls back to the legacy CrossLogin endpoint if the new one fails", async () => {
