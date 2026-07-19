@@ -4,12 +4,7 @@ const utils = require("@iobroker/adapter-core");
 const { SemsApi } = require("./lib/semsApi");
 const { Notifier } = require("./lib/notify");
 const { mapMonitorDetail } = require("./lib/mapping");
-const {
-    SemsAuthError,
-    SemsRateLimitError,
-    SemsNetworkError,
-    SemsProtocolError,
-} = require("./lib/errors");
+const { SemsAuthError, SemsRateLimitError, SemsNetworkError, SemsProtocolError } = require("./lib/errors");
 
 // Hard floor for the poll interval, independent of user configuration.
 // Protects the SEMS account from being rate-limited/locked even if someone
@@ -53,33 +48,21 @@ class GoodweSems extends utils.Adapter {
             return;
         }
 
-        this.basePollIntervalSec = Math.max(
-            MIN_POLL_INTERVAL_SEC,
-            Number(this.config.pollInterval) || 300,
-        );
-        if (
-            Number(this.config.pollInterval) &&
-            Number(this.config.pollInterval) < MIN_POLL_INTERVAL_SEC
-        ) {
+        this.basePollIntervalSec = Math.max(MIN_POLL_INTERVAL_SEC, Number(this.config.pollInterval) || 300);
+        if (Number(this.config.pollInterval) && Number(this.config.pollInterval) < MIN_POLL_INTERVAL_SEC) {
             this.log.warn(
                 `Konfiguriertes Poll-Intervall (${this.config.pollInterval}s) liegt unter dem Minimum von ${MIN_POLL_INTERVAL_SEC}s ` +
                     `und wurde zum Schutz vor SEMS-Rate-Limits auf ${this.basePollIntervalSec}s angehoben.`,
             );
         }
-        this.maxConsecutiveErrors = Math.max(
-            1,
-            Number(this.config.maxConsecutiveErrors) || 3,
-        );
-        this.stationOfflineMs =
-            Math.max(1, Number(this.config.stationOfflineMinutes) || 30) *
-            60000;
+        this.maxConsecutiveErrors = Math.max(1, Number(this.config.maxConsecutiveErrors) || 3);
+        this.stationOfflineMs = Math.max(1, Number(this.config.stationOfflineMinutes) || 30) * 60000;
 
         this.notifier = new Notifier(this, this.config);
         this.api = new SemsApi({
             account: this.config.account,
             password: this.config.password,
-            requestTimeoutMs:
-                Math.max(5, Number(this.config.requestTimeout) || 15) * 1000,
+            requestTimeoutMs: Math.max(5, Number(this.config.requestTimeout) || 15) * 1000,
             log: (level, message) => {
                 if (typeof this.log[level] === "function") {
                     this.log[level](message);
@@ -87,13 +70,14 @@ class GoodweSems extends utils.Adapter {
                     this.log.debug(message);
                 }
             },
+            // Use the adapter's managed timers so HTTP-request-timeout
+            // timers are automatically cleaned up on adapter unload/compact
+            // mode shutdown instead of leaking a bare Node.js timer.
+            setTimeoutFn: this.setTimeout.bind(this),
+            clearTimeoutFn: this.clearTimeout.bind(this),
         });
 
-        await this.setStateAsync(
-            "info.activePollInterval",
-            this.basePollIntervalSec,
-            true,
-        );
+        await this.setStateAsync("info.activePollInterval", this.basePollIntervalSec, true);
         this.log.info(
             `GoodWe SEMS Adapter gestartet. Poll-Intervall: ${this.basePollIntervalSec}s, Konto: ${this._maskAccount(this.config.account)}.`,
         );
@@ -110,9 +94,7 @@ class GoodweSems extends utils.Adapter {
             }
             callback();
         } catch (error) {
-            this.log.error(
-                `Fehler beim Beenden des Adapters: ${error.message}`,
-            );
+            this.log.error(`Fehler beim Beenden des Adapters: ${error.message}`);
             callback();
         }
     }
@@ -125,13 +107,11 @@ class GoodweSems extends utils.Adapter {
             this.clearTimeout(this.pollTimer);
         }
         this.pollTimer = this.setTimeout(() => {
-            this._pollCycle().catch((error) => {
+            this._pollCycle().catch(error => {
                 // _pollCycle already handles its own errors; this is a last-resort
                 // safety net so a programming mistake can never silently kill the
                 // polling loop.
-                this.log.error(
-                    `Unbehandelter Fehler im Poll-Zyklus: ${error.stack || error.message}`,
-                );
+                this.log.error(`Unbehandelter Fehler im Poll-Zyklus: ${error.stack || error.message}`);
                 this._schedulePoll(this.basePollIntervalSec * 1000);
             });
         }, delayMs);
@@ -159,19 +139,11 @@ class GoodweSems extends utils.Adapter {
             this.notifier.resetDedupe("adapterError");
 
             await this.setStateAsync("info.connection", true, true);
-            await this.setStateAsync(
-                "info.lastSuccess",
-                this.lastSuccessTs,
-                true,
-            );
+            await this.setStateAsync("info.lastSuccess", this.lastSuccessTs, true);
             await this.setStateAsync("info.lastError", "", true);
             await this.setStateAsync("info.consecutiveErrors", 0, true);
             await this.setStateAsync("info.rateLimited", false, true);
-            await this.setStateAsync(
-                "info.activePollInterval",
-                this.basePollIntervalSec,
-                true,
-            );
+            await this.setStateAsync("info.activePollInterval", this.basePollIntervalSec, true);
 
             this.log.debug(
                 `Poll-Zyklus erfolgreich (${Date.now() - startedAt} ms), nächster Abruf in ${this.basePollIntervalSec}s.`,
@@ -190,15 +162,11 @@ class GoodweSems extends utils.Adapter {
         const configuredId = (this.config.powerStationId || "").trim();
         if (configuredId) {
             this.stationId = configuredId;
-            this.log.debug(
-                `Verwende in der Konfiguration hinterlegte powerStationId: ${configuredId}`,
-            );
+            this.log.debug(`Verwende in der Konfiguration hinterlegte powerStationId: ${configuredId}`);
             return;
         }
 
-        this.log.info(
-            "Keine powerStationId konfiguriert - versuche automatische Erkennung über das SEMS-Konto.",
-        );
+        this.log.info("Keine powerStationId konfiguriert - versuche automatische Erkennung über das SEMS-Konto.");
         const stations = await this.api.getOwnedPowerStations();
         if (!stations.length) {
             throw new SemsProtocolError(
@@ -228,41 +196,25 @@ class GoodweSems extends utils.Adapter {
         await this._ensureChannel("PowerFlow", "Current plant power flow");
         await this._ensureChannel("Battery", "Overall battery state");
 
-        const hasEvCharger = points.some((p) => p.id.startsWith("EVCharger."));
+        const hasEvCharger = points.some(p => p.id.startsWith("EVCharger."));
         if (hasEvCharger) {
             await this._ensureChannel("EVCharger", "EV charger");
         }
 
-        const inverterSerials = new Set(
-            points
-                .filter((p) => p.id.startsWith("Inverters."))
-                .map((p) => p.id.split(".")[1]),
-        );
+        const inverterSerials = new Set(points.filter(p => p.id.startsWith("Inverters.")).map(p => p.id.split(".")[1]));
         if (inverterSerials.size) {
-            await this._ensureChannel(
-                "Inverters",
-                "One channel per inverter reported by the portal",
-            );
+            await this._ensureChannel("Inverters", "One channel per inverter reported by the portal");
             for (const sn of inverterSerials) {
                 await this._ensureChannel(`Inverters.${sn}`, `Inverter ${sn}`);
             }
         }
 
         for (const point of points) {
-            await this._ensureState(
-                point.id,
-                point.name,
-                point.common,
-                point.value,
-            );
+            await this._ensureState(point.id, point.name, point.common, point.value);
         }
 
         if (this.config.debugRawResponse) {
-            await this.setStateAsync(
-                "info.rawResponse",
-                JSON.stringify(detail),
-                true,
-            );
+            await this.setStateAsync("info.rawResponse", JSON.stringify(detail), true);
         }
     }
 
@@ -302,11 +254,7 @@ class GoodweSems extends utils.Adapter {
         this.consecutiveErrors++;
         await this.setStateAsync("info.connection", false, true);
         await this.setStateAsync("info.lastError", error.message, true);
-        await this.setStateAsync(
-            "info.consecutiveErrors",
-            this.consecutiveErrors,
-            true,
-        );
+        await this.setStateAsync("info.consecutiveErrors", this.consecutiveErrors, true);
 
         let nextDelaySec = this.basePollIntervalSec;
 
@@ -323,8 +271,7 @@ class GoodweSems extends utils.Adapter {
         } else if (error instanceof SemsAuthError) {
             this.log.error(`SEMS-Login fehlgeschlagen: ${error.message}`);
             nextDelaySec = Math.min(
-                this.basePollIntervalSec *
-                    Math.pow(2, Math.min(this.consecutiveErrors, 5)),
+                this.basePollIntervalSec * Math.pow(2, Math.min(this.consecutiveErrors, 5)),
                 MAX_BACKOFF_SEC,
             );
             await this.notifier.notify(
@@ -333,31 +280,18 @@ class GoodweSems extends utils.Adapter {
                 `Anmeldung am SEMS-Portal für Konto "${this._maskAccount(this.config.account)}" schlägt fehl: ${error.message}. ` +
                     "Bitte Benutzername/Passwort in der Instanzkonfiguration prüfen.",
             );
-        } else if (
-            error instanceof SemsNetworkError ||
-            error instanceof SemsProtocolError
-        ) {
+        } else if (error instanceof SemsNetworkError || error instanceof SemsProtocolError) {
             this.log.warn(`SEMS-API-Fehler: ${error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
             nextDelaySec = Math.min(
-                this.basePollIntervalSec *
-                    Math.pow(1.5, Math.min(this.consecutiveErrors, 6)),
+                this.basePollIntervalSec * Math.pow(1.5, Math.min(this.consecutiveErrors, 6)),
                 MAX_BACKOFF_SEC / 2,
             );
         } else {
-            this.log.error(
-                `Unerwarteter Fehler im Poll-Zyklus: ${error.stack || error.message}`,
-            );
+            this.log.error(`Unerwarteter Fehler im Poll-Zyklus: ${error.stack || error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
-            nextDelaySec = Math.min(
-                this.basePollIntervalSec * 2,
-                MAX_BACKOFF_SEC / 2,
-            );
-            await this.notifier.notify(
-                "adapterError",
-                "Unerwarteter Adapterfehler",
-                error.message,
-            );
+            nextDelaySec = Math.min(this.basePollIntervalSec * 2, MAX_BACKOFF_SEC / 2);
+            await this.notifier.notify("adapterError", "Unerwarteter Adapterfehler", error.message);
         }
 
         // "Anlage offline" is only alarmiert, wenn BEIDE Kriterien erfüllt sind:
@@ -398,7 +332,7 @@ class GoodweSems extends utils.Adapter {
 }
 
 if (require.main !== module) {
-    module.exports = (options) => new GoodweSems(options);
+    module.exports = options => new GoodweSems(options);
 } else {
     new GoodweSems();
 }

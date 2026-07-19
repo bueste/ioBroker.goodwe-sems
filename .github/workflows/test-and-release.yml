@@ -1,30 +1,46 @@
 name: Test and Release
 
+# Run this job on all pushes and pull requests
+# as well as tags with a semantic version
 on:
   push:
-    branches: ["main"]
-    tags: ["v*.*.*"]
+    branches:
+      - "main"
+    tags:
+      # normal versions
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      # pre-releases
+      - "v[0-9]+.[0-9]+.[0-9]+-**"
   pull_request: {}
 
+# Cancel previous PR/branch runs when a new commit is pushed
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
+  # Performs quick checks (lint) before the expensive test runs
+  check-and-lint:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
       - run: npm ci
       - run: npm run lint
 
-  unit-tests:
-    name: Unit + package tests (Node ${{ matrix.node-version }})
-    runs-on: ubuntu-latest
+  # Runs unit + package tests on all supported node versions and OSes
+  adapter-tests:
+    name: Unit + package tests (Node ${{ matrix.node-version }}, ${{ matrix.os }})
+    needs: [check-and-lint]
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,31 +56,36 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
       - run: npx --yes @iobroker/repochecker "https://github.com/${{ github.repository }}" "${{ github.ref_name }}"
 
-  release:
+  # Deploys the final package to npm
+  deploy:
     name: Publish to npm on tag (OIDC trusted publishing)
-    needs: [lint, unit-tests, adapter-check]
-    if: contains(github.ref, 'refs/tags/')
+    needs: [check-and-lint, adapter-tests, adapter-check]
+    if: |
+      contains(github.event.head_commit.message, '[skip ci]') == false &&
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    # Write permissions are required for npm OIDC trusted publishing and to
+    # create a GitHub release
     permissions:
-      id-token: write # required for npm OIDC trusted publishing
-      contents: read
+      id-token: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22" # trusted publishing requires npm CLI >=11.5.1 / Node >=22.14
+          node-version: "24" # trusted publishing requires npm CLI >=11.5.1 / Node >=22.14, 24 is recommended
           registry-url: "https://registry.npmjs.org"
-      # Node 22 currently bundles npm 10.9.x, which is BELOW the npm CLI
-      # version required for OIDC trusted publishing (>=11.5.1). Force an
-      # upgrade of the npm CLI itself before installing/publishing.
+      # Belt-and-suspenders: make sure the npm CLI itself is new enough for
+      # OIDC trusted publishing, regardless of what the runner bundles.
       - run: npm install -g npm@latest
-      - run: npm --version
       - run: npm ci
       # No NPM_TOKEN needed: npm CLI exchanges the GitHub Actions OIDC token
       # for a short-lived publish credential once the trusted publisher is
       # configured for this package on npmjs.com (org=bueste, repo=ioBroker.goodwe-sems,
-      # workflow filename=test-and-release.yml).
+      # workflow filename=test-and-release.yml). Trusted publishing is
+      # incompatible with an npm-token parameter, so none is set here.
       - run: npm publish

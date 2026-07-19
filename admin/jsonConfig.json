@@ -4,12 +4,17 @@
     "items": {
         "_login": {
             "type": "panel",
-            "label": "SEMS-Login",
+            "label": "loginTab",
             "items": {
                 "_hintLogin": {
                     "type": "staticText",
                     "text": "hintLoginText",
-                    "newLine": true
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 },
                 "account": {
                     "type": "text",
@@ -19,7 +24,9 @@
                     "trim": true,
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "password": {
                     "type": "password",
@@ -27,7 +34,9 @@
                     "help": "semsPasswordHelp",
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "powerStationId": {
                     "type": "text",
@@ -37,7 +46,9 @@
                     "trim": true,
                     "xs": 12,
                     "sm": 8,
-                    "md": 6
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
                 }
             }
         },
@@ -48,7 +59,12 @@
                 "_hintPolling": {
                     "type": "staticText",
                     "text": "hintPollingText",
-                    "newLine": true
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 },
                 "pollInterval": {
                     "type": "number",
@@ -60,7 +76,9 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "requestTimeout": {
                     "type": "number",
@@ -70,7 +88,9 @@
                     "max": 60,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "maxConsecutiveErrors": {
                     "type": "number",
@@ -81,7 +101,9 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "stationOfflineMinutes": {
                     "type": "number",
@@ -91,7 +113,9 @@
                     "max": 720,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "debugRawResponse": {
                     "type": "checkbox",
@@ -100,7 +124,9 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 8,
-                    "md": 6
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
                 }
             }
         },
@@ -111,7 +137,12 @@
                 "_hintPushover": {
                     "type": "staticText",
                     "text": "hintPushoverText",
-                    "newLine": true
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 },
                 "pushoverMode": {
                     "type": "select",
@@ -126,7 +157,9 @@
                     ],
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "pushoverPriority": {
                     "type": "select",
@@ -140,7 +173,9 @@
                     ],
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "pushoverInstance": {
                     "type": "instance",
@@ -151,7 +186,9 @@
                     "hidden": "data.pushoverMode !== 'instance' && data.pushoverMode !== 'both'",
                     "xs": 12,
                     "sm": 8,
-                    "md": 6
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
                 },
                 "pushoverUserKey": {
                     "type": "text",
@@ -160,7 +197,9 @@
                     "hidden": "data.pushoverMode !== 'direct' && data.pushoverMode !== 'both'",
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "pushoverApiToken": {
                     "type": "password",
@@ -168,12 +207,19 @@
                     "hidden": "data.pushoverMode !== 'direct' && data.pushoverMode !== 'both'",
                     "xs": 12,
                     "sm": 6,
-                    "md": 4
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "_notifyHeader": {
                     "type": "header",
                     "text": "notifyHeader",
-                    "newLine": true
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 },
                 "notifyOnLoginFailure": {
                     "type": "checkbox",
@@ -181,14 +227,18 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "notifyOnRateLimit": {
                     "type": "checkbox",
                     "label": "notifyOnRateLimit",
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "notifyOnStationOffline": {
                     "type": "checkbox",
@@ -196,14 +246,18 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "notifyOnAdapterError": {
                     "type": "checkbox",
                     "label": "notifyOnAdapterError",
                     "xs": 12,
                     "sm": 6,
-                    "md": 3
+                    "md": 3,
+                    "lg": 3,
+                    "xl": 3
                 }
             }
         }

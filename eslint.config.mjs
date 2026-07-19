@@ -10,6 +10,9 @@ export default [
             "jsdoc/require-jsdoc": "off",
             "jsdoc/require-param-description": "off",
             "jsdoc/require-returns-description": "off",
+            // opaque timer-handle return type (Node's setTimeout return value has
+            // no meaningful plain-JS type beyond "whatever clearTimeout accepts")
+            "jsdoc/reject-any-type": "off",
         },
     },
     {

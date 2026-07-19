@@ -1,203 +1,208 @@
 ![Logo](admin/goodwe-sems.png)
 
+*[Auf Deutsch lesen](README.de.md)*
+
 # ioBroker.goodwe-sems
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.goodwe-sems.svg)](https://www.npmjs.com/package/iobroker.goodwe-sems)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.goodwe-sems.svg)](https://www.npmjs.com/package/iobroker.goodwe-sems)
 ![Test and Release](https://github.com/bueste/ioBroker.goodwe-sems/actions/workflows/test-and-release.yml/badge.svg)
-[![Donate](https://img.shields.io/badge/Spenden-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/ncp/payment/TT6MTBLXX9L9U)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://www.paypal.com/ncp/payment/TT6MTBLXX9L9U)
 
-Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem **GoodWe SEMS Portal (Cloud)** – für Anlagen, die (z. B. weil kein LAN-Zugriff auf den Wechselrichter besteht) **nicht** mit dem lokalen [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)-Adapter (Modbus/UDP, Port 8899) abgefragt werden können.
+Reads inverter, battery and power-flow data from the **[GoodWe](https://www.goodwe.com) [SEMS Portal](https://www.semsportal.com) (cloud)** - for installations that (e.g. because there is no LAN access to the inverter) **cannot** be polled with the local [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe) adapter (Modbus/UDP, port 8899).
 
-Login erfolgt mit dem **ganz normalen SEMS-Portal-Konto** (dasselbe wie unter semsportal.com / in der SEMS-App). Ein GoodWe-"Organization"/OpenAPI-Konto wird **nicht** benötigt.
+Login uses your **normal SEMS Portal account** (the same one you use at semsportal.com / in the SEMS app). A GoodWe "organization"/OpenAPI account is **not** required.
 
-## Inhaltsverzeichnis
+## Table of contents
 
-- [Warum dieser Adapter?](#warum-dieser-adapter)
-- [API-Herkunft und Grenzen (bitte lesen)](#api-herkunft-und-grenzen-bitte-lesen)
+- [Why this adapter?](#why-this-adapter)
+- [API origin and limitations (please read)](#api-origin-and-limitations-please-read)
 - [Installation](#installation)
-- [Konfiguration](#konfiguration)
-- [Objekt-/State-Struktur](#objekt-state-struktur)
-- [Fehlerbehandlung, Backoff und Rate-Limits](#fehlerbehandlung-backoff-und-rate-limits)
-- [Pushover-Benachrichtigungen](#pushover-benachrichtigungen)
-- [Sicherheit & Datenschutz](#sicherheit--datenschutz)
-- [Entwicklung](#entwicklung)
+- [Configuration](#configuration)
+- [Object/state structure](#objectstate-structure)
+- [Error handling, backoff and rate limits](#error-handling-backoff-and-rate-limits)
+- [Pushover notifications](#pushover-notifications)
+- [Security & privacy](#security--privacy)
+- [Development](#development)
 - [Changelog](#changelog)
-- [Lizenz](#lizenz)
+- [License](#license)
 
-## Warum dieser Adapter?
+## Why this adapter?
 
-GoodWe ET/EH/BH/BT-Wechselrichter lassen sich normalerweise lokal per Modbus/UDP auslesen (siehe [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)). Steht kein LAN-Zugriff auf den Wechselrichter zur Verfügung (z. B. weil nur ein WLAN/LTE-Stick mit dem SEMS-Portal verbunden ist und das Zielnetz nicht erreichbar ist), bleibt nur der Umweg über die Cloud: das **SEMS Portal** (semsportal.com), über das die Anlage ohnehin schon überwacht wird.
+GoodWe ET/EH/BH/BT inverters can normally be read out locally via Modbus/UDP (see [ioBroker.goodwe](https://github.com/FossyTom/ioBroker.goodwe)). If there is no LAN access to the inverter (e.g. because only a WLAN/LTE stick is connected to the SEMS Portal and the target network is otherwise unreachable), the only remaining option is the cloud detour via the **[SEMS Portal](https://www.semsportal.com)** ([GoodWe](https://www.goodwe.com)) that the installation is already being monitored through anyway.
 
-## API-Herkunft und Grenzen (bitte lesen)
+## API origin and limitations (please read)
 
-GoodWe bietet offiziell drei APIs an (siehe [GoodWe API Technical Document](https://community.goodwe.com/solution/API)):
+GoodWe officially offers three APIs (see the [GoodWe API technical document](https://community.goodwe.com/solution/API)):
 
-- **OpenAPI** – nur für SEMS-*Organization*-Konten, erfordert Freischaltung durch GoodWe.
-- **Real-time Data Monitoring API** – für Drittanbieter, erfordert Lizenzvertrag + Geräte-Whitelist.
-- **Batch Remote Control Interface** – Kafka-basiert, nur Fernsteuerung.
+- **OpenAPI** - only for SEMS *organization* accounts, requires activation by GoodWe.
+- **Real-time Data Monitoring API** - for third parties, requires a license agreement plus a device whitelist.
+- **Batch Remote Control Interface** - Kafka-based, remote control only.
 
-Für ein **normales** SEMS-Portal-Konto (wie es die meisten Privatanwender haben) ist keine davon zugänglich. Dieser Adapter spricht stattdessen dieselbe **undokumentierte HTTPS-API**, die auch die offizielle SEMS-App/Webseite verwendet (Login via `CrossLogin`/`SEMS+ cross-login`, Datenabfrage via `GetMonitorDetailByPowerstationId`). Diese Endpunkte wurden nicht von GoodWe für Drittnutzung freigegeben oder dokumentiert; die Implementierung basiert auf eigener Analyse sowie den quelloffenen Referenzprojekten:
+None of these are accessible with a **normal** SEMS Portal account (the kind most private users have). This adapter instead speaks the same **undocumented HTTPS API** that the official SEMS app/website itself uses (login via `CrossLogin`/`SEMS+ cross-login`, data retrieval via `GetMonitorDetailByPowerstationId`). These endpoints have not been released or documented by GoodWe for third-party use; the implementation is based on independent traffic analysis as well as the following open-source reference projects:
 
 - [pygoodwe](https://github.com/yaleman/pygoodwe) (MIT)
 - [goodwe-sems-home-assistant](https://github.com/TimSoethout/goodwe-sems-home-assistant)
-- [openHAB SEMSPortal-Binding](https://www.openhab.org/addons/bindings/semsportal/)
+- [openHAB SEMSPortal binding](https://www.openhab.org/addons/bindings/semsportal/)
 
-**Konsequenzen:**
+**Consequences:**
 
-- GoodWe kann die API jederzeit ohne Vorankündigung ändern - der Adapter kann dadurch (temporär) ausfallen.
-- Es gibt **kein dokumentiertes Echtzeit-/Push-Verfahren** (Websocket/SignalR) für Drittanbieter. Ein `msgSocketAdr`-Feld taucht in älteren Login-Antworten auf, wird aber von keinem der oben genannten Referenzprojekte tatsächlich genutzt - es wäre reines Reverse-Engineering ohne belastbare Dokumentation und ein deutlich höheres Risiko (Kontosperrung, instabile Verbindung). Dieser Adapter pollt daher bewusst per HTTPS in konfigurierbarem Intervall (Default 5 Minuten) statt eine ungetestete Websocket-Verbindung vorzutäuschen.
-- Es wurde ein **Rate-Limit-Code (`GY0429`)** beobachtet (u. a. in der Home-Assistant-Integration dokumentiert). Der Adapter erkennt diesen Code und pausiert automatisch (Default 5 Minuten Cool-down), statt das Konto durch wiederholte Anfragen zu gefährden.
-- Nutzung erfolgt auf eigenes Risiko, siehe [LICENSE](LICENSE) (MIT, ohne Gewährleistung).
+- GoodWe can change the API at any time without notice - the adapter may (temporarily) break as a result.
+- There is **no documented real-time/push mechanism** (websocket/SignalR) for third parties. An `msgSocketAdr` field appears in some older login responses but is not actually used by any of the reference projects above - using it would be pure reverse engineering without reliable documentation and a significantly higher risk (account lockout, unstable connection). This adapter therefore deliberately polls over HTTPS at a configurable interval (default 5 minutes) instead of faking an untested websocket connection.
+- A **rate-limit code (`GY0429`)** has been observed (documented, among others, in the Home Assistant integration). The adapter recognizes this code and automatically pauses (default 5-minute cool-down) instead of endangering the account with repeated requests.
+- Use at your own risk, see [LICENSE](LICENSE) (MIT, no warranty).
 
 ## Installation
 
-Solange der Adapter noch nicht im offiziellen ioBroker-Repository gelistet ist:
+Once this adapter is listed in the official ioBroker adapter repository, install it the normal way: **Admin -> Adapters -> search for "goodwe-sems" -> install**.
+
+Until then, an ioBroker administrator can add it manually on the ioBroker host:
 
 ```
-cd /opt/iobroker
-npm install https://github.com/bueste/ioBroker.goodwe-sems/tarball/main
-iobroker add goodwe-sems
+iobroker url iobroker.goodwe-sems
 ```
 
-## Konfiguration
+## Configuration
 
-| Feld | Beschreibung |
+| Field | Description |
 |---|---|
-| SEMS-Konto / Passwort | Dieselben Zugangsdaten wie auf semsportal.com. Passwort wird von ioBroker verschlüsselt gespeichert. |
-| Anlagen-ID (optional) | Leer lassen für automatische Erkennung (`GetPowerStationIdByOwner`). Bei mehreren Anlagen pro Konto: ID manuell aus der Portal-URL übernehmen (`.../powerstation/powerstatussnmin/<ID>`). |
-| Poll-Intervall | Default 300 s. Der Adapter erzwingt ein Minimum von 60 s, unabhängig von der Konfiguration. |
-| Pushover | Siehe [Pushover-Benachrichtigungen](#pushover-benachrichtigungen). |
+| SEMS account / password | Same credentials as at semsportal.com. The password is stored encrypted by ioBroker. |
+| Plant ID (optional) | Leave empty for automatic detection (`GetPowerStationIdByOwner`). For accounts with several plants: copy the ID manually from the portal URL (`.../powerstation/powerstatussnmin/<ID>`). |
+| Poll interval | Default 300 s. The adapter enforces a minimum of 60 s regardless of configuration. |
+| Pushover | See [Pushover notifications](#pushover-notifications). |
 
-## Objekt-/State-Struktur
+## Object/state structure
 
 ```
-goodwe-sems.0.info.connection              SEMS Portal erreichbar (bool)
-goodwe-sems.0.info.lastSuccess             Zeitstempel letzter erfolgreicher Poll
-goodwe-sems.0.info.lastError               Letzte Fehlermeldung
-goodwe-sems.0.info.consecutiveErrors       Anzahl aufeinanderfolgender Fehlversuche
-goodwe-sems.0.info.rateLimited             SEMS Portal limitiert aktuell (bool)
-goodwe-sems.0.info.activePollInterval      Aktuell wirksames Intervall inkl. Backoff (s)
-goodwe-sems.0.info.rawResponse             Rohe JSON-Antwort (nur wenn Debug-Option aktiv)
+goodwe-sems.0.info.connection              SEMS Portal reachable (bool)
+goodwe-sems.0.info.lastSuccess             Timestamp of the last successful poll
+goodwe-sems.0.info.lastError               Last error message
+goodwe-sems.0.info.consecutiveErrors       Number of consecutive failed attempts
+goodwe-sems.0.info.rateLimited             SEMS Portal is currently rate-limiting (bool)
+goodwe-sems.0.info.activePollInterval      Currently effective interval incl. backoff (s)
+goodwe-sems.0.info.rawResponse             Raw JSON response (only when the debug option is enabled)
 
 goodwe-sems.0.Station.Name / .Capacity / .Address / .Latitude / .Longitude / .PortalTimestamp / .Status / .StationId
 goodwe-sems.0.KPI.CurrentPower / .TodayGeneration / .MonthGeneration / .TotalGeneration / .TodayIncome / .TotalIncome / .Currency
 goodwe-sems.0.PowerFlow.PV / .Load / .Grid / .Battery / .LoadStatus / .GridStatus / .PvStatus / .BatteryStatus
 goodwe-sems.0.Battery.SOC / .Status
-goodwe-sems.0.EVCharger.*                  (nur wenn vom Portal gemeldet)
+goodwe-sems.0.EVCharger.*                  (only if reported by the portal)
 
-goodwe-sems.0.Inverters.<Seriennummer>.Name / .Model / .Status / .WarningCode
-goodwe-sems.0.Inverters.<Seriennummer>.CurrentPower / .TodayGeneration / .TotalGeneration / .Temperature
-goodwe-sems.0.Inverters.<Seriennummer>.PV1..4.Voltage / .Current
-goodwe-sems.0.Inverters.<Seriennummer>.AC_L1..3.Voltage / .Current / .Frequency
-goodwe-sems.0.Inverters.<Seriennummer>.Battery.SOC / .Voltage / .Current
+goodwe-sems.0.Inverters.<serial>.Name / .Model / .Status / .WarningCode
+goodwe-sems.0.Inverters.<serial>.CurrentPower / .TodayGeneration / .TotalGeneration / .Temperature
+goodwe-sems.0.Inverters.<serial>.PV1..4.Voltage / .Current
+goodwe-sems.0.Inverters.<serial>.AC_L1..3.Voltage / .Current / .Frequency
+goodwe-sems.0.Inverters.<serial>.Battery.SOC / .Voltage / .Current
 ```
 
-Bei zwei Wechselrichtern (wie in der ursprünglichen Anforderung) entstehen automatisch zwei `Inverters.<SN>.*`-Zweige - die Anzahl ist nicht fest codiert, sondern richtet sich nach dem, was das Portal für das jeweilige Konto zurückliefert.
+With two inverters (as in the original requirement this adapter was built for), two `Inverters.<serial>.*` branches are created automatically - the number is not hardcoded, it is driven entirely by what the portal returns for the configured account.
 
-Felder, die das Portal liefert, aber dieser Adapter (noch) nicht kennt, gehen nicht verloren: Mit aktivierter Debug-Option landet die komplette Rohantwort in `info.rawResponse` (JSON), sodass sie inspiziert und bei Bedarf per PR ergänzt werden können.
+Fields that the portal delivers but this adapter does not (yet) know about are not lost: with the debug option enabled, the full raw response ends up in `info.rawResponse` (JSON), so it can be inspected and added via PR if needed.
 
-## Fehlerbehandlung, Backoff und Rate-Limits
+## Error handling, backoff and rate limits
 
-- Jeder Poll-Zyklus ist vollständig try/catch-abgesichert; ein einzelner Fehler kann die Polling-Schleife nicht dauerhaft stoppen.
-- Fehlerklassen (`SemsAuthError`, `SemsRateLimitError`, `SemsNetworkError`, `SemsProtocolError`) steuern das Verhalten gezielt:
-  - **Rate-Limit (`GY0429`)** → sofortige Pause (Default 300 s), `info.rateLimited = true`.
-  - **Login-Fehler** → exponentielles Backoff (bis 1 h Deckel), damit falsche Zugangsdaten das Konto nicht zusätzlich belasten.
-  - **Netzwerk-/Protokollfehler** → moderates Backoff.
-- Nach konfigurierbar vielen aufeinanderfolgenden Fehlversuchen (Default 3) gilt die Anlage als "offline" und es wird - falls aktiviert - eine Pushover-Meldung ausgelöst.
-- Alles wird zusätzlich strukturiert ins ioBroker-Log geschrieben (`error`/`warn`/`debug` je nach Schweregrad).
+- Every poll cycle is fully wrapped in try/catch; a single failure can never permanently stop the polling loop.
+- Dedicated error classes (`SemsAuthError`, `SemsRateLimitError`, `SemsNetworkError`, `SemsProtocolError`) drive targeted behaviour:
+  - **Rate limit (`GY0429`)** -> immediate pause (default 300 s), `info.rateLimited = true`.
+  - **Login failure** -> exponential backoff (capped at 1 h) so that wrong credentials do not put additional strain on the account.
+  - **Network/protocol errors** -> moderate backoff.
+- After a configurable number of consecutive failures (default 3), the plant is considered "offline" and, if enabled, a Pushover notification is triggered.
+- Everything is additionally written to the ioBroker log in a structured way (`error`/`warn`/`debug` depending on severity).
 
-## Pushover-Benachrichtigungen
+## Pushover notifications
 
-Konfigurierbar in drei Modi:
+Configurable in three modes:
 
-1. **Über eine bestehende `ioBroker.pushover`-Instanz** (`sendTo`) - empfohlen, keine doppelte Zugangsdatenverwaltung.
-2. **Direkt über die Pushover-API** (eigener User-Key + API-/App-Token, verschlüsselt gespeichert) - funktioniert auch ohne separate Pushover-Instanz.
-3. **Beides gleichzeitig.**
+1. **Via an existing `ioBroker.pushover` instance** (`sendTo`) - recommended, no duplicate credential management.
+2. **Directly via the Pushover API** (your own user key + API/app token, stored encrypted) - also works without a separate Pushover instance.
+3. **Both at the same time.**
 
-Ausgelöst wird bei: SEMS-Login-Fehler, SEMS-Rate-Limit, länger andauerndem Ausfall, unerwartetem Adapterfehler - jeweils einzeln aktivierbar. Eine interne Sperrfrist (Default 1 h pro Kategorie) verhindert Spam bei andauernden Störungen.
+Triggered on: SEMS login failure, SEMS rate limit, a prolonged outage, unexpected adapter error - each individually toggleable. An internal cool-down (default 1 h per category) prevents spam during ongoing issues.
 
-## Sicherheit & Datenschutz
+## Security & privacy
 
-- SEMS-Passwort und Pushover-API-Token sind in `io-package.json` als `encryptedNative`/`protectedNative` markiert und werden von ioBroker verschlüsselt abgelegt, nicht im Klartext geloggt (Kontoname wird in Log-Meldungen maskiert, z. B. `st***@gmail.com`).
-- Der Adapter führt **ausschließlich lesende** Zugriffe aus (`GetMonitorDetailByPowerstationId`, `GetPowerStationIdByOwner`). Es gibt bewusst **keine** Fernsteuerungs-/Schreibfunktion (`SaveRemoteControlInverter`) - das wäre ein deutlich größeres Sicherheits- und Haftungsrisiko und war nicht Teil der Anforderung.
-- Keine Drittanbieter-Abhängigkeiten für den HTTP-Zugriff: Es wird das in Node.js ≥18 eingebaute `fetch` verwendet statt einer zusätzlichen HTTP-Bibliothek - kleinere Angriffsfläche, weniger Supply-Chain-Risiko.
-- Alle Netzwerkfehler werden typisiert abgefangen; es werden keine ungeprüften Daten aus der API-Antwort ausgeführt (`eval`, `Function`, o. ä. werden nirgends verwendet).
+- The SEMS password and the Pushover API token are marked as `encryptedNative`/`protectedNative` at the root of `io-package.json` and are stored encrypted by ioBroker, never logged in plain text (the account name is masked in log messages, e.g. `st***@gmail.com`).
+- The adapter performs **read-only** access only (`GetMonitorDetailByPowerstationId`, `GetPowerStationIdByOwner`). There is deliberately **no** remote-control/write function (`SaveRemoteControlInverter`) - that would be a considerably larger security and liability risk and was not part of the requirement.
+- No third-party dependency for HTTP access: the built-in `fetch` of Node.js >=20 is used instead of an additional HTTP library - a smaller attack surface, less supply-chain risk.
+- The API base URL returned by the login response is validated (HTTPS on GoodWe-owned domains only) before any further request uses it, so a manipulated login response cannot redirect the session token to a foreign host.
+- All network errors are caught in a typed way; no unchecked data from the API response is ever executed (`eval`, `Function`, and similar are not used anywhere).
 
-## Entwicklung
+## Development
 
 ```
 npm install
 npm run lint
-npm test          # Unit-Tests (lib/mapping.js, lib/semsApi.js, lib/notify.js) + Package-Konsistenz-Check
+npm test          # unit tests (lib/mapping.js, lib/semsApi.js, lib/notify.js) + package consistency check
 ```
 
-Empfehlung vor jedem Release zusätzlich lokal:
+Recommended additionally before every release:
 
 ```
-npx @iobroker/adapter-checker@latest .
+npx @iobroker/repochecker@latest .
 ```
 
-Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Felder zu ergänzen (siehe `info.rawResponse` mit aktivierter Debug-Option) oder Übersetzungen zu verbessern.
+Pull requests are welcome, especially to add further fields delivered by the portal (see `info.rawResponse` with the debug option enabled) or to improve translations.
 
 ## Changelog
 
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
 ### **WORK IN PROGRESS**
+
+### 0.1.9 (2026-07-19)
+
+Addressed the stricter automated `@iobroker/repochecker` findings surfaced on the `ioBroker.repositories` listing PR:
+
+- (Stefan Bühler) **[E1057]** moved `encryptedNative`/`protectedNative` from `common` to the `io-package.json` root, matching the current schema
+- (Stefan Bühler) **[E3009]/[E3010]/[E3011]/[E3012]** raised `engines.node` to `>=20`, `@iobroker/adapter-core` to `^3.4.1`, `js-controller` dependency to `>=6.0.11`, `admin` globalDependency to `>=7.6.20`
+- (Stefan Bühler) **[E3040]** updated devDependencies (`@iobroker/adapter-dev`, `@iobroker/testing`, mocha, esbuild and others) to current major versions
+- (Stefan Bühler) **[E3000-series]** rewrote `.github/workflows/test-and-release.yml` to the current official template: renamed jobs (`check-and-lint`, `adapter-tests`, `adapter-check`, `deploy`), full OS/Node test matrix (ubuntu/windows/macos x 20/22/24), `concurrency` group, deploy job pinned to Node 24
+- (Stefan Bühler) **[E5005]** replaced global `setTimeout`/`clearTimeout` with adapter-managed timers (`adapter.setTimeout`/`adapter.clearTimeout`) in `lib/notify.js` and `lib/semsApi.js`
+- (Stefan Bühler) **[E5043]** switched to `require("node:crypto")`
+- (Stefan Bühler) **[E5507]/[E5510]/[E5512]/[E5612]** fixed `admin/jsonConfig.json`: added missing `lg`/`xl` responsive sizes on every item, replaced a literal label string with a proper i18n key (`loginTab`, added to all 11 translation files)
+- (Stefan Bühler) **[E6004]/[E6015]/[W0037]/[W0076]** translated `README.md` to English (required language), moved the previous German content to `README.de.md`, added `CHANGELOG_OLD.md` for older entries
+- (Stefan Bühler) **[W9501]** removed the redundant `.npmignore` (superseded by package.json `files`)
+- (Stefan Bühler) **[E9006]** added `.commitinfo` to `.gitignore`
+- (Stefan Bühler) **[S4036]/[S5026]** added `prettier.config.mjs`, re-formatted the codebase, disabled `jsdoc/reject-any-type` for the opaque Node timer-handle type with a justifying comment
 
 ### 0.1.8 (2026-07-19)
 
-ioBroker-Adapter-Check-Befunde behoben:
+Addressed ioBroker adapter-check findings:
 
-- (Stefan Bühler) **[E254]** News-Einträge für 0.1.1/0.1.2 entfernt - diese Tags wurden zwar gepusht, aber der zugehörige npm-Publish-Job schlug damals fehl (fehlendes NPM_TOKEN bzw. zu alte npm-CLI für OIDC), die Versionen existieren nie auf npm
-- (Stefan Bühler) **[W132]** dadurch automatisch unter dem 7-Einträge-Limit des Repository-Builders für `common.news`
-- (Stefan Bühler) **[W184]** veraltetes `common.title` entfernt (durch `common.titleLang` ersetzt) und veraltetes/ignoriertes `common.main` entfernt (Entry-Point kommt aus `package.json`)
-- (Stefan Bühler) **[W034]** `@iobroker/adapter-core` von ^3.1.6 auf ^3.2.2 angehoben (installiert 3.4.3)
-- (Stefan Bühler) **[W173]/[W174]/[E999]/[W401]**: `password` ist bereits korrekt in `encryptedNative`/`protectedNative` gelistet (per Tarball-Inspektion verifiziert) - diese Meldungen sowie der globale Axios-404-Fehler beim Abruf von `sources-dist-latest.json` sind Nebenwirkungen davon, dass der Adapter noch nicht im offiziellen ioBroker-Repository gelistet ist; sollten nach der Aufnahme verschwinden
+- (Stefan Bühler) **[E254]** removed changelog entries for 0.1.1/0.1.2 - those tags were pushed but their npm-publish CI job failed at the time (missing `NPM_TOKEN` / npm CLI too old for OIDC), so the versions never existed on npm
+- (Stefan Bühler) **[W132]** this automatically brought the entry count under the repository builder's 7-entry truncation limit for `common.news`
+- (Stefan Bühler) **[W184]** removed deprecated `common.title` (superseded by `common.titleLang`) and deprecated/ignored `common.main` (the entry point comes from `package.json`)
+- (Stefan Bühler) **[W034]** raised `@iobroker/adapter-core` from ^3.1.6 to ^3.2.2
+- (Stefan Bühler) **[W173]/[W174]/[E999]/[W401]**: `password` was already correctly listed in `encryptedNative`/`protectedNative` (verified against the published tarball) - these findings, together with the global axios 404 when fetching `sources-dist-latest.json`, are side effects of the adapter not yet being listed in the official ioBroker repository
 
 ### 0.1.7 (2026-07-19)
 
-- (Stefan Bühler) Branding: Platzhalter-Icon durch das offizielle GoodWe-Logo ersetzt (mit Genehmigung von GoodWe verwendet)
+- (Stefan Bühler) branding: replaced the placeholder icon with the official GoodWe logo (used with permission from GoodWe)
 
 ### 0.1.6 (2026-07-18)
 
-- (Stefan Bühler) Dev-Toolchain aktualisiert: mocha 11, sinon 22, @alcalzone/release-script 5, @iobroker/eslint-config 2; verbleibende transitive CVEs (adm-zip, diff, esbuild, serialize-javascript) per npm-`overrides` erzwungen behoben - `npm audit`: 0 Schwachstellen (auch inkl. Dev-Dependencies)
+- (Stefan Bühler) updated the dev toolchain: mocha 11, sinon 22, @alcalzone/release-script 5, @iobroker/eslint-config 2; remaining transitive CVEs (adm-zip, diff, esbuild, serialize-javascript) resolved via npm `overrides` - `npm audit`: 0 vulnerabilities (including dev dependencies)
 
-Sicherheits-/Qualitätsaudit (Security-Tester, Maintainer-Review, Fuzzing der Mapping-Schicht):
+Security/quality audit (security tester, maintainer review, fuzzing of the mapping layer):
 
-- (Stefan Bühler) **Security:** Wechselrichter-Seriennummern aus der (nicht vertrauenswürdigen) Portal-Antwort werden bereinigt, bevor sie Teil von ioBroker-Objekt-IDs werden (verhindert kaputte/unerwartet verschachtelte Objektbäume durch Sonderzeichen wie `.` `*` `]`)
-- (Stefan Bühler) **Security:** die vom Login-Server gelieferte API-Basis-URL wird validiert - nur HTTPS auf GoodWe-eigenen Domains (`*.semsportal.com`, `*.goodwe.com`), sonst Fallback auf die bekannte Regional-URL. Eine manipulierte Login-Antwort kann das Session-Token damit nicht mehr an fremde Hosts umleiten
-- (Stefan Bühler) **Fix:** `null`/defekte Einträge im `inverter[]`-Array des Portals ließen den kompletten Poll-Zyklus abstürzen - werden jetzt übersprungen, gesunde Wechselrichter derselben Antwort werden weiter verarbeitet
-- (Stefan Bühler) **Fix:** Zahlen in Exponentialschreibweise (`"1e5"`) wurden falsch geparst (ergab 15 statt 100000)
-- (Stefan Bühler) **Fix:** offensichtlich ungültige Portal-Zeitstempel (`99/99/9999 …`) erzeugten durch JS-Date-Rollover absurde Epochen-Werte - werden jetzt verworfen
-- (Stefan Bühler) **Fix:** automatische Anlagen-Erkennung filtert Einträge ohne verwertbare ID (verhinderte sonst dauerhafte Fehlzyklen)
-- (Stefan Bühler) **Robustheit:** keine State-Writes mehr nach Adapter-Unload; `adapterError`-Dedupe wird nach Erholung ebenfalls zurückgesetzt
-- (Stefan Bühler) 14 neue Regressionstests (42 Unit-Tests gesamt); `npm audit`: 0 Schwachstellen in Produktions-Dependencies (verbleibende betreffen ausschließlich Dev-Toolchain)
+- (Stefan Bühler) **Security:** inverter serial numbers from the (untrusted) portal response are sanitized before becoming part of ioBroker object IDs (prevents broken/unexpectedly nested object trees caused by special characters such as `.` `*` `]`)
+- (Stefan Bühler) **Security:** the API base URL returned by the login server is validated - HTTPS on GoodWe-owned domains only (`*.semsportal.com`, `*.goodwe.com`), otherwise falls back to the known regional URL. A manipulated login response can no longer redirect the session token to a foreign host
+- (Stefan Bühler) **Fix:** `null`/broken entries in the portal's `inverter[]` array crashed the entire poll cycle - now skipped, healthy inverters from the same response are still processed
+- (Stefan Bühler) **Fix:** numbers in scientific notation (`"1e5"`) were parsed incorrectly (yielded 15 instead of 100000)
+- (Stefan Bühler) **Fix:** obviously invalid portal timestamps (`99/99/9999 ...`) produced absurd epoch values via JavaScript's `Date` rollover behaviour - now rejected
+- (Stefan Bühler) **Fix:** automatic plant discovery now filters out entries without a usable ID (previously caused permanently failing poll cycles)
+- (Stefan Bühler) **Robustness:** no more state writes after adapter unload; the `adapterError` notification dedupe window is also reset after recovery
+- (Stefan Bühler) 14 new regression tests (42 unit tests in total); `npm audit`: 0 vulnerabilities in production dependencies (remaining findings were dev-toolchain only)
 
 ### 0.1.5 (2026-07-18)
 
-- (Stefan Bühler) fix: PayPal-Spendenlink im README korrigiert (Button-Link statt Donate-Link)
+- (Stefan Bühler) fix: corrected the PayPal donation link in the README (button link instead of the old donate link)
 
-### 0.1.4 (2026-07-18)
+Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
-- (Stefan Bühler) docs: PayPal-Spendenlink im README ergänzt
-
-### 0.1.3 (2026-07-18)
-
-- (Stefan Bühler) CI: OIDC Trusted Publishing repariert - Node 22 Runner bringt npm 10.9.x mit, was unter der für Trusted Publishing benötigten Version (>=11.5.1) liegt. Release-Job aktualisiert npm jetzt explizit vor `npm publish`.
-
-### 0.1.2 (2026-07-18)
-
-- (Stefan Bühler) CI: npm-Publish von langlebigem `NPM_TOKEN` auf OIDC Trusted Publishing umgestellt (kein Secret mehr im Repo nötig)
-
-### 0.1.1 (2026-07-18)
-
-- (Stefan Bühler) fix `repository.url` field format in package.json (removed npm-publish normalization warning)
-
-### 0.1.0 (2026-07-18)
-
-- (Stefan Bühler) initial release: SEMS-Portal-Login (SEMS+ mit Legacy-Fallback), automatische Anlagen-Erkennung, vollständiges Monitoring (Station/KPI/PowerFlow/Battery/EV-Charger/pro Wechselrichter), Rate-Limit-Handling, Backoff, Pushover-Alarmierung, Admin6-JSON-Config, i18n (11 Sprachen), Unit-Tests.
-
-## Lizenz
+## License
 
 MIT License
 

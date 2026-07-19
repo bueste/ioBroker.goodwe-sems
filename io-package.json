@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "goodwe-sems",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "news": {
       "0.1.0": {
         "en": "initial release",
@@ -93,6 +93,19 @@
         "pl": "rozwiązano uwagi adapter-check: usunięto wpisy news dla wersji nigdy niepublikowanych na npm (0.1.1, 0.1.2), usunięto przestarzałe pola common.title/common.main, zaktualizowano @iobroker/adapter-core do ^3.2.2",
         "uk": "усунено зауваження adapter-check: видалено записи news для версій, які ніколи не публікувалися в npm (0.1.1, 0.1.2), видалено застарілі поля common.title/common.main, оновлено @iobroker/adapter-core до ^3.2.2",
         "zh-cn": "解决 adapter-check 发现的问题:移除从未真正发布到 npm 的版本的 news 条目(0.1.1、0.1.2),移除已弃用的 common.title/common.main 字段,将 @iobroker/adapter-core 更新至 ^3.2.2"
+      },
+      "0.1.9": {
+        "en": "address stricter ioBroker.repositories PR check: move encryptedNative/protectedNative to io-package.json root, update deps (adapter-core, testing, adapter-dev, admin, js-controller), rewrite CI workflow (check-and-lint/adapter-tests/deploy jobs, concurrency, full OS+Node matrix), use adapter-managed timers, node:crypto, fix jsonConfig responsive sizes + i18n key, translate README to English (required), add CHANGELOG_OLD.md",
+        "de": "strengere ioBroker.repositories-PR-Prüfung behoben: encryptedNative/protectedNative auf io-package.json-Root verschoben, Abhängigkeiten aktualisiert (adapter-core, testing, adapter-dev, admin, js-controller), CI-Workflow neu geschrieben (check-and-lint/adapter-tests/deploy Jobs, Concurrency, volle OS+Node-Matrix), adapter-verwaltete Timer, node:crypto, jsonConfig Responsive-Größen + i18n-Key behoben, README auf Englisch übersetzt (Pflicht), CHANGELOG_OLD.md ergänzt",
+        "ru": "устранены более строгие проверки PR ioBroker.repositories: encryptedNative/protectedNative перемещены в корень io-package.json, обновлены зависимости, переписан CI, README переведён на английский (обязательно)",
+        "pt": "corrigidas verificações mais rigorosas do PR do ioBroker.repositories: encryptedNative/protectedNative movidos para a raiz do io-package.json, dependências atualizadas, CI reescrito, README traduzido para inglês (obrigatório)",
+        "nl": "strengere ioBroker.repositories-PR-controles opgelost: encryptedNative/protectedNative naar de root van io-package.json verplaatst, dependencies bijgewerkt, CI herschreven, README naar het Engels vertaald (verplicht)",
+        "fr": "correction des vérifications plus strictes du PR ioBroker.repositories : encryptedNative/protectedNative déplacés à la racine de io-package.json, dépendances mises à jour, CI réécrit, README traduit en anglais (obligatoire)",
+        "it": "risolti controlli più severi del PR ioBroker.repositories: encryptedNative/protectedNative spostati alla radice di io-package.json, dipendenze aggiornate, CI riscritta, README tradotto in inglese (obbligatorio)",
+        "es": "se resolvieron comprobaciones más estrictas del PR de ioBroker.repositories: encryptedNative/protectedNative movidos a la raíz de io-package.json, dependencias actualizadas, CI reescrita, README traducido al inglés (obligatorio)",
+        "pl": "rozwiązano bardziej rygorystyczne kontrole PR ioBroker.repositories: encryptedNative/protectedNative przeniesiono do katalogu głównego io-package.json, zaktualizowano zależności, przepisano CI, README przetłumaczono na angielski (wymagane)",
+        "uk": "усунено суворіші перевірки PR ioBroker.repositories: encryptedNative/protectedNative перенесено в корінь io-package.json, оновлено залежності, переписано CI, README перекладено англійською (обов'язково)",
+        "zh-cn": "解决更严格的 ioBroker.repositories PR 检查:将 encryptedNative/protectedNative 移至 io-package.json 根目录,更新依赖项,重写 CI,将 README 翻译为英文(必需)"
       }
     },
     "titleLang": {
@@ -153,22 +166,14 @@
     "adminUI": {
       "config": "json"
     },
-    "encryptedNative": [
-      "password",
-      "pushoverApiToken"
-    ],
-    "protectedNative": [
-      "password",
-      "pushoverApiToken"
-    ],
     "dependencies": [
       {
-        "js-controller": ">=5.0.19"
+        "js-controller": ">=6.0.11"
       }
     ],
     "globalDependencies": [
       {
-        "admin": ">=6.13.16"
+        "admin": ">=7.6.20"
       }
     ]
   },
@@ -191,6 +196,14 @@
     "stationOfflineMinutes": 30,
     "debugRawResponse": false
   },
+  "encryptedNative": [
+    "password",
+    "pushoverApiToken"
+  ],
+  "protectedNative": [
+    "password",
+    "pushoverApiToken"
+  ],
   "objects": [],
   "instanceObjects": [
     {
