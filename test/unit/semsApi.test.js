@@ -205,7 +205,7 @@ describe("lib/semsApi SemsApi", () => {
         expect(fetchStub.getCall(2).args[0]).to.include("/v2/PowerStation/GetMonitorDetailByPowerstationId");
     });
 
-    it("getMonitorDetail() surfaces error_msg from a 404 envelope if the v2 fallback also fails", async () => {
+    it("getMonitorDetail() falls back all the way to v1 if both v3 and v2 404", async () => {
         fetchStub.onCall(0).resolves(
             jsonResponse(200, {
                 code: 0,
@@ -216,6 +216,33 @@ describe("lib/semsApi SemsApi", () => {
         );
         fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
         fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(3).resolves(
+            jsonResponse(200, { code: 0, msg: "success", data: { info: { stationname: "OK" } } }),
+        );
+
+        const api = newApi();
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        expect(detail.info.stationname).to.equal("OK");
+        expect(fetchStub.callCount).to.equal(4);
+        expect(fetchStub.getCall(1).args[0]).to.include("/v3/PowerStation/GetMonitorDetailByPowerstationId");
+        expect(fetchStub.getCall(2).args[0]).to.include("/v2/PowerStation/GetMonitorDetailByPowerstationId");
+        expect(fetchStub.getCall(3).args[0]).to.include("/v1/PowerStation/GetMonitorDetailByPowerstationId");
+    });
+
+    it("getMonitorDetail() surfaces error_msg from a 404 envelope if all version fallbacks fail", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu.semsportal.com/api",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
+        fetchStub.onCall(3).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
 
         const api = newApi();
         await api.login();
@@ -228,6 +255,6 @@ describe("lib/semsApi SemsApi", () => {
         }
         expect(caught).to.be.instanceOf(SemsProtocolError);
         expect(caught.message).to.include("404 Route Not Found");
-        expect(fetchStub.callCount).to.equal(3);
+        expect(fetchStub.callCount).to.equal(4);
     });
 });

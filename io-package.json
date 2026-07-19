@@ -1,298 +1,298 @@
 {
-  "common": {
-    "name": "goodwe-sems",
-    "version": "0.1.14",
-    "news": {
-      "0.1.7": {
-        "en": "branding: replace placeholder icon with the official GoodWe logo (used with permission from GoodWe)",
-        "de": "Branding: Platzhalter-Icon durch das offizielle GoodWe-Logo ersetzt (mit Genehmigung von GoodWe verwendet)",
-        "ru": "брендинг: заменена иконка-заполнитель на официальный логотип GoodWe (используется с разрешения GoodWe)",
-        "pt": "marca: ícone substituído pelo logótipo oficial da GoodWe (usado com autorização da GoodWe)",
-        "nl": "branding: placeholder-icoon vervangen door het officiële GoodWe-logo (gebruikt met toestemming van GoodWe)",
-        "fr": "image de marque : icône remplacée par le logo officiel GoodWe (utilisé avec l autorisation de GoodWe)",
-        "it": "branding: icona sostituita con il logo ufficiale GoodWe (utilizzato con l autorizzazione di GoodWe)",
-        "es": "marca: icono sustituido por el logotipo oficial de GoodWe (utilizado con permiso de GoodWe)",
-        "pl": "branding: zastąpiono ikonę zastępczą oficjalnym logo GoodWe (używane za zgodą GoodWe)",
-        "uk": "брендинг: замінено іконку-заповнювач на офіційний логотип GoodWe (використовується з дозволу GoodWe)",
-        "zh-cn": "品牌:将占位图标替换为 GoodWe 官方标志(经 GoodWe 许可使用)"
-      },
-      "0.1.8": {
-        "en": "address ioBroker adapter-check findings: remove news entries for versions that were never actually published to npm (0.1.1, 0.1.2), remove deprecated common.title/common.main fields, update @iobroker/adapter-core to ^3.2.2",
-        "de": "ioBroker-Adapter-Check-Befunde behoben: News-Einträge für nie tatsächlich auf npm veröffentlichte Versionen entfernt (0.1.1, 0.1.2), veraltete Felder common.title/common.main entfernt, @iobroker/adapter-core auf ^3.2.2 aktualisiert",
-        "ru": "устранены замечания adapter-check: удалены записи news для версий, никогда не публиковавшихся в npm (0.1.1, 0.1.2), удалены устаревшие поля common.title/common.main, обновлён @iobroker/adapter-core до ^3.2.2",
-        "pt": "resolvidas as constatações do adapter-check: removidas entradas de news de versões nunca publicadas no npm (0.1.1, 0.1.2), removidos campos obsoletos common.title/common.main, @iobroker/adapter-core atualizado para ^3.2.2",
-        "nl": "adapter-check bevindingen opgelost: news-items voor nooit op npm gepubliceerde versies verwijderd (0.1.1, 0.1.2), verouderde velden common.title/common.main verwijderd, @iobroker/adapter-core bijgewerkt naar ^3.2.2",
-        "fr": "corrections des remarques adapter-check : suppression des entrées news pour des versions jamais publiées sur npm (0.1.1, 0.1.2), suppression des champs obsolètes common.title/common.main, mise à jour de @iobroker/adapter-core vers ^3.2.2",
-        "it": "risolti i rilievi di adapter-check: rimosse le voci news per versioni mai pubblicate su npm (0.1.1, 0.1.2), rimossi i campi deprecati common.title/common.main, aggiornato @iobroker/adapter-core a ^3.2.2",
-        "es": "se resolvieron los hallazgos de adapter-check: se eliminaron entradas de news de versiones nunca publicadas en npm (0.1.1, 0.1.2), se eliminaron los campos obsoletos common.title/common.main, se actualizó @iobroker/adapter-core a ^3.2.2",
-        "pl": "rozwiązano uwagi adapter-check: usunięto wpisy news dla wersji nigdy niepublikowanych na npm (0.1.1, 0.1.2), usunięto przestarzałe pola common.title/common.main, zaktualizowano @iobroker/adapter-core do ^3.2.2",
-        "uk": "усунено зауваження adapter-check: видалено записи news для версій, які ніколи не публікувалися в npm (0.1.1, 0.1.2), видалено застарілі поля common.title/common.main, оновлено @iobroker/adapter-core до ^3.2.2",
-        "zh-cn": "解决 adapter-check 发现的问题:移除从未真正发布到 npm 的版本的 news 条目(0.1.1、0.1.2),移除已弃用的 common.title/common.main 字段,将 @iobroker/adapter-core 更新至 ^3.2.2"
-      },
-      "0.1.9": {
-        "en": "address stricter ioBroker.repositories PR check: move encryptedNative/protectedNative to io-package.json root, update deps (adapter-core, testing, adapter-dev, admin, js-controller), rewrite CI workflow (check-and-lint/adapter-tests/deploy jobs, concurrency, full OS+Node matrix), use adapter-managed timers, node:crypto, fix jsonConfig responsive sizes + i18n key, translate README to English (required), add CHANGELOG_OLD.md",
-        "de": "strengere ioBroker.repositories-PR-Prüfung behoben: encryptedNative/protectedNative auf io-package.json-Root verschoben, Abhängigkeiten aktualisiert (adapter-core, testing, adapter-dev, admin, js-controller), CI-Workflow neu geschrieben (check-and-lint/adapter-tests/deploy Jobs, Concurrency, volle OS+Node-Matrix), adapter-verwaltete Timer, node:crypto, jsonConfig Responsive-Größen + i18n-Key behoben, README auf Englisch übersetzt (Pflicht), CHANGELOG_OLD.md ergänzt",
-        "ru": "устранены более строгие проверки PR ioBroker.repositories: encryptedNative/protectedNative перемещены в корень io-package.json, обновлены зависимости, переписан CI, README переведён на английский (обязательно)",
-        "pt": "corrigidas verificações mais rigorosas do PR do ioBroker.repositories: encryptedNative/protectedNative movidos para a raiz do io-package.json, dependências atualizadas, CI reescrito, README traduzido para inglês (obrigatório)",
-        "nl": "strengere ioBroker.repositories-PR-controles opgelost: encryptedNative/protectedNative naar de root van io-package.json verplaatst, dependencies bijgewerkt, CI herschreven, README naar het Engels vertaald (verplicht)",
-        "fr": "correction des vérifications plus strictes du PR ioBroker.repositories : encryptedNative/protectedNative déplacés à la racine de io-package.json, dépendances mises à jour, CI réécrit, README traduit en anglais (obligatoire)",
-        "it": "risolti controlli più severi del PR ioBroker.repositories: encryptedNative/protectedNative spostati alla radice di io-package.json, dipendenze aggiornate, CI riscritta, README tradotto in inglese (obbligatorio)",
-        "es": "se resolvieron comprobaciones más estrictas del PR de ioBroker.repositories: encryptedNative/protectedNative movidos a la raíz de io-package.json, dependencias actualizadas, CI reescrita, README traducido al inglés (obligatorio)",
-        "pl": "rozwiązano bardziej rygorystyczne kontrole PR ioBroker.repositories: encryptedNative/protectedNative przeniesiono do katalogu głównego io-package.json, zaktualizowano zależności, przepisano CI, README przetłumaczono na angielski (wymagane)",
-        "uk": "усунено суворіші перевірки PR ioBroker.repositories: encryptedNative/protectedNative перенесено в корінь io-package.json, оновлено залежності, переписано CI, README перекладено англійською (обов'язково)",
-        "zh-cn": "解决更严格的 ioBroker.repositories PR 检查:将 encryptedNative/protectedNative 移至 io-package.json 根目录,更新依赖项,重写 CI,将 README 翻译为英文(必需)"
-      },
-      "0.1.11": {
-        "en": "fix broken CI: remove Node.js 20.x from the adapter-tests matrix - it is incompatible with engines.node >=22 (introduced in 0.1.10) under the official action's engine-strict npm ci, which crashed that matrix job and cancelled all others",
-        "de": "defekte CI behoben: Node.js 20.x aus der adapter-tests-Matrix entfernt - inkompatibel mit engines.node >=22 (seit 0.1.10) unter dem engine-strict npm ci der offiziellen Action, wodurch dieser Matrix-Job abstürzte und alle anderen abgebrochen wurden",
-        "ru": "исправлен неработающий CI: Node.js 20.x удалён из матрицы adapter-tests - несовместим с engines.node >=22 (введено в 0.1.10)",
-        "pt": "corrigido o CI quebrado: Node.js 20.x removido da matriz adapter-tests - incompatível com engines.node >=22 (introduzido em 0.1.10)",
-        "nl": "defecte CI opgelost: Node.js 20.x verwijderd uit de adapter-tests-matrix - incompatibel met engines.node >=22 (geïntroduceerd in 0.1.10)",
-        "fr": "correction du CI cassé : Node.js 20.x retiré de la matrice adapter-tests - incompatible avec engines.node >=22 (introduit en 0.1.10)",
-        "it": "risolto il CI non funzionante: rimosso Node.js 20.x dalla matrice adapter-tests - incompatibile con engines.node >=22 (introdotto in 0.1.10)",
-        "es": "se corrigió el CI roto: se eliminó Node.js 20.x de la matriz adapter-tests - incompatible con engines.node >=22 (introducido en 0.1.10)",
-        "pl": "naprawiono uszkodzone CI: usunięto Node.js 20.x z macierzy adapter-tests - niekompatybilne z engines.node >=22 (wprowadzone w 0.1.10)",
-        "uk": "виправлено зламаний CI: видалено Node.js 20.x з матриці adapter-tests - несумісний з engines.node >=22 (введено в 0.1.10)",
-        "zh-cn": "修复损坏的 CI:从 adapter-tests 矩阵中移除 Node.js 20.x - 与 engines.node >=22(0.1.10 中引入)不兼容"
-      },
-      "0.1.12": {
-        "en": "further recheck fixes: remove news entry for 0.1.10 (never published to npm - its CI failed before the deploy step), declare \"needs: check-and-lint\" on the adapter-tests job, pin @types/node to \"^22\" (was open-ended \">=22\"), fix .vscode/settings.json schema fileMatch patterns (drop leading slash, add jsonCustom.json/jsonTab.json), add dependabot auto-merge workflow + config",
-        "de": "weitere Recheck-Fixes: News-Eintrag fuer 0.1.10 entfernt (nie auf npm veroeffentlicht - CI schlug vor dem Deploy-Schritt fehl), \"needs: check-and-lint\" beim adapter-tests-Job ergaenzt, @types/node auf \"^22\" fixiert (war offenes \">=22\"), Schema-fileMatch in .vscode/settings.json korrigiert (kein fuehrender Slash, jsonCustom.json/jsonTab.json ergaenzt), Dependabot-Automerge-Workflow + Konfiguration ergaenzt",
-        "ru": "дальнейшие исправления: удалена запись news для 0.1.10 (никогда не публиковалась в npm), needs: check-and-lint для adapter-tests, @types/node зафиксирован на ^22, исправлены схемы в .vscode/settings.json, добавлен automerge для dependabot",
-        "pt": "mais correcoes: removida a entrada de news para 0.1.10 (nunca publicada no npm), needs: check-and-lint no job adapter-tests, @types/node fixado em ^22, esquemas corrigidos em .vscode/settings.json, automerge do dependabot adicionado",
-        "nl": "verdere fixes: news-item voor 0.1.10 verwijderd (nooit op npm gepubliceerd), needs: check-and-lint toegevoegd aan adapter-tests, @types/node vastgezet op ^22, schema's in .vscode/settings.json gecorrigeerd, dependabot automerge toegevoegd",
-        "fr": "autres corrections : entree news pour 0.1.10 supprimee (jamais publiee sur npm), needs: check-and-lint ajoute au job adapter-tests, @types/node fixe a ^22, schemas corriges dans .vscode/settings.json, automerge dependabot ajoute",
-        "it": "ulteriori correzioni: rimossa la voce news per 0.1.10 (mai pubblicata su npm), aggiunto needs: check-and-lint al job adapter-tests, @types/node fissato a ^22, schemi corretti in .vscode/settings.json, aggiunto automerge per dependabot",
-        "es": "mas correcciones: se elimino la entrada de news para 0.1.10 (nunca publicada en npm), se agrego needs: check-and-lint al job adapter-tests, @types/node fijado en ^22, esquemas corregidos en .vscode/settings.json, se agrego automerge de dependabot",
-        "pl": "kolejne poprawki: usunieto wpis news dla 0.1.10 (nigdy nie opublikowano na npm), dodano needs: check-and-lint do zadania adapter-tests, @types/node ustalono na ^22, poprawiono schematy w .vscode/settings.json, dodano automerge dependabot",
-        "uk": "подальші виправлення: видалено запис news для 0.1.10 (ніколи не публікувався на npm), додано needs: check-and-lint для adapter-tests, @types/node зафіксовано на ^22, виправлено схеми в .vscode/settings.json, додано automerge для dependabot",
-        "zh-cn": "进一步修复:移除 0.1.10 的 news 条目(从未发布到 npm),为 adapter-tests 任务添加 needs: check-and-lint,将 @types/node 固定为 ^22,修复 .vscode/settings.json 中的 schema 匹配,添加 dependabot 自动合并"
-      },
-      "0.1.13": {
-        "en": "diagnostics: log the raw JSON envelope of every SEMS API call at debug level (not just the monitor-detail call). This helps pinpoint reports like \"unbekannter Fehler (code=undefined)\" on GetPowerStationIdByOwner, where the actual success/error convention used by that endpoint differs from what earlier testing assumed",
-        "de": "Diagnose: rohe JSON-Antwort jedes SEMS-API-Aufrufs wird jetzt auf Debug-Level geloggt (nicht mehr nur beim Monitor-Detail-Aufruf). Hilft, Meldungen wie \"unbekannter Fehler (code=undefined)\" bei GetPowerStationIdByOwner einzugrenzen, wenn die tatsächliche Erfolgs-/Fehler-Konvention dieses Endpunkts von den bisherigen Annahmen abweicht",
-        "ru": "диагностика: сырой JSON-ответ каждого вызова SEMS API теперь логируется на уровне debug",
-        "pt": "diagnóstico: a resposta JSON bruta de cada chamada à API SEMS agora é registada ao nível de debug",
-        "nl": "diagnostiek: de ruwe JSON-respons van elke SEMS API-aanroep wordt nu op debug-niveau gelogd",
-        "fr": "diagnostic : la reponse JSON brute de chaque appel a l'API SEMS est desormais journalisee au niveau debug",
-        "it": "diagnostica: la risposta JSON grezza di ogni chiamata all'API SEMS viene ora registrata a livello debug",
-        "es": "diagnostico: la respuesta JSON en bruto de cada llamada a la API de SEMS ahora se registra en el nivel debug",
-        "pl": "diagnostyka: surowa odpowiedz JSON kazdego wywolania API SEMS jest teraz logowana na poziomie debug",
-        "uk": "діагностика: сирий JSON-вiдповiдь кожного виклику SEMS API тепер логується на рiвнi debug",
-        "zh-cn": "诊断:每次 SEMS API 调用的原始 JSON 响应现在都会在 debug 级别记录"
-      },
-      "0.1.14": {
-        "en": "fix: GetMonitorDetailByPowerstationId returned 404 (\"Route Not Found\") for accounts whose SEMS+ login is rejected and falls back to the legacy CrossLogin API - that backend uses the \"v2\" API path instead of \"v3\". The adapter now automatically retries with the v2 path on a detected 404, and error messages now surface the actual error_msg field instead of \"unbekannter Fehler\"",
-        "de": "Fix: GetMonitorDetailByPowerstationId lieferte 404 (\"Route Not Found\") fuer Konten, deren SEMS+-Login abgelehnt wird und die auf die Legacy-CrossLogin-API zurueckfallen - dieses Backend nutzt den \"v2\"-API-Pfad statt \"v3\". Der Adapter versucht bei erkanntem 404 jetzt automatisch den v2-Pfad, und Fehlermeldungen zeigen jetzt das tatsaechliche error_msg-Feld statt \"unbekannter Fehler\"",
-        "ru": "исправление: GetMonitorDetailByPowerstationId возвращал 404 для учётных записей с резервным входом через устаревший API - теперь используется путь v2",
-        "pt": "correcao: GetMonitorDetailByPowerstationId retornava 404 para contas com login de reserva na API legada - agora usa o caminho v2",
-        "nl": "fix: GetMonitorDetailByPowerstationId gaf 404 voor accounts met fallback-login op de legacy API - gebruikt nu het v2-pad",
-        "fr": "correction : GetMonitorDetailByPowerstationId renvoyait une 404 pour les comptes utilisant la connexion de secours a l'API historique - utilise desormais le chemin v2",
-        "it": "correzione: GetMonitorDetailByPowerstationId restituiva 404 per gli account con login di fallback sull'API legacy - ora usa il percorso v2",
-        "es": "correccion: GetMonitorDetailByPowerstationId devolvia 404 para cuentas con inicio de sesion de respaldo en la API heredada - ahora usa la ruta v2",
-        "pl": "poprawka: GetMonitorDetailByPowerstationId zwracal 404 dla kont z zapasowym logowaniem do starszego API - teraz uzywana jest sciezka v2",
-        "uk": "виправлення: GetMonitorDetailByPowerstationId повертав 404 для облікових записів із резервним входом через застарілий API - тепер використовується шлях v2",
-        "zh-cn": "修复:对于回退到旧版登录 API 的账户,GetMonitorDetailByPowerstationId 返回 404 - 现在改用 v2 路径"
-      }
+    "common": {
+        "name": "goodwe-sems",
+        "version": "0.1.15",
+        "news": {
+            "0.1.15": {
+                "de": "Weiterer Fix für die GoodWe-API-Versionierung: getMonitorDetail() probiert jetzt v3, v2 UND v1 der Reihe nach durch (statt nur v3->v2), da GoodWe je nach Konto/Backend unterschiedliche API-Versionen für denselben Endpunkt verwendet. Zusätzlich vollständige Request-URL im Debug-Log für einfachere Diagnose.",
+                "en": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "ru": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "pt": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "nl": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "fr": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "it": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "es": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "pl": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "zh-cn": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis.",
+                "uk": "Further fix for GoodWe API versioning: getMonitorDetail() now tries v3, v2 AND v1 in sequence (not just v3->v2), since GoodWe uses different API versions for the same endpoint depending on account/backend. Also logs the full request URL in debug mode for easier diagnosis."
+            },
+            "0.1.14": {
+                "en": "fix: GetMonitorDetailByPowerstationId returned 404 (\"Route Not Found\") for accounts whose SEMS+ login is rejected and falls back to the legacy CrossLogin API - that backend uses the \"v2\" API path instead of \"v3\". The adapter now automatically retries with the v2 path on a detected 404, and error messages now surface the actual error_msg field instead of \"unbekannter Fehler\"",
+                "de": "Fix: GetMonitorDetailByPowerstationId lieferte 404 (\"Route Not Found\") fuer Konten, deren SEMS+-Login abgelehnt wird und die auf die Legacy-CrossLogin-API zurueckfallen - dieses Backend nutzt den \"v2\"-API-Pfad statt \"v3\". Der Adapter versucht bei erkanntem 404 jetzt automatisch den v2-Pfad, und Fehlermeldungen zeigen jetzt das tatsaechliche error_msg-Feld statt \"unbekannter Fehler\"",
+                "ru": "исправление: GetMonitorDetailByPowerstationId возвращал 404 для учётных записей с резервным входом через устаревший API - теперь используется путь v2",
+                "pt": "correcao: GetMonitorDetailByPowerstationId retornava 404 para contas com login de reserva na API legada - agora usa o caminho v2",
+                "nl": "fix: GetMonitorDetailByPowerstationId gaf 404 voor accounts met fallback-login op de legacy API - gebruikt nu het v2-pad",
+                "fr": "correction : GetMonitorDetailByPowerstationId renvoyait une 404 pour les comptes utilisant la connexion de secours a l'API historique - utilise desormais le chemin v2",
+                "it": "correzione: GetMonitorDetailByPowerstationId restituiva 404 per gli account con login di fallback sull'API legacy - ora usa il percorso v2",
+                "es": "correccion: GetMonitorDetailByPowerstationId devolvia 404 para cuentas con inicio de sesion de respaldo en la API heredada - ahora usa la ruta v2",
+                "pl": "poprawka: GetMonitorDetailByPowerstationId zwracal 404 dla kont z zapasowym logowaniem do starszego API - teraz uzywana jest sciezka v2",
+                "uk": "виправлення: GetMonitorDetailByPowerstationId повертав 404 для облікових записів із резервним входом через застарілий API - тепер використовується шлях v2",
+                "zh-cn": "修复:对于回退到旧版登录 API 的账户,GetMonitorDetailByPowerstationId 返回 404 - 现在改用 v2 路径"
+            },
+            "0.1.13": {
+                "en": "diagnostics: log the raw JSON envelope of every SEMS API call at debug level (not just the monitor-detail call). This helps pinpoint reports like \"unbekannter Fehler (code=undefined)\" on GetPowerStationIdByOwner, where the actual success/error convention used by that endpoint differs from what earlier testing assumed",
+                "de": "Diagnose: rohe JSON-Antwort jedes SEMS-API-Aufrufs wird jetzt auf Debug-Level geloggt (nicht mehr nur beim Monitor-Detail-Aufruf). Hilft, Meldungen wie \"unbekannter Fehler (code=undefined)\" bei GetPowerStationIdByOwner einzugrenzen, wenn die tatsächliche Erfolgs-/Fehler-Konvention dieses Endpunkts von den bisherigen Annahmen abweicht",
+                "ru": "диагностика: сырой JSON-ответ каждого вызова SEMS API теперь логируется на уровне debug",
+                "pt": "diagnóstico: a resposta JSON bruta de cada chamada à API SEMS agora é registada ao nível de debug",
+                "nl": "diagnostiek: de ruwe JSON-respons van elke SEMS API-aanroep wordt nu op debug-niveau gelogd",
+                "fr": "diagnostic : la reponse JSON brute de chaque appel a l'API SEMS est desormais journalisee au niveau debug",
+                "it": "diagnostica: la risposta JSON grezza di ogni chiamata all'API SEMS viene ora registrata a livello debug",
+                "es": "diagnostico: la respuesta JSON en bruto de cada llamada a la API de SEMS ahora se registra en el nivel debug",
+                "pl": "diagnostyka: surowa odpowiedz JSON kazdego wywolania API SEMS jest teraz logowana na poziomie debug",
+                "uk": "діагностика: сирий JSON-вiдповiдь кожного виклику SEMS API тепер логується на рiвнi debug",
+                "zh-cn": "诊断:每次 SEMS API 调用的原始 JSON 响应现在都会在 debug 级别记录"
+            },
+            "0.1.12": {
+                "en": "further recheck fixes: remove news entry for 0.1.10 (never published to npm - its CI failed before the deploy step), declare \"needs: check-and-lint\" on the adapter-tests job, pin @types/node to \"^22\" (was open-ended \">=22\"), fix .vscode/settings.json schema fileMatch patterns (drop leading slash, add jsonCustom.json/jsonTab.json), add dependabot auto-merge workflow + config",
+                "de": "weitere Recheck-Fixes: News-Eintrag fuer 0.1.10 entfernt (nie auf npm veroeffentlicht - CI schlug vor dem Deploy-Schritt fehl), \"needs: check-and-lint\" beim adapter-tests-Job ergaenzt, @types/node auf \"^22\" fixiert (war offenes \">=22\"), Schema-fileMatch in .vscode/settings.json korrigiert (kein fuehrender Slash, jsonCustom.json/jsonTab.json ergaenzt), Dependabot-Automerge-Workflow + Konfiguration ergaenzt",
+                "ru": "дальнейшие исправления: удалена запись news для 0.1.10 (никогда не публиковалась в npm), needs: check-and-lint для adapter-tests, @types/node зафиксирован на ^22, исправлены схемы в .vscode/settings.json, добавлен automerge для dependabot",
+                "pt": "mais correcoes: removida a entrada de news para 0.1.10 (nunca publicada no npm), needs: check-and-lint no job adapter-tests, @types/node fixado em ^22, esquemas corrigidos em .vscode/settings.json, automerge do dependabot adicionado",
+                "nl": "verdere fixes: news-item voor 0.1.10 verwijderd (nooit op npm gepubliceerd), needs: check-and-lint toegevoegd aan adapter-tests, @types/node vastgezet op ^22, schema's in .vscode/settings.json gecorrigeerd, dependabot automerge toegevoegd",
+                "fr": "autres corrections : entree news pour 0.1.10 supprimee (jamais publiee sur npm), needs: check-and-lint ajoute au job adapter-tests, @types/node fixe a ^22, schemas corriges dans .vscode/settings.json, automerge dependabot ajoute",
+                "it": "ulteriori correzioni: rimossa la voce news per 0.1.10 (mai pubblicata su npm), aggiunto needs: check-and-lint al job adapter-tests, @types/node fissato a ^22, schemi corretti in .vscode/settings.json, aggiunto automerge per dependabot",
+                "es": "mas correcciones: se elimino la entrada de news para 0.1.10 (nunca publicada en npm), se agrego needs: check-and-lint al job adapter-tests, @types/node fijado en ^22, esquemas corregidos en .vscode/settings.json, se agrego automerge de dependabot",
+                "pl": "kolejne poprawki: usunieto wpis news dla 0.1.10 (nigdy nie opublikowano na npm), dodano needs: check-and-lint do zadania adapter-tests, @types/node ustalono na ^22, poprawiono schematy w .vscode/settings.json, dodano automerge dependabot",
+                "uk": "подальші виправлення: видалено запис news для 0.1.10 (ніколи не публікувався на npm), додано needs: check-and-lint для adapter-tests, @types/node зафіксовано на ^22, виправлено схеми в .vscode/settings.json, додано automerge для dependabot",
+                "zh-cn": "进一步修复:移除 0.1.10 的 news 条目(从未发布到 npm),为 adapter-tests 任务添加 needs: check-and-lint,将 @types/node 固定为 ^22,修复 .vscode/settings.json 中的 schema 匹配,添加 dependabot 自动合并"
+            },
+            "0.1.11": {
+                "en": "fix broken CI: remove Node.js 20.x from the adapter-tests matrix - it is incompatible with engines.node >=22 (introduced in 0.1.10) under the official action's engine-strict npm ci, which crashed that matrix job and cancelled all others",
+                "de": "defekte CI behoben: Node.js 20.x aus der adapter-tests-Matrix entfernt - inkompatibel mit engines.node >=22 (seit 0.1.10) unter dem engine-strict npm ci der offiziellen Action, wodurch dieser Matrix-Job abstürzte und alle anderen abgebrochen wurden",
+                "ru": "исправлен неработающий CI: Node.js 20.x удалён из матрицы adapter-tests - несовместим с engines.node >=22 (введено в 0.1.10)",
+                "pt": "corrigido o CI quebrado: Node.js 20.x removido da matriz adapter-tests - incompatível com engines.node >=22 (introduzido em 0.1.10)",
+                "nl": "defecte CI opgelost: Node.js 20.x verwijderd uit de adapter-tests-matrix - incompatibel met engines.node >=22 (geïntroduceerd in 0.1.10)",
+                "fr": "correction du CI cassé : Node.js 20.x retiré de la matrice adapter-tests - incompatible avec engines.node >=22 (introduit en 0.1.10)",
+                "it": "risolto il CI non funzionante: rimosso Node.js 20.x dalla matrice adapter-tests - incompatibile con engines.node >=22 (introdotto in 0.1.10)",
+                "es": "se corrigió el CI roto: se eliminó Node.js 20.x de la matriz adapter-tests - incompatible con engines.node >=22 (introducido en 0.1.10)",
+                "pl": "naprawiono uszkodzone CI: usunięto Node.js 20.x z macierzy adapter-tests - niekompatybilne z engines.node >=22 (wprowadzone w 0.1.10)",
+                "uk": "виправлено зламаний CI: видалено Node.js 20.x з матриці adapter-tests - несумісний з engines.node >=22 (введено в 0.1.10)",
+                "zh-cn": "修复损坏的 CI:从 adapter-tests 矩阵中移除 Node.js 20.x - 与 engines.node >=22(0.1.10 中引入)不兼容"
+            },
+            "0.1.9": {
+                "en": "address stricter ioBroker.repositories PR check: move encryptedNative/protectedNative to io-package.json root, update deps (adapter-core, testing, adapter-dev, admin, js-controller), rewrite CI workflow (check-and-lint/adapter-tests/deploy jobs, concurrency, full OS+Node matrix), use adapter-managed timers, node:crypto, fix jsonConfig responsive sizes + i18n key, translate README to English (required), add CHANGELOG_OLD.md",
+                "de": "strengere ioBroker.repositories-PR-Prüfung behoben: encryptedNative/protectedNative auf io-package.json-Root verschoben, Abhängigkeiten aktualisiert (adapter-core, testing, adapter-dev, admin, js-controller), CI-Workflow neu geschrieben (check-and-lint/adapter-tests/deploy Jobs, Concurrency, volle OS+Node-Matrix), adapter-verwaltete Timer, node:crypto, jsonConfig Responsive-Größen + i18n-Key behoben, README auf Englisch übersetzt (Pflicht), CHANGELOG_OLD.md ergänzt",
+                "ru": "устранены более строгие проверки PR ioBroker.repositories: encryptedNative/protectedNative перемещены в корень io-package.json, обновлены зависимости, переписан CI, README переведён на английский (обязательно)",
+                "pt": "corrigidas verificações mais rigorosas do PR do ioBroker.repositories: encryptedNative/protectedNative movidos para a raiz do io-package.json, dependências atualizadas, CI reescrito, README traduzido para inglês (obrigatório)",
+                "nl": "strengere ioBroker.repositories-PR-controles opgelost: encryptedNative/protectedNative naar de root van io-package.json verplaatst, dependencies bijgewerkt, CI herschreven, README naar het Engels vertaald (verplicht)",
+                "fr": "correction des vérifications plus strictes du PR ioBroker.repositories : encryptedNative/protectedNative déplacés à la racine de io-package.json, dépendances mises à jour, CI réécrit, README traduit en anglais (obligatoire)",
+                "it": "risolti controlli più severi del PR ioBroker.repositories: encryptedNative/protectedNative spostati alla radice di io-package.json, dipendenze aggiornate, CI riscritta, README tradotto in inglese (obbligatorio)",
+                "es": "se resolvieron comprobaciones más estrictas del PR de ioBroker.repositories: encryptedNative/protectedNative movidos a la raíz de io-package.json, dependencias actualizadas, CI reescrita, README traducido al inglés (obligatorio)",
+                "pl": "rozwiązano bardziej rygorystyczne kontrole PR ioBroker.repositories: encryptedNative/protectedNative przeniesiono do katalogu głównego io-package.json, zaktualizowano zależności, przepisano CI, README przetłumaczono na angielski (wymagane)",
+                "uk": "усунено суворіші перевірки PR ioBroker.repositories: encryptedNative/protectedNative перенесено в корінь io-package.json, оновлено залежності, переписано CI, README перекладено англійською (обов'язково)",
+                "zh-cn": "解决更严格的 ioBroker.repositories PR 检查:将 encryptedNative/protectedNative 移至 io-package.json 根目录,更新依赖项,重写 CI,将 README 翻译为英文(必需)"
+            },
+            "0.1.8": {
+                "en": "address ioBroker adapter-check findings: remove news entries for versions that were never actually published to npm (0.1.1, 0.1.2), remove deprecated common.title/common.main fields, update @iobroker/adapter-core to ^3.2.2",
+                "de": "ioBroker-Adapter-Check-Befunde behoben: News-Einträge für nie tatsächlich auf npm veröffentlichte Versionen entfernt (0.1.1, 0.1.2), veraltete Felder common.title/common.main entfernt, @iobroker/adapter-core auf ^3.2.2 aktualisiert",
+                "ru": "устранены замечания adapter-check: удалены записи news для версий, никогда не публиковавшихся в npm (0.1.1, 0.1.2), удалены устаревшие поля common.title/common.main, обновлён @iobroker/adapter-core до ^3.2.2",
+                "pt": "resolvidas as constatações do adapter-check: removidas entradas de news de versões nunca publicadas no npm (0.1.1, 0.1.2), removidos campos obsoletos common.title/common.main, @iobroker/adapter-core atualizado para ^3.2.2",
+                "nl": "adapter-check bevindingen opgelost: news-items voor nooit op npm gepubliceerde versies verwijderd (0.1.1, 0.1.2), verouderde velden common.title/common.main verwijderd, @iobroker/adapter-core bijgewerkt naar ^3.2.2",
+                "fr": "corrections des remarques adapter-check : suppression des entrées news pour des versions jamais publiées sur npm (0.1.1, 0.1.2), suppression des champs obsolètes common.title/common.main, mise à jour de @iobroker/adapter-core vers ^3.2.2",
+                "it": "risolti i rilievi di adapter-check: rimosse le voci news per versioni mai pubblicate su npm (0.1.1, 0.1.2), rimossi i campi deprecati common.title/common.main, aggiornato @iobroker/adapter-core a ^3.2.2",
+                "es": "se resolvieron los hallazgos de adapter-check: se eliminaron entradas de news de versiones nunca publicadas en npm (0.1.1, 0.1.2), se eliminaron los campos obsoletos common.title/common.main, se actualizó @iobroker/adapter-core a ^3.2.2",
+                "pl": "rozwiązano uwagi adapter-check: usunięto wpisy news dla wersji nigdy niepublikowanych na npm (0.1.1, 0.1.2), usunięto przestarzałe pola common.title/common.main, zaktualizowano @iobroker/adapter-core do ^3.2.2",
+                "uk": "усунено зауваження adapter-check: видалено записи news для версій, які ніколи не публікувалися в npm (0.1.1, 0.1.2), видалено застарілі поля common.title/common.main, оновлено @iobroker/adapter-core до ^3.2.2",
+                "zh-cn": "解决 adapter-check 发现的问题:移除从未真正发布到 npm 的版本的 news 条目(0.1.1、0.1.2),移除已弃用的 common.title/common.main 字段,将 @iobroker/adapter-core 更新至 ^3.2.2"
+            }
+        },
+        "titleLang": {
+            "en": "GoodWe SEMS Portal",
+            "de": "GoodWe SEMS Portal",
+            "ru": "GoodWe SEMS Portal",
+            "pt": "GoodWe SEMS Portal",
+            "nl": "GoodWe SEMS Portal",
+            "fr": "GoodWe SEMS Portal",
+            "it": "GoodWe SEMS Portal",
+            "es": "GoodWe SEMS Portal",
+            "pl": "GoodWe SEMS Portal",
+            "uk": "GoodWe SEMS Portal",
+            "zh-cn": "GoodWe SEMS 门户"
+        },
+        "desc": {
+            "en": "Reads inverter, battery and power-flow data from the GoodWe SEMS Portal cloud for installations that have no local/LAN access to the inverter.",
+            "de": "Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem GoodWe-SEMS-Portal (Cloud) für Anlagen ohne lokalen/LAN-Zugriff auf den Wechselrichter.",
+            "ru": "Считывает данные инвертора, батареи и потоков энергии из облачного портала GoodWe SEMS для установок без локального доступа к инвертору.",
+            "pt": "Lê dados do inversor, bateria e fluxo de energia do portal SEMS da GoodWe na nuvem para instalações sem acesso local/LAN ao inversor.",
+            "nl": "Leest omvormer-, batterij- en energiestroomgegevens uit het GoodWe SEMS-portaal (cloud) voor installaties zonder lokale/LAN-toegang tot de omvormer.",
+            "fr": "Lit les données de l'onduleur, de la batterie et des flux d'énergie depuis le portail cloud GoodWe SEMS pour les installations sans accès local/LAN à l'onduleur.",
+            "it": "Legge i dati dell'inverter, della batteria e del flusso di energia dal portale cloud GoodWe SEMS per impianti senza accesso locale/LAN all'inverter.",
+            "es": "Lee datos del inversor, la batería y el flujo de energía desde el portal en la nube GoodWe SEMS para instalaciones sin acceso local/LAN al inversor.",
+            "pl": "Odczytuje dane falownika, baterii i przepływu energii z chmury portalu GoodWe SEMS dla instalacji bez lokalnego dostępu do falownika.",
+            "uk": "Зчитує дані інвертора, батареї та потоків енергії з хмарного порталу GoodWe SEMS для установок без локального доступу до інвертора.",
+            "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
+        },
+        "authors": [
+            "bueste <bueste@users.noreply.github.com>"
+        ],
+        "keywords": [
+            "goodwe",
+            "sems",
+            "semsportal",
+            "inverter",
+            "solar",
+            "pv",
+            "photovoltaik",
+            "battery"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "goodwe-sems.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
+        "readme": "https://github.com/bueste/ioBroker.goodwe-sems/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "energy",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "tier": 3,
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "GoodWe SEMS Portal",
-      "de": "GoodWe SEMS Portal",
-      "ru": "GoodWe SEMS Portal",
-      "pt": "GoodWe SEMS Portal",
-      "nl": "GoodWe SEMS Portal",
-      "fr": "GoodWe SEMS Portal",
-      "it": "GoodWe SEMS Portal",
-      "es": "GoodWe SEMS Portal",
-      "pl": "GoodWe SEMS Portal",
-      "uk": "GoodWe SEMS Portal",
-      "zh-cn": "GoodWe SEMS 门户"
+    "native": {
+        "account": "",
+        "password": "",
+        "powerStationId": "",
+        "pollInterval": 300,
+        "requestTimeout": 15,
+        "maxConsecutiveErrors": 3,
+        "pushoverMode": "none",
+        "pushoverInstance": "pushover.0",
+        "pushoverUserKey": "",
+        "pushoverApiToken": "",
+        "pushoverPriority": 0,
+        "notifyOnLoginFailure": true,
+        "notifyOnRateLimit": true,
+        "notifyOnStationOffline": true,
+        "notifyOnAdapterError": true,
+        "stationOfflineMinutes": 30,
+        "debugRawResponse": false
     },
-    "desc": {
-      "en": "Reads inverter, battery and power-flow data from the GoodWe SEMS Portal cloud for installations that have no local/LAN access to the inverter.",
-      "de": "Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem GoodWe-SEMS-Portal (Cloud) für Anlagen ohne lokalen/LAN-Zugriff auf den Wechselrichter.",
-      "ru": "Считывает данные инвертора, батареи и потоков энергии из облачного портала GoodWe SEMS для установок без локального доступа к инвертору.",
-      "pt": "Lê dados do inversor, bateria e fluxo de energia do portal SEMS da GoodWe na nuvem para instalações sem acesso local/LAN ao inversor.",
-      "nl": "Leest omvormer-, batterij- en energiestroomgegevens uit het GoodWe SEMS-portaal (cloud) voor installaties zonder lokale/LAN-toegang tot de omvormer.",
-      "fr": "Lit les données de l'onduleur, de la batterie et des flux d'énergie depuis le portail cloud GoodWe SEMS pour les installations sans accès local/LAN à l'onduleur.",
-      "it": "Legge i dati dell'inverter, della batteria e del flusso di energia dal portale cloud GoodWe SEMS per impianti senza accesso locale/LAN all'inverter.",
-      "es": "Lee datos del inversor, la batería y el flujo de energía desde el portal en la nube GoodWe SEMS para instalaciones sin acceso local/LAN al inversor.",
-      "pl": "Odczytuje dane falownika, baterii i przepływu energii z chmury portalu GoodWe SEMS dla instalacji bez lokalnego dostępu do falownika.",
-      "uk": "Зчитує дані інвертора, батареї та потоків енергії з хмарного порталу GoodWe SEMS для установок без локального доступу до інвертора.",
-      "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
-    },
-    "authors": [
-      "bueste <bueste@users.noreply.github.com>"
+    "encryptedNative": [
+        "password",
+        "pushoverApiToken"
     ],
-    "keywords": [
-      "goodwe",
-      "sems",
-      "semsportal",
-      "inverter",
-      "solar",
-      "pv",
-      "photovoltaik",
-      "battery"
+    "protectedNative": [
+        "password",
+        "pushoverApiToken"
     ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "platform": "Javascript/Node.js",
-    "icon": "goodwe-sems.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
-    "readme": "https://github.com/bueste/ioBroker.goodwe-sems/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "energy",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "tier": 3,
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "SEMS Portal reachable",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastSuccess",
+            "type": "state",
+            "common": {
+                "role": "value.time",
+                "name": "Timestamp of last successful poll",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastError",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Last error message",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.consecutiveErrors",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Number of consecutive failed polls",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.rateLimited",
+            "type": "state",
+            "common": {
+                "role": "indicator",
+                "name": "SEMS Portal is currently rate-limiting this account",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.activePollInterval",
+            "type": "state",
+            "common": {
+                "role": "value.interval",
+                "name": "Currently active poll interval (seconds, incl. backoff)",
+                "type": "number",
+                "unit": "s",
+                "read": true,
+                "write": false,
+                "def": 300
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.rawResponse",
+            "type": "state",
+            "common": {
+                "role": "json",
+                "name": "Raw last SEMS API response (debug, disabled by default)",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": "",
+                "expert": true
+            },
+            "native": {}
+        }
     ]
-  },
-  "native": {
-    "account": "",
-    "password": "",
-    "powerStationId": "",
-    "pollInterval": 300,
-    "requestTimeout": 15,
-    "maxConsecutiveErrors": 3,
-    "pushoverMode": "none",
-    "pushoverInstance": "pushover.0",
-    "pushoverUserKey": "",
-    "pushoverApiToken": "",
-    "pushoverPriority": 0,
-    "notifyOnLoginFailure": true,
-    "notifyOnRateLimit": true,
-    "notifyOnStationOffline": true,
-    "notifyOnAdapterError": true,
-    "stationOfflineMinutes": 30,
-    "debugRawResponse": false
-  },
-  "encryptedNative": [
-    "password",
-    "pushoverApiToken"
-  ],
-  "protectedNative": [
-    "password",
-    "pushoverApiToken"
-  ],
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "SEMS Portal reachable",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.lastSuccess",
-      "type": "state",
-      "common": {
-        "role": "value.time",
-        "name": "Timestamp of last successful poll",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.lastError",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Last error message",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.consecutiveErrors",
-      "type": "state",
-      "common": {
-        "role": "value",
-        "name": "Number of consecutive failed polls",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.rateLimited",
-      "type": "state",
-      "common": {
-        "role": "indicator",
-        "name": "SEMS Portal is currently rate-limiting this account",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.activePollInterval",
-      "type": "state",
-      "common": {
-        "role": "value.interval",
-        "name": "Currently active poll interval (seconds, incl. backoff)",
-        "type": "number",
-        "unit": "s",
-        "read": true,
-        "write": false,
-        "def": 300
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.rawResponse",
-      "type": "state",
-      "common": {
-        "role": "json",
-        "name": "Raw last SEMS API response (debug, disabled by default)",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": "",
-        "expert": true
-      },
-      "native": {}
-    }
-  ]
 }

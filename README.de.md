@@ -151,6 +151,12 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.15 (2026-07-19)
+
+- (Stefan Bühler) Fix: Der v3→v2-Fallback aus 0.1.14 für `GetMonitorDetailByPowerstationId` reichte nicht aus - bei einem echten Konto lieferte das Legacy-Login-Backend `404 Route Not Found` für **beide** Pfade, `v2` und `v3`. Community-Referenzen widersprechen sich, welche Version korrekt ist (pygoodwe verwendet fest `v2`, ein separater Artikel von 2023 nutzt `v1`, unsere eigene Traffic-Analyse beobachtete `v3`) - `getMonitorDetail()` probiert jetzt alle drei Versionen der Reihe nach durch (`v3` → `v2` → `v1`) und nutzt die erste, die keinen 404 liefert
+- (Stefan Bühler) Diagnose: Debug-Logs enthalten jetzt die vollständige Request-URL (inkl. aufgelöster API-Basis) statt nur des relativen Pfads, und der Login-Erfolgs-Log gibt jetzt ebenfalls die aufgelöste API-Basis aus - so lässt sich genau erkennen, welche Host+Pfad-Kombination fehlschlägt
+- (Stefan Bühler) 2 aktualisierte/neue Regressionstests (45 Unit-Tests insgesamt) für den dreistufigen Versions-Fallback und den Fall, dass alle drei Pfade fehlschlagen
+
 ### 0.1.14 (2026-07-19)
 
 - (Stefan Bühler) Fix: `GetMonitorDetailByPowerstationId` lieferte `404 Route Not Found` für Konten, deren SEMS+-Login abgelehnt wird (beobachtet: `code=C0602`) und die auf die Legacy-CrossLogin-API zurückfallen - dieses Backend stellt den Endpunkt unter dem `v2`-API-Pfad bereit, nicht `v3`. Root Cause gefunden anhand des Debug-Logs eines echten Kontos sowie der Referenzimplementierung [pygoodwe](https://github.com/yaleman/pygoodwe), deren rein-legacy-Client den `v2`-Pfad fest verdrahtet. `getMonitorDetail()` versucht jetzt zuerst `v3` und wiederholt bei erkanntem 404 automatisch einmal mit `v2` - beide Backend-Varianten funktionieren damit ohne jede Konfigurationsänderung durch den Nutzer
