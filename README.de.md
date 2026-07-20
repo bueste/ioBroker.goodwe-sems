@@ -151,6 +151,12 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.19 (2026-07-20)
+
+- (Stefan Bühler) Den klassischen, versionierten `GetMonitorDetailByPowerstationId`-Endpunkt (seit 0.1.14/0.1.15 als `/v3`, `/v2`, `/v1` versucht) komplett entfernt - GoodWe hat ihn abgeschaltet, jedes während der Entwicklung beobachtete Konto bekommt bei allen drei Versionen ausnahmslos 404. `getMonitorDetail()` ruft jetzt direkt die in 0.1.16 eingeführte SEMS+-Gateway-API auf, was jeden Poll-Zyklus schneller macht und unnötige, garantiert scheiternde Anfragen vermeidet
+- (Stefan Bühler) Fix: Die Gateway-Session wurde nie automatisch erneuert, wenn sie serverseitig ablief - der Adapter erzeugt beim Start eine einzige, langlebige API-Client-Instanz und nutzt deren Session unbegrenzt weiter, und anders als der (jetzt entfernte) klassische Pfad hat der Gateway-Request-Helfer nie bei einer abgelaufenen Session neu eingeloggt. Das führte dazu, dass der Adapter nach einigen Stunden dauerhaft ausfiel (bestätigt an einem echten Konto: abends funktionierend, den gesamten nächsten Tag bei jedem einzelnen Poll-Zyklus fehlgeschlagen), bis er manuell neu gestartet wurde. Jeder Gateway-Aufruf loggt sich jetzt bei jedem Fehler automatisch einmalig neu ein und wiederholt den Aufruf, bevor aufgegeben wird
+- (Stefan Bühler) 5 aktualisierte/neue Regressionstests (45 Unit-Tests insgesamt) für den vereinfachten direkten Gateway-Aufruf und das automatische Re-Login-und-Wiederholen-Verhalten (inklusive korrektem Aufgeben nach genau einem Versuch)
+
 ### 0.1.18 (2026-07-19)
 
 - (Stefan Bühler) Fix: Der SEMS+-Login wurde trotz des Host-Fixes in 0.1.17 weiterhin mit `code=C0602 "account_login_abnormal"` abgelehnt, weil sich der Adapter als iOS-App ausgab (`User-Agent: PVMaster/...`, Token-`client: "ios"`) - der aufgerufene Endpunkt (`eu-semsplus.goodwe.com`) wird laut echtem Browser-Mitschnitt aber ausschließlich vom SEMS+-*Web*-Client genutzt, der `client: "semsPlusWeb"`, einen Browser-User-Agent sowie `Origin`/`Referer`-Header sendet. Der Login-Call baut jetzt eine eigene, passende Header-Identität nur für diesen einen Aufruf; alle anderen (klassischen/Legacy-)Endpunkte nutzen unverändert weiterhin die etablierte iOS-Identität

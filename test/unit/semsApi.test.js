@@ -93,7 +93,7 @@ describe("lib/semsApi SemsApi", () => {
         await expect(api.login()).to.be.rejectedWith(SemsAuthError);
     });
 
-    it("raises SemsRateLimitError with the documented retry-after on GY0429", async () => {
+    it("raises SemsRateLimitError with the documented retry-after on GY0429 (classic _authenticatedPost path, exercised via getOwnedPowerStations)", async () => {
         fetchStub.onCall(0).resolves(
             jsonResponse(200, {
                 code: 0,
@@ -109,7 +109,7 @@ describe("lib/semsApi SemsApi", () => {
 
         let caught;
         try {
-            await api.getMonitorDetail("station-1");
+            await api.getOwnedPowerStations();
         } catch (error) {
             caught = error;
         }
@@ -117,7 +117,7 @@ describe("lib/semsApi SemsApi", () => {
         expect(caught.retryAfterSeconds).to.equal(300);
     });
 
-    it("transparently re-logs in once when the session looks expired, then retries the call", async () => {
+    it("transparently re-logs in once when the classic session looks expired, then retries the call (via getOwnedPowerStations)", async () => {
         fetchStub.onCall(0).resolves(
             jsonResponse(200, {
                 code: 0,
@@ -139,14 +139,14 @@ describe("lib/semsApi SemsApi", () => {
         );
         // retried data call succeeds
         fetchStub.onCall(3).resolves(
-            jsonResponse(200, { code: 0, msg: "success", data: { info: { stationname: "OK" } } }),
+            jsonResponse(200, { code: 0, msg: "success", data: [{ powerStationId: "id-1", stationName: "Anlage 1" }] }),
         );
 
         const api = newApi();
         await api.login();
-        const detail = await api.getMonitorDetail("station-1");
+        const stations = await api.getOwnedPowerStations();
 
-        expect(detail.info.stationname).to.equal("OK");
+        expect(stations).to.deep.equal([{ id: "id-1", name: "Anlage 1" }]);
         expect(fetchStub.callCount).to.equal(4);
     });
 
@@ -195,91 +195,7 @@ describe("lib/semsApi SemsApi", () => {
         expect(stations).to.deep.equal([{ id: "id-1", name: "Anlage 1" }]);
     });
 
-    it("getMonitorDetail() falls back from the v3 to the v2 API path on a 404 (legacy-backend accounts)", async () => {
-        fetchStub.onCall(0).resolves(
-            jsonResponse(200, {
-                code: 0,
-                msg: "success",
-                api: "https://eu.semsportal.com/api",
-                data: { uid: "u1", token: "t1", timestamp: 1 },
-            }),
-        );
-        // v3 path: this backend doesn't know it, responds with a bare {"error_msg": ...} 404 envelope
-        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        // v2 path: succeeds
-        fetchStub.onCall(2).resolves(
-            jsonResponse(200, { code: 0, msg: "success", data: { info: { stationname: "OK" } } }),
-        );
-
-        const api = newApi();
-        await api.login();
-        const detail = await api.getMonitorDetail("station-1");
-
-        expect(detail.info.stationname).to.equal("OK");
-        expect(fetchStub.callCount).to.equal(3);
-        expect(fetchStub.getCall(1).args[0]).to.include("/v3/PowerStation/GetMonitorDetailByPowerstationId");
-        expect(fetchStub.getCall(2).args[0]).to.include("/v2/PowerStation/GetMonitorDetailByPowerstationId");
-    });
-
-    it("getMonitorDetail() falls back all the way to v1 if both v3 and v2 404", async () => {
-        fetchStub.onCall(0).resolves(
-            jsonResponse(200, {
-                code: 0,
-                msg: "success",
-                api: "https://eu.semsportal.com/api",
-                data: { uid: "u1", token: "t1", timestamp: 1 },
-            }),
-        );
-        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(3).resolves(
-            jsonResponse(200, { code: 0, msg: "success", data: { info: { stationname: "OK" } } }),
-        );
-
-        const api = newApi();
-        await api.login();
-        const detail = await api.getMonitorDetail("station-1");
-
-        expect(detail.info.stationname).to.equal("OK");
-        expect(fetchStub.callCount).to.equal(4);
-        expect(fetchStub.getCall(1).args[0]).to.include("/v3/PowerStation/GetMonitorDetailByPowerstationId");
-        expect(fetchStub.getCall(2).args[0]).to.include("/v2/PowerStation/GetMonitorDetailByPowerstationId");
-        expect(fetchStub.getCall(3).args[0]).to.include("/v1/PowerStation/GetMonitorDetailByPowerstationId");
-    });
-
-    it("getMonitorDetail() surfaces error_msg from a 404 envelope if all version fallbacks AND the gateway fallback fail", async () => {
-        fetchStub.onCall(0).resolves(
-            jsonResponse(200, {
-                code: 0,
-                msg: "success",
-                api: "https://eu.semsportal.com/api",
-                data: { uid: "u1", token: "t1", timestamp: 1 },
-            }),
-        );
-        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(3).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        // After all 3 classic paths 404, getMonitorDetail() also tries the SEMS+
-        // gateway fallback (basic/info) - make that fail too, so the ORIGINAL
-        // classic error still surfaces to the caller instead of being masked.
-        fetchStub.onCall(4).resolves(jsonResponse(200, { code: "40004", description: "station not found" }));
-
-        const api = newApi();
-        await api.login();
-
-        let caught;
-        try {
-            await api.getMonitorDetail("station-1");
-        } catch (error) {
-            caught = error;
-        }
-        expect(caught).to.be.instanceOf(SemsProtocolError);
-        expect(caught.message).to.include("404 Route Not Found");
-        expect(fetchStub.callCount).to.equal(5);
-        expect(fetchStub.getCall(4).args[0]).to.include("/sems-plant/api/portal/stations/basic/info");
-    });
-
-    it("getMonitorDetail() falls back to the SEMS+ gateway API when all classic paths 404, using the real signature scheme", async () => {
+    it("getMonitorDetail() calls the SEMS+ gateway API directly (no classic PowerStation probing), using the real signature scheme", async () => {
         fetchStub.onCall(0).resolves(
             jsonResponse(200, {
                 code: 0,
@@ -288,17 +204,14 @@ describe("lib/semsApi SemsApi", () => {
                 data: { uid: "u1", token: "t1", timestamp: 1784490221381 },
             }),
         );
-        fetchStub.onCall(1).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(2).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(3).resolves(jsonResponse(200, { error_msg: "404 Route Not Found" }));
-        fetchStub.onCall(4).resolves(
+        fetchStub.onCall(1).resolves(
             jsonResponse(200, {
                 code: "00000",
                 description: "成功",
                 data: { name: "Test Station", pvCapacity: 12.18, googleAddress: "Somewhere 1", status: "0" },
             }),
         );
-        fetchStub.onCall(5).resolves(
+        fetchStub.onCall(2).resolves(
             jsonResponse(200, {
                 code: "00000",
                 description: "成功",
@@ -319,14 +232,14 @@ describe("lib/semsApi SemsApi", () => {
                 },
             }),
         );
-        fetchStub.onCall(6).resolves(
+        fetchStub.onCall(3).resolves(
             jsonResponse(200, {
                 code: "00000",
                 description: "成功",
                 data: [{ code: "ac", factors: [{ code: "pAc", data: "2.5", unit: "kW" }] }],
             }),
         );
-        fetchStub.onCall(7).resolves(
+        fetchStub.onCall(4).resolves(
             jsonResponse(200, {
                 code: "00000",
                 description: "成功",
@@ -337,6 +250,11 @@ describe("lib/semsApi SemsApi", () => {
         const api = newApi();
         await api.login();
         const detail = await api.getMonitorDetail("station-1");
+
+        // Only 5 calls total: login + basic/info + device list + telemetry +
+        // telecounting - no classic /v3//v2//v1 PowerStation probing at all.
+        expect(fetchStub.callCount).to.equal(5);
+        expect(fetchStub.getCall(1).args[0]).to.include("/sems-plant/api/portal/stations/basic/info");
 
         expect(detail.info.stationname).to.equal("Test Station");
         expect(detail.info.capacity).to.equal(12.18);
@@ -349,7 +267,7 @@ describe("lib/semsApi SemsApi", () => {
         // Verify the x-signature header on the gateway calls matches the
         // real, empirically reverse-engineered formula (see GATEWAY_CLIENT
         // comment in lib/semsApi.js): base64(sha256(`${ts}@${uid}@${token}`) + "@" + ts).
-        const basicInfoCall = fetchStub.getCall(4);
+        const basicInfoCall = fetchStub.getCall(1);
         const headers = basicInfoCall.args[1].headers;
         expect(headers).to.have.property("x-signature");
         const decoded = Buffer.from(headers["x-signature"], "base64").toString("utf8");
@@ -358,5 +276,80 @@ describe("lib/semsApi SemsApi", () => {
         expect(hash).to.equal(expectedHash);
         const tokenHeader = JSON.parse(headers.token);
         expect(tokenHeader).to.include({ uid: "u1", token: "t1", client: "semsPlusWeb" });
+    });
+
+    it("getMonitorDetail() re-logins once and retries on a stale gateway session, then succeeds", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        // First basic/info call: stale session, rejected.
+        fetchStub.onCall(1).resolves(
+            jsonResponse(200, { code: "C0602", description: "账号登录异常", translationCode: "account_login_abnormal" }),
+        );
+        // Automatic re-login...
+        fetchStub.onCall(2).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u2", token: "t2", timestamp: 2 },
+            }),
+        );
+        // ...then the SAME basic/info call retried with the fresh session succeeds.
+        fetchStub.onCall(3).resolves(
+            jsonResponse(200, { code: "00000", description: "成功", data: { name: "Recovered Station" } }),
+        );
+        // Device list: empty, so no further per-device calls are made.
+        fetchStub.onCall(4).resolves(jsonResponse(200, { code: "00000", description: "成功", data: { total: 0 } }));
+
+        const api = newApi();
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        expect(detail.info.stationname).to.equal("Recovered Station");
+        expect(fetchStub.callCount).to.equal(5);
+        // The retried basic/info call must use the NEW session's credentials.
+        const retriedTokenHeader = JSON.parse(fetchStub.getCall(3).args[1].headers.token);
+        expect(retriedTokenHeader).to.include({ uid: "u2", token: "t2" });
+    });
+
+    it("getMonitorDetail() throws if the gateway fails again even after the one automatic re-login retry", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(jsonResponse(200, { code: "C0602", description: "账号登录异常" }));
+        fetchStub.onCall(2).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u2", token: "t2", timestamp: 2 },
+            }),
+        );
+        // Retry fails too - must give up after exactly one retry, not loop forever.
+        fetchStub.onCall(3).resolves(jsonResponse(200, { code: "C0602", description: "账号登录异常" }));
+
+        const api = newApi();
+        await api.login();
+
+        let caught;
+        try {
+            await api.getMonitorDetail("station-1");
+        } catch (error) {
+            caught = error;
+        }
+        expect(caught).to.be.instanceOf(SemsProtocolError);
+        expect(caught.message).to.include("账号登录异常");
+        expect(fetchStub.callCount).to.equal(4);
     });
 });

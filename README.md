@@ -151,6 +151,12 @@ Pull requests are welcome, especially to add further fields delivered by the por
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.19 (2026-07-20)
+
+- (Stefan Bühler) removed the classic, version-prefixed `GetMonitorDetailByPowerstationId` endpoint (tried as `/v3`, `/v2`, `/v1` since 0.1.14/0.1.15) entirely - GoodWe has retired it, every account observed during development 404s on all three versions unconditionally. `getMonitorDetail()` now calls the SEMS+ gateway API (introduced in 0.1.16) directly, making every poll cycle faster and avoiding pointless failing requests
+- (Stefan Bühler) fix: the gateway session was never automatically refreshed once it expired server-side - the adapter creates a single long-lived API client at startup and reuses its session indefinitely, and unlike the (now removed) classic path, the gateway request helper never re-logged in on a stale session. This caused the adapter to fail permanently after a few hours (confirmed by a real account: worked in the evening, failed every single poll cycle the entire next day) until manually restarted. Every gateway call now automatically re-logs in once and retries on any error before giving up
+- (Stefan Bühler) 5 updated/new regression tests (45 unit tests in total) covering the simplified direct-gateway call and the automatic re-login-and-retry behavior (including giving up correctly after exactly one retry)
+
 ### 0.1.18 (2026-07-19)
 
 - (Stefan Bühler) fix: SEMS+ login still got rejected with `code=C0602 "account_login_abnormal"` even after the host fix in 0.1.17, because the adapter identified itself as the iOS app (`User-Agent: PVMaster/...`, token `client: "ios"`) - but the called endpoint (`eu-semsplus.goodwe.com`) is, per the real browser capture, only ever used by the SEMS+ *web* client, sending `client: "semsPlusWeb"`, a browser User-Agent, and `Origin`/`Referer` headers. The login call now builds its own matching header identity for just that one request; every other (classic/legacy) endpoint keeps using the established iOS identity, unchanged
