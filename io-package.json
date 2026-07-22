@@ -1,11 +1,11 @@
 {
     "common": {
         "name": "goodwe-sems",
-        "version": "0.1.20",
+        "version": "1.0.0",
         "news": {
-            "0.1.20": {
-                "de": "Nur Metadaten: Übersetzungen für common.news (0.1.15-0.1.19) korrigiert (waren teils unübersetzt/englisch kopiert) und einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge in README/README.de.md sowie im npm-Paket (funding-Feld) ergänzt. Keine funktionalen Änderungen.",
-                "en": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+            "1.0.0": {
+                "de": "Erstes stabiles 1.0.0-Release: Der Adapter läuft seit mehreren Release-Zyklen zuverlässig mit der SEMS+-Gateway-API im produktiven Einsatz. Dieses Release enthält nur Metadaten-Änderungen - common.news-Übersetzungen für 0.1.15-0.1.19 korrigiert (einige Sprachen waren unübersetzte Kopien des englischen Texts), einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge ergänzt und Copyright-/Autoren-Metadaten vereinheitlicht. Keine funktionalen Änderungen.",
+                "en": "First stable 1.0.0 release: the adapter has been running reliably against the SEMS+ gateway API in production for several release cycles. This release is metadata only - fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text), added a Buy Me a Coffee link next to the PayPal donate badge, and standardized copyright/author metadata. No functional changes.",
                 "ru": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
                 "pt": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
                 "nl": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
@@ -122,7 +122,7 @@
             "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
         },
         "authors": [
-            "bueste <bueste@users.noreply.github.com>"
+            "Stefan Bühler"
         ],
         "keywords": [
             "goodwe",

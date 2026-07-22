@@ -150,11 +150,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
     Platzhalter für die nächste Version (am Zeilenanfang):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
 
-### 0.1.20 (2026-07-21)
+### 1.0.0 (2026-07-22)
 
-- (Stefan Bühler) Nur Metadaten: `common.news`-Übersetzungen für 0.1.15-0.1.19 korrigiert (einige Sprachen waren unübersetzte Kopien des englischen Texts - vom Repochecker als E1144 gemeldet) und einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge ergänzt. Keine funktionalen Änderungen.
+- (Stefan Bühler) Erstes stabiles Release: Der Adapter läuft seit mehreren Release-Zyklen zuverlässig mit der SEMS+-Gateway-API im produktiven Einsatz. Dieses Release enthält nur Metadaten-Änderungen - `common.news`-Übersetzungen für 0.1.15-0.1.19 korrigiert (einige Sprachen waren unübersetzte Kopien des englischen Texts - vom Repochecker als E1144 gemeldet), einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge ergänzt und Copyright-/Autoren-Metadaten vereinheitlicht. Keine funktionalen Änderungen.
 
 ### 0.1.19 (2026-07-20)
 

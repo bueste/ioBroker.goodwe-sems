@@ -1,80 +1,77 @@
 {
-  "name": "iobroker.goodwe-sems",
-  "version": "0.1.20",
-  "description": "ioBroker adapter to read GoodWe inverter data from the SEMS Portal cloud API (for installations without local/LAN access to the inverter).",
-  "author": {
-    "name": "bueste",
-    "email": "bueste@users.noreply.github.com"
-  },
-  "homepage": "https://github.com/bueste/ioBroker.goodwe-sems",
-  "funding": {
-    "type": "buymeacoffee",
-    "url": "https://buymeacoffee.com/stefanbuehler"
-  },
-  "license": "MIT",
-  "keywords": [
-    "ioBroker",
-    "goodwe",
-    "sems",
-    "semsportal",
-    "inverter",
-    "solar",
-    "photovoltaik",
-    "pv"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bueste/ioBroker.goodwe-sems.git"
-  },
-  "bugs": {
-    "url": "https://github.com/bueste/ioBroker.goodwe-sems/issues"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "os": [
-    "linux",
-    "darwin",
-    "win32"
-  ],
-  "main": "main.js",
-  "files": [
-    "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
-    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
-    "lib/",
-    "io-package.json",
-    "LICENSE",
-    "main.js"
-  ],
-  "scripts": {
-    "test:unit": "mocha test/unit --config test/mocharc.custom.json --exit",
-    "test:package": "mocha test/package --exit",
-    "test": "npm run test:unit && npm run test:package",
-    "lint": "eslint .",
-    "translate": "translate-adapter",
-    "release": "release-script",
-    "test:integration": "mocha test/integration --exit"
-  },
-  "dependencies": {
-    "@iobroker/adapter-core": "^3.4.1"
-  },
-  "devDependencies": {
-    "@alcalzone/release-script": "^5.2.1",
-    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
-    "@alcalzone/release-script-plugin-license": "^5.2.0",
-    "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
-    "@iobroker/adapter-dev": "^1.5.0",
-    "@iobroker/db-objects-jsonl": "^7.2.2",
-    "@iobroker/db-states-jsonl": "^7.2.2",
-    "@iobroker/eslint-config": "^2.3.4",
-    "@iobroker/testing": "^5.3.0",
-    "@tsconfig/node22": "^22.0.5",
-    "@types/node": "^22"
-  },
-  "overrides": {
-    "adm-zip": "^0.6.0",
-    "diff": "^8.0.3",
-    "esbuild": "^0.25.0",
-    "serialize-javascript": "^7.0.5"
-  }
+    "name": "iobroker.goodwe-sems",
+    "version": "1.0.0",
+    "description": "ioBroker adapter to read GoodWe inverter data from the SEMS Portal cloud API (for installations without local/LAN access to the inverter).",
+    "author": "Stefan Bühler",
+    "homepage": "https://github.com/bueste/ioBroker.goodwe-sems",
+    "funding": {
+        "type": "buymeacoffee",
+        "url": "https://buymeacoffee.com/stefanbuehler"
+    },
+    "license": "MIT",
+    "keywords": [
+        "ioBroker",
+        "goodwe",
+        "sems",
+        "semsportal",
+        "inverter",
+        "solar",
+        "photovoltaik",
+        "pv"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bueste/ioBroker.goodwe-sems.git"
+    },
+    "bugs": {
+        "url": "https://github.com/bueste/ioBroker.goodwe-sems/issues"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "os": [
+        "linux",
+        "darwin",
+        "win32"
+    ],
+    "main": "main.js",
+    "files": [
+        "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
+        "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
+        "lib/",
+        "io-package.json",
+        "LICENSE",
+        "main.js"
+    ],
+    "scripts": {
+        "test:unit": "mocha test/unit --config test/mocharc.custom.json --exit",
+        "test:package": "mocha test/package --exit",
+        "test": "npm run test:unit && npm run test:package",
+        "lint": "eslint .",
+        "translate": "translate-adapter",
+        "release": "release-script",
+        "test:integration": "mocha test/integration --exit"
+    },
+    "dependencies": {
+        "@iobroker/adapter-core": "^3.4.1"
+    },
+    "devDependencies": {
+        "@alcalzone/release-script": "^5.2.1",
+        "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
+        "@alcalzone/release-script-plugin-license": "^5.2.0",
+        "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
+        "@iobroker/adapter-dev": "^1.5.0",
+        "@iobroker/db-objects-jsonl": "^7.2.2",
+        "@iobroker/db-states-jsonl": "^7.2.2",
+        "@iobroker/eslint-config": "^2.3.4",
+        "@iobroker/testing": "^5.3.0",
+        "@tsconfig/node22": "^22.0.5",
+        "@types/node": "^22"
+    },
+    "overrides": {
+        "adm-zip": "^0.6.0",
+        "diff": "^8.0.3",
+        "esbuild": "^0.25.0",
+        "serialize-javascript": "^7.0.5"
+    }
 }

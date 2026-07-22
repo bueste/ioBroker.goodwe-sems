@@ -150,11 +150,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
 
-### 0.1.20 (2026-07-21)
+### 1.0.0 (2026-07-22)
 
-- (Stefan Bühler) metadata only: fixed `common.news` translations for 0.1.15-0.1.19 (some languages were untranslated copies of the English text - flagged by the repochecker as E1144) and added a Buy Me a Coffee link next to the PayPal donate badge. No functional changes.
+- (Stefan Bühler) First stable release: the adapter has been running reliably against the SEMS+ gateway API in production for several release cycles. This release is metadata only - fixed `common.news` translations for 0.1.15-0.1.19 (some languages were untranslated copies of the English text - flagged by the repochecker as E1144), added a Buy Me a Coffee link next to the PayPal donate badge, and standardized copyright/author metadata. No functional changes.
 
 ### 0.1.19 (2026-07-20)
 
