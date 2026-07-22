@@ -7,6 +7,10 @@
     "email": "bueste@users.noreply.github.com"
   },
   "homepage": "https://github.com/bueste/ioBroker.goodwe-sems",
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/stefanbuehler"
+  },
   "license": "MIT",
   "keywords": [
     "ioBroker",
