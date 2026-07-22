@@ -152,6 +152,10 @@ Pull Requests willkommen, insbesondere um zusätzliche, vom Portal gelieferte Fe
 -->
 ### **WORK IN PROGRESS**
 
+### 0.1.20 (2026-07-21)
+
+- (Stefan Bühler) Nur Metadaten: `common.news`-Übersetzungen für 0.1.15-0.1.19 korrigiert (einige Sprachen waren unübersetzte Kopien des englischen Texts - vom Repochecker als E1144 gemeldet) und einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge ergänzt. Keine funktionalen Änderungen.
+
 ### 0.1.19 (2026-07-20)
 
 - (Stefan Bühler) Den klassischen, versionierten `GetMonitorDetailByPowerstationId`-Endpunkt (seit 0.1.14/0.1.15 als `/v3`, `/v2`, `/v1` versucht) komplett entfernt - GoodWe hat ihn abgeschaltet, jedes während der Entwicklung beobachtete Konto bekommt bei allen drei Versionen ausnahmslos 404. `getMonitorDetail()` ruft jetzt direkt die in 0.1.16 eingeführte SEMS+-Gateway-API auf, was jeden Poll-Zyklus schneller macht und unnötige, garantiert scheiternde Anfragen vermeidet

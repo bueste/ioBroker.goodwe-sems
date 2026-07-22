@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "goodwe-sems",
-        "version": "0.1.19",
+        "version": "0.1.20",
         "news": {
+            "0.1.20": {
+                "de": "Nur Metadaten: Übersetzungen für common.news (0.1.15-0.1.19) korrigiert (waren teils unübersetzt/englisch kopiert) und einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge in README/README.de.md sowie im npm-Paket (funding-Feld) ergänzt. Keine funktionalen Änderungen.",
+                "en": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "ru": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "pt": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "nl": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "fr": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "it": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "es": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "pl": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "zh-cn": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes.",
+                "uk": "Metadata only: fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text) and added a Buy Me a Coffee link next to the PayPal donate badge in README/README.de.md and the npm package (funding field). No functional changes."
+            },
             "0.1.19": {
                 "de": "Zwei wichtige Fixes: (1) Der klassische, versionierte GetMonitorDetailByPowerstationId-Endpunkt (v3/v2/v1) wurde von GoodWe abgeschaltet und wird nicht mehr versucht - der Adapter nutzt jetzt direkt und ausschließlich die SEMS+-Gateway-API, was jeden Zyklus schneller macht und unnötige 404-Anfragen vermeidet. (2) Die Gateway-Session wurde bisher nie automatisch erneuert, wenn sie serverseitig ablief - das führte dazu, dass der Adapter nach einigen Stunden dauerhaft ausfiel, bis er manuell neu gestartet wurde. Jetzt wird bei jedem Gateway-Fehler automatisch einmalig neu eingeloggt und der Aufruf wiederholt.",
                 "en": "Two important fixes: (1) The classic, version-prefixed GetMonitorDetailByPowerstationId endpoint (v3/v2/v1) has been retired by GoodWe and is no longer tried - the adapter now goes straight to the SEMS+ gateway API only, making every poll cycle faster and avoiding pointless 404 requests. (2) The gateway session was never automatically refreshed when it expired server-side, causing the adapter to fail permanently after a few hours until manually restarted. It now automatically re-logs in once and retries on any gateway error.",
@@ -80,19 +93,6 @@
                 "pl": "poprawka: GetMonitorDetailByPowerstationId zwracal 404 dla kont z zapasowym logowaniem do starszego API - teraz uzywana jest sciezka v2",
                 "uk": "виправлення: GetMonitorDetailByPowerstationId повертав 404 для облікових записів із резервним входом через застарілий API - тепер використовується шлях v2",
                 "zh-cn": "修复:对于回退到旧版登录 API 的账户,GetMonitorDetailByPowerstationId 返回 404 - 现在改用 v2 路径"
-            },
-            "0.1.13": {
-                "en": "diagnostics: log the raw JSON envelope of every SEMS API call at debug level (not just the monitor-detail call). This helps pinpoint reports like \"unbekannter Fehler (code=undefined)\" on GetPowerStationIdByOwner, where the actual success/error convention used by that endpoint differs from what earlier testing assumed",
-                "de": "Diagnose: rohe JSON-Antwort jedes SEMS-API-Aufrufs wird jetzt auf Debug-Level geloggt (nicht mehr nur beim Monitor-Detail-Aufruf). Hilft, Meldungen wie \"unbekannter Fehler (code=undefined)\" bei GetPowerStationIdByOwner einzugrenzen, wenn die tatsächliche Erfolgs-/Fehler-Konvention dieses Endpunkts von den bisherigen Annahmen abweicht",
-                "ru": "диагностика: сырой JSON-ответ каждого вызова SEMS API теперь логируется на уровне debug",
-                "pt": "diagnóstico: a resposta JSON bruta de cada chamada à API SEMS agora é registada ao nível de debug",
-                "nl": "diagnostiek: de ruwe JSON-respons van elke SEMS API-aanroep wordt nu op debug-niveau gelogd",
-                "fr": "diagnostic : la reponse JSON brute de chaque appel a l'API SEMS est desormais journalisee au niveau debug",
-                "it": "diagnostica: la risposta JSON grezza di ogni chiamata all'API SEMS viene ora registrata a livello debug",
-                "es": "diagnostico: la respuesta JSON en bruto de cada llamada a la API de SEMS ahora se registra en el nivel debug",
-                "pl": "diagnostyka: surowa odpowiedz JSON kazdego wywolania API SEMS jest teraz logowana na poziomie debug",
-                "uk": "діагностика: сирий JSON-вiдповiдь кожного виклику SEMS API тепер логується на рiвнi debug",
-                "zh-cn": "诊断:每次 SEMS API 调用的原始 JSON 响应现在都会在 debug 级别记录"
             }
         },
         "titleLang": {
