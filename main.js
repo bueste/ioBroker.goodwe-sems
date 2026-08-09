@@ -10,6 +10,13 @@ const { SemsAuthError, SemsRateLimitError, SemsNetworkError, SemsProtocolError }
 // Protects the SEMS account from being rate-limited/locked even if someone
 // sets an unreasonably low value in the admin UI.
 const MIN_POLL_INTERVAL_SEC = 60;
+// Hard ceiling for the poll interval. Node's setTimeout() silently wraps delays
+// beyond ~2,147,483,647ms (~24.8 days), firing immediately instead of after the
+// intended delay - an extreme user-configured value would otherwise cause rapid,
+// unintended polling and risk a SEMS account lockout. 1 day is already far beyond
+// any sensible polling need for this adapter, so it doubles as a sane operational
+// ceiling, well clear of the technical Node.js limit.
+const MAX_POLL_INTERVAL_SEC = 86400;
 // Ceiling for the exponential backoff on repeated errors.
 const MAX_BACKOFF_SEC = 3600;
 
@@ -37,7 +44,29 @@ class GoodweSems extends utils.Adapter {
         this.stationOfflineMs = 30 * 60000;
     }
 
+    /**
+     * Force-corrects the common.unit of an existing info.activePollInterval object from the
+     * old "s" to the "sec" string required by the value.interval role. Objects declared under
+     * io-package.json's instanceObjects are only auto-created, not reliably kept in sync with
+     * io-package.json changes on every js-controller version an installation might run
+     * (see https://github.com/ioBroker/ioBroker.js-controller/issues/769) - so an already-running
+     * installation upgrading from <=1.0.1 could otherwise keep the old, incorrect unit forever.
+     */
+    async _migrateActivePollIntervalUnit() {
+        try {
+            const obj = await this.getObjectAsync("info.activePollInterval");
+            if (obj && obj.common && obj.common.unit !== "sec") {
+                await this.extendObjectAsync("info.activePollInterval", { common: { unit: "sec" } });
+                this.log.info('Migration: corrected info.activePollInterval unit to "sec".');
+            }
+        } catch (error) {
+            // Never let a migration failure block adapter startup.
+            this.log.warn(`Migration of info.activePollInterval unit failed (non-fatal): ${error.message}`);
+        }
+    }
+
     async onReady() {
+        await this._migrateActivePollIntervalUnit();
         await this.setStateAsync("info.connection", false, true);
         this.startTs = Date.now();
 
@@ -48,11 +77,20 @@ class GoodweSems extends utils.Adapter {
             return;
         }
 
-        this.basePollIntervalSec = Math.max(MIN_POLL_INTERVAL_SEC, Number(this.config.pollInterval) || 300);
-        if (Number(this.config.pollInterval) && Number(this.config.pollInterval) < MIN_POLL_INTERVAL_SEC) {
+        const configuredPollInterval = Number(this.config.pollInterval) || 300;
+        this.basePollIntervalSec = Math.min(
+            Math.max(MIN_POLL_INTERVAL_SEC, configuredPollInterval),
+            MAX_POLL_INTERVAL_SEC,
+        );
+        if (configuredPollInterval < MIN_POLL_INTERVAL_SEC) {
             this.log.warn(
                 `Configured poll interval (${this.config.pollInterval}s) is below the minimum of ${MIN_POLL_INTERVAL_SEC}s ` +
                     `and was raised to ${this.basePollIntervalSec}s to protect against SEMS rate limits.`,
+            );
+        } else if (configuredPollInterval > MAX_POLL_INTERVAL_SEC) {
+            this.log.warn(
+                `Configured poll interval (${this.config.pollInterval}s) exceeds the maximum of ${MAX_POLL_INTERVAL_SEC}s ` +
+                    `and was capped to ${this.basePollIntervalSec}s (Node.js setTimeout() would otherwise wrap and fire immediately).`,
             );
         }
         this.maxConsecutiveErrors = Math.max(1, Number(this.config.maxConsecutiveErrors) || 3);
@@ -262,24 +300,20 @@ class GoodweSems extends utils.Adapter {
             this.log.warn(`SEMS portal rate limit reached: ${error.message}`);
             await this.setStateAsync("info.rateLimited", true, true);
             nextDelaySec = error.retryAfterSeconds;
-            await this.notifier.notify(
-                "rateLimit",
-                "SEMS Rate-Limit erreicht",
-                `Das SEMS-Portal hat Anfragen mit dem Rate-Limit-Code abgelehnt. Polling pausiert für ${nextDelaySec}s. ` +
-                    "Falls das öfter vorkommt, das Poll-Intervall in der Instanzkonfiguration erhöhen.",
-            );
+            {
+                const t = this._notifyText("rateLimit", { nextDelaySec });
+                await this.notifier.notify("rateLimit", t.title, t.message);
+            }
         } else if (error instanceof SemsAuthError) {
             this.log.error(`SEMS login failed: ${error.message}`);
             nextDelaySec = Math.min(
                 this.basePollIntervalSec * Math.pow(2, Math.min(this.consecutiveErrors, 5)),
                 MAX_BACKOFF_SEC,
             );
-            await this.notifier.notify(
-                "loginFailure",
-                "SEMS-Login fehlgeschlagen",
-                `Anmeldung am SEMS-Portal für Konto "${this._maskAccount(this.config.account)}" schlägt fehl: ${error.message}. ` +
-                    "Bitte Benutzername/Passwort in der Instanzkonfiguration prüfen.",
-            );
+            {
+                const t = this._notifyText("loginFailure", { errorMessage: error.message });
+                await this.notifier.notify("loginFailure", t.title, t.message);
+            }
         } else if (error instanceof SemsNetworkError || error instanceof SemsProtocolError) {
             this.log.warn(`SEMS API error: ${error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
@@ -291,7 +325,10 @@ class GoodweSems extends utils.Adapter {
             this.log.error(`Unexpected error in poll cycle: ${error.stack || error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
             nextDelaySec = Math.min(this.basePollIntervalSec * 2, MAX_BACKOFF_SEC / 2);
-            await this.notifier.notify("adapterError", "Unerwarteter Adapterfehler", error.message);
+            {
+                const t = this._notifyText("adapterError", { errorMessage: error.message });
+                await this.notifier.notify("adapterError", t.title, t.message);
+            }
         }
 
         // "Anlage offline" is only alarmiert, wenn BEIDE Kriterien erfüllt sind:
@@ -306,12 +343,14 @@ class GoodweSems extends utils.Adapter {
             !this.stationOfflineNotified
         ) {
             const downMinutes = Math.round(downMs / 60000);
-            await this.notifier.notify(
-                "stationOffline",
-                "GoodWe-Anlage nicht erreichbar",
-                `${this.consecutiveErrors} aufeinanderfolgende Poll-Versuche sind fehlgeschlagen (seit ca. ${downMinutes} Minuten keine Daten vom SEMS-Portal). ` +
-                    `Letzter Fehler: ${error.message}`,
-            );
+            {
+                const t = this._notifyText("stationOffline", {
+                    consecutiveErrors: this.consecutiveErrors,
+                    downMinutes,
+                    errorMessage: error.message,
+                });
+                await this.notifier.notify("stationOffline", t.title, t.message);
+            }
             this.stationOfflineNotified = true;
         }
 
@@ -321,13 +360,75 @@ class GoodweSems extends utils.Adapter {
 
     _maskAccount(account) {
         if (!account) {
-            return "(nicht gesetzt)";
+            return "(not set)";
         }
         const at = account.indexOf("@");
         if (at <= 1) {
             return "***";
         }
         return `${account.slice(0, 2)}***${account.slice(at)}`;
+    }
+
+    /**
+     * Returns the {title, message} pair for a notify() category in the configured
+     * notification language (notificationLanguage config field), falling back to
+     * English for any language not explicitly supported here. This is separate from
+     * ioBroker log messages, which are always English regardless of this setting.
+     *
+     * @param {"rateLimit"|"loginFailure"|"adapterError"|"stationOffline"} category
+     * @param {object} params values interpolated into the message template
+     */
+    _notifyText(category, params) {
+        const lang = this.config.notificationLanguage === "de" ? "de" : "en";
+        const templates = {
+            rateLimit: {
+                en: {
+                    title: "SEMS rate limit reached",
+                    message:
+                        `The SEMS portal rejected requests with the rate-limit code. Polling paused for ${params.nextDelaySec}s. ` +
+                        "If this happens often, increase the poll interval in the instance configuration.",
+                },
+                de: {
+                    title: "SEMS Rate-Limit erreicht",
+                    message:
+                        `Das SEMS-Portal hat Anfragen mit dem Rate-Limit-Code abgelehnt. Polling pausiert für ${params.nextDelaySec}s. ` +
+                        "Falls das öfter vorkommt, das Poll-Intervall in der Instanzkonfiguration erhöhen.",
+                },
+            },
+            loginFailure: {
+                en: {
+                    title: "SEMS login failed",
+                    message:
+                        `Login to the SEMS portal for account "${this._maskAccount(this.config.account)}" is failing: ${params.errorMessage}. ` +
+                        "Please check username/password in the instance configuration.",
+                },
+                de: {
+                    title: "SEMS-Login fehlgeschlagen",
+                    message:
+                        `Anmeldung am SEMS-Portal für Konto "${this._maskAccount(this.config.account)}" schlägt fehl: ${params.errorMessage}. ` +
+                        "Bitte Benutzername/Passwort in der Instanzkonfiguration prüfen.",
+                },
+            },
+            adapterError: {
+                en: { title: "Unexpected adapter error", message: params.errorMessage },
+                de: { title: "Unerwarteter Adapterfehler", message: params.errorMessage },
+            },
+            stationOffline: {
+                en: {
+                    title: "GoodWe plant unreachable",
+                    message:
+                        `${params.consecutiveErrors} consecutive poll attempts have failed (no data from the SEMS portal for approx. ${params.downMinutes} minutes). ` +
+                        `Last error: ${params.errorMessage}`,
+                },
+                de: {
+                    title: "GoodWe-Anlage nicht erreichbar",
+                    message:
+                        `${params.consecutiveErrors} aufeinanderfolgende Poll-Versuche sind fehlgeschlagen (seit ca. ${params.downMinutes} Minuten keine Daten vom SEMS-Portal). ` +
+                        `Letzter Fehler: ${params.errorMessage}`,
+                },
+            },
+        };
+        return templates[category][lang] || templates[category].en;
     }
 }
 

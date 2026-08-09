@@ -40,5 +40,9 @@
     "semsPassword": "SEMS-wachtwoord",
     "semsPasswordHelp": "Wordt versleuteld opgeslagen.",
     "stationOfflineMinutes": "Wachttijd storingsmelding (minuten)",
-    "stationOfflineMinutesHelp": "Alleen informatief."
+    "stationOfflineMinutesHelp": "Alleen informatief.",
+    "notificationLanguage": "Meldingstaal",
+    "notificationLanguageHelp": "Taal voor titel/tekst van Pushover-pushmeldingen. ioBroker-logregels zijn altijd Engels, ongeacht deze instelling.",
+    "notificationLanguageEn": "Engels",
+    "notificationLanguageDe": "Duits"
 }

@@ -40,5 +40,9 @@
     "semsPassword": "Hasło SEMS",
     "semsPasswordHelp": "Przechowywane w postaci zaszyfrowanej.",
     "stationOfflineMinutes": "Odstęp między alertami awarii (minuty)",
-    "stationOfflineMinutesHelp": "Tylko informacyjnie."
+    "stationOfflineMinutesHelp": "Tylko informacyjnie.",
+    "notificationLanguage": "Język powiadomień",
+    "notificationLanguageHelp": "Język tytułu/treści powiadomień push Pushover. Wpisy dziennika ioBroker są zawsze w języku angielskim, niezależnie od tego ustawienia.",
+    "notificationLanguageEn": "Angielski",
+    "notificationLanguageDe": "Niemiecki"
 }

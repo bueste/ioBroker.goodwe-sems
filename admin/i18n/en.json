@@ -40,5 +40,9 @@
     "semsPassword": "SEMS password",
     "semsPasswordHelp": "Stored encrypted by ioBroker.",
     "stationOfflineMinutes": "Outage alert cool-down (minutes)",
-    "stationOfflineMinutesHelp": "Informational only - shown in the outage notification text."
+    "stationOfflineMinutesHelp": "Informational only - shown in the outage notification text.",
+    "notificationLanguage": "Notification language",
+    "notificationLanguageHelp": "Language used for Pushover push notification title/body. ioBroker log entries are always English regardless of this setting.",
+    "notificationLanguageEn": "English",
+    "notificationLanguageDe": "German"
 }

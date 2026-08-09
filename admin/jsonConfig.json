@@ -177,6 +177,21 @@
                     "lg": 4,
                     "xl": 4
                 },
+                "notificationLanguage": {
+                    "type": "select",
+                    "label": "notificationLanguage",
+                    "help": "notificationLanguageHelp",
+                    "newLine": true,
+                    "options": [
+                        { "value": "en", "label": "notificationLanguageEn" },
+                        { "value": "de", "label": "notificationLanguageDe" }
+                    ],
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
+                },
                 "pushoverInstance": {
                     "type": "instance",
                     "label": "pushoverInstance",

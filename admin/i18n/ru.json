@@ -40,5 +40,9 @@
     "semsPassword": "Пароль SEMS",
     "semsPasswordHelp": "Хранится в зашифрованном виде.",
     "stationOfflineMinutes": "Пауза уведомления об отключении (мин)",
-    "stationOfflineMinutesHelp": "Только информативно."
+    "stationOfflineMinutesHelp": "Только информативно.",
+    "notificationLanguage": "Язык уведомлений",
+    "notificationLanguageHelp": "Язык заголовка/текста push-уведомлений Pushover. Записи в журнале ioBroker всегда на английском независимо от этой настройки.",
+    "notificationLanguageEn": "Английский",
+    "notificationLanguageDe": "Немецкий"
 }

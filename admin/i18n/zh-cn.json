@@ -40,5 +40,9 @@
     "semsPassword": "SEMS 密码",
     "semsPasswordHelp": "以加密方式存储。",
     "stationOfflineMinutes": "故障告警间隔（分钟）",
-    "stationOfflineMinutesHelp": "仅作说明用途。"
+    "stationOfflineMinutesHelp": "仅作说明用途。",
+    "notificationLanguage": "通知语言",
+    "notificationLanguageHelp": "Pushover 推送通知标题/正文使用的语言。无论此设置如何，ioBroker 日志条目始终为英文。",
+    "notificationLanguageEn": "英语",
+    "notificationLanguageDe": "德语"
 }

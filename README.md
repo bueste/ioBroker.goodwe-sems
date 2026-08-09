@@ -151,6 +151,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     ### **WORK IN PROGRESS**
 -->
 
+### 1.0.2 (2026-08-09)
+
+- Fix all findings from the follow-up manual review: translated 6 previously missed German log messages in lib/semsApi.js, fixed a second duplicate German error message, and made _maskAccount() always return English. Implemented proper multi-language support for Pushover notification text (new notificationLanguage config option, English/German, default English). Added a hard ceiling (86400s) on the poll interval to prevent a setTimeout() integer overflow. Corrected the unit of info.activePollInterval from "s" to "sec" as required by the value.interval role. Since js-controller does not reliably re-sync instanceObjects common properties on every adapter update across all versions in the field (see https://github.com/ioBroker/ioBroker.js-controller/issues/769), the unit fix is also applied via an explicit migration on every adapter start, so already-running installations get the corrected value, not just fresh installs. No functional regressions.
+
 ### 1.0.1 (2026-08-08)
 
 - Fix: translated all German log messages to English (this.log.*() calls in main.js, the internal log callback in lib/semsApi.js, and lib/notify.js). The internal Pushover notification log line in Notifier.notify() no longer embeds the (intentionally German-language) push title/message into the log entry. Also translated the underlying SemsAuthError/SemsProtocolError/SemsNetworkError messages to English, since those flow into log lines via error.message. The actual Pushover push notification text intentionally stays German. No functional changes.

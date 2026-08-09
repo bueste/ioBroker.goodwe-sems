@@ -40,5 +40,9 @@
     "semsPassword": "Contraseña SEMS",
     "semsPasswordHelp": "Se almacena cifrada.",
     "stationOfflineMinutes": "Espera entre alertas de interrupción (minutos)",
-    "stationOfflineMinutesHelp": "Solo informativo."
+    "stationOfflineMinutesHelp": "Solo informativo.",
+    "notificationLanguage": "Idioma de las notificaciones",
+    "notificationLanguageHelp": "Idioma para el título/cuerpo de las notificaciones push de Pushover. Las entradas del registro de ioBroker siempre están en inglés, independientemente de este ajuste.",
+    "notificationLanguageEn": "Inglés",
+    "notificationLanguageDe": "Alemán"
 }

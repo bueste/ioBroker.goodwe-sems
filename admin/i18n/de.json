@@ -40,5 +40,9 @@
     "semsPassword": "SEMS-Passwort",
     "semsPasswordHelp": "Wird von ioBroker verschlüsselt gespeichert.",
     "stationOfflineMinutes": "Sperrfrist Ausfall-Meldung (Minuten)",
-    "stationOfflineMinutesHelp": "Nur informativ - wird im Text der Ausfall-Meldung angezeigt."
+    "stationOfflineMinutesHelp": "Nur informativ - wird im Text der Ausfall-Meldung angezeigt.",
+    "notificationLanguage": "Benachrichtigungssprache",
+    "notificationLanguageHelp": "Sprache für Titel/Text der Pushover-Push-Benachrichtigungen. ioBroker-Log-Einträge sind unabhängig von dieser Einstellung immer Englisch.",
+    "notificationLanguageEn": "Englisch",
+    "notificationLanguageDe": "Deutsch"
 }

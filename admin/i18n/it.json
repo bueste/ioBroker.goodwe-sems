@@ -40,5 +40,9 @@
     "semsPassword": "Password SEMS",
     "semsPasswordHelp": "Memorizzata in modo crittografato.",
     "stationOfflineMinutes": "Attesa tra avvisi di guasto (minuti)",
-    "stationOfflineMinutesHelp": "Solo informativo."
+    "stationOfflineMinutesHelp": "Solo informativo.",
+    "notificationLanguage": "Lingua delle notifiche",
+    "notificationLanguageHelp": "Lingua per titolo/testo delle notifiche push Pushover. Le voci di log di ioBroker sono sempre in inglese, indipendentemente da questa impostazione.",
+    "notificationLanguageEn": "Inglese",
+    "notificationLanguageDe": "Tedesco"
 }
