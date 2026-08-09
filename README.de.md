@@ -53,6 +53,8 @@ Für ein **normales** SEMS-Portal-Konto (wie es die meisten Privatanwender haben
 - Es wurde ein **Rate-Limit-Code (`GY0429`)** beobachtet (u. a. in der Home-Assistant-Integration dokumentiert). Der Adapter erkennt diesen Code und pausiert automatisch (Default 5 Minuten Cool-down), statt das Konto durch wiederholte Anfragen zu gefährden.
 - Nutzung erfolgt auf eigenes Risiko, siehe [LICENSE](LICENSE) (MIT, ohne Gewährleistung).
 
+**Von diesem Endpunkt nicht gelieferte Felder:** gegen eine echte Tages-Antwort verifiziert, liefert die von diesem Adapter genutzte `GetMonitorDetailByPowerstationId`-Gateway-Antwort weder einen Stations-Zeitstempel (`info.time`) noch Monats-Erzeugungs-/Einkommens-/Währungsfelder (`kpi.month_generation`, `kpi.day_income`, `kpi.total_income`, `kpi.currency`). Die entsprechenden States (`Station.PortalTimestamp`, `KPI.MonthGeneration`, `KPI.TodayIncome`, `KPI.TotalIncome`, `KPI.Currency`) werden daher bei keinem Konto und zu keiner Tageszeit erzeugt - das ist eine dauerhafte Lücke der Gateway-API selbst, keine vorübergehende Abwesenheit bei geringer Erzeugung. `Battery.*`- und `PowerFlow.*`-States werden nur erzeugt, wenn das Portal tatsächlich Batterie-/Leistungsfluss-Daten für die Anlage liefert (z. B. fehlt der `powerflow`-Schlüssel komplett bei Anlagen ohne Batterie).
+
 ## Installation
 
 Sobald dieser Adapter im offiziellen ioBroker-Adapter-Repository gelistet ist, wird er ganz normal installiert: **Admin -> Adapter -> nach „goodwe-sems“ suchen -> installieren**.

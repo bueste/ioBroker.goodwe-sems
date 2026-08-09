@@ -53,6 +53,8 @@ None of these are accessible with a **normal** SEMS Portal account (the kind mos
 - A **rate-limit code (`GY0429`)** has been observed (documented, among others, in the Home Assistant integration). The adapter recognizes this code and automatically pauses (default 5-minute cool-down) instead of endangering the account with repeated requests.
 - Use at your own risk, see [LICENSE](LICENSE) (MIT, no warranty).
 
+**Fields not returned by this endpoint:** verified against a live daytime response, the `GetMonitorDetailByPowerstationId` gateway response used by this adapter does not include a station timestamp (`info.time`), nor month-to-date generation/income/currency fields (`kpi.month_generation`, `kpi.day_income`, `kpi.total_income`, `kpi.currency`). The corresponding states (`Station.PortalTimestamp`, `KPI.MonthGeneration`, `KPI.TodayIncome`, `KPI.TotalIncome`, `KPI.Currency`) are therefore never created for any account/time of day - this is a permanent gap in the gateway API itself, not a temporary absence during low-generation hours. `Battery.*` and `PowerFlow.*` states are created only when the portal actually returns battery/power-flow data for the plant (e.g. no `powerflow` key at all is present for plants without a battery).
+
 ## Installation
 
 Once this adapter is listed in the official ioBroker adapter repository, install it the normal way: **Admin -> Adapters -> search for "goodwe-sems" -> install**.
@@ -150,6 +152,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### 1.0.3 (2026-08-09)
+
+- Docs only: documented, based on a live daytime API response, that the SEMS+ gateway endpoint used by this adapter (GetMonitorDetailByPowerstationId) never returns a station timestamp or month-to-date generation/income/currency fields for any account - these are a permanent gap in the API itself, not a symptom of an incomplete/nighttime object dump as previously assumed during review. Battery/PowerFlow states are correctly created only when the portal actually reports that data for the plant. No code changes.
 
 ### 1.0.2 (2026-08-09)
 
