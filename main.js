@@ -242,8 +242,30 @@ class GoodweSems extends utils.Adapter {
         const inverterSerials = new Set(points.filter(p => p.id.startsWith("Inverters.")).map(p => p.id.split(".")[1]));
         if (inverterSerials.size) {
             await this._ensureChannel("Inverters", "One channel per inverter reported by the portal");
+            const GROUP_LABELS = {
+                AC_L1: "AC phase 1",
+                AC_L2: "AC phase 2",
+                AC_L3: "AC phase 3",
+                PV1: "PV string 1",
+                PV2: "PV string 2",
+                PV3: "PV string 3",
+                PV4: "PV string 4",
+                Battery: "Battery (this inverter)",
+            };
             for (const sn of inverterSerials) {
                 await this._ensureChannel(`Inverters.${sn}`, `Inverter ${sn}`);
+                // mapMonitorDetail() creates 3-level-deep state IDs for these sub-groups
+                // (e.g. Inverters.<sn>.AC_L1.Voltage). ioBroker requires every intermediate
+                // path segment to exist as its own channel object, not just be implied by the
+                // dotted state ID (E3009 "missing intermediate object"). Only create a group's
+                // channel when at least one of its states was actually mapped for this inverter,
+                // matching the same presence-driven pattern already used for EVCharger above.
+                for (const [group, label] of Object.entries(GROUP_LABELS)) {
+                    const prefix = `Inverters.${sn}.${group}.`;
+                    if (points.some(p => p.id.startsWith(prefix))) {
+                        await this._ensureChannel(`Inverters.${sn}.${group}`, label);
+                    }
+                }
             }
         }
 

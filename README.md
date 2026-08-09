@@ -153,6 +153,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     ### **WORK IN PROGRESS**
 -->
 
+### 1.0.4 (2026-08-09)
+
+- Fix E3009 (26 errors from the automated Object Structure Check): the per-inverter AC_L1-3, PV1-4 and Battery sub-groups were missing their required intermediate channel object. _applyMonitorDetail() now ensures a channel for each sub-group that actually has at least one mapped state. No migration needed - these are new objects and self-heal on the next poll cycle after upgrading. Verified against a live daytime API response: 0 missing intermediate objects (was 26). No functional regressions.
+
 ### 1.0.3 (2026-08-09)
 
 - Docs only: documented, based on a live daytime API response, that the SEMS+ gateway endpoint used by this adapter (GetMonitorDetailByPowerstationId) never returns a station timestamp or month-to-date generation/income/currency fields for any account - these are a permanent gap in the API itself, not a symptom of an incomplete/nighttime object dump as previously assumed during review. Battery/PowerFlow states are correctly created only when the portal actually reports that data for the plant. No code changes.
