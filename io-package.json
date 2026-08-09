@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "goodwe-sems",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
+            "1.0.1": {
+                "de": "Fix: Alle deutschen Log-Meldungen ins Englische übersetzt (this.log.*()-Aufrufe in main.js, das interne Log-Callback in lib/semsApi.js sowie lib/notify.js) - ein realer Review eines Schwester-Adapters (zeptrion) hat diese Fehlerklasse aufgedeckt, daher hier proaktiv geprüft und behoben statt auf Review-Feedback zu warten. Die interne Pushover-Log-Zeile in Notifier.notify() bettet den (bewusst deutschen) Push-Titel/-Text nicht mehr in den Log-Eintrag ein. Zudem die zugrundeliegenden SemsAuthError-/SemsProtocolError-/SemsNetworkError-Meldungen ins Englische übersetzt, da diese über error.message in Log-Zeilen landen. Der eigentliche Pushover-Push-Text (Titel/Nachricht an notify()) bleibt bewusst Deutsch, passend zur Schweizerdeutsch-sprachigen Zielgruppe des Adapters - nur die ioBroker-Log-Ausgabe selbst musste geändert werden. Keine funktionalen Änderungen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch.",
+                "en": "Fix: translated all German log messages to English (this.log.*() calls in main.js, the internal log callback in lib/semsApi.js, and lib/notify.js) - a real-world review of a sibling adapter (zeptrion) surfaced this class of issue, so it was proactively checked and fixed here before submission rather than waiting for review feedback. The internal Pushover notification log line in Notifier.notify() no longer embeds the (intentionally German-language) push title/message into the log entry. Also translated the underlying SemsAuthError/SemsProtocolError/SemsNetworkError messages to English, since those flow into log lines via error.message. The actual Pushover push notification text (title/message passed to notify()) intentionally stays German, matching the adapter's Swiss German-speaking target audience - only the ioBroker log output itself needed to change. No functional changes; all 45 unit tests and 57 package-consistency tests pass unchanged.",
+                "ru": "Исправление: все немецкие сообщения журнала переведены на английский язык. Функциональных изменений нет.",
+                "pt": "Correção: todas as mensagens de log em alemão foram traduzidas para inglês. Sem alterações funcionais.",
+                "nl": "Fix: alle Duitse logberichten vertaald naar het Engels. Geen functionele wijzigingen.",
+                "fr": "Correction : tous les messages de journal en allemand traduits en anglais. Aucun changement fonctionnel.",
+                "it": "Correzione: tutti i messaggi di log in tedesco tradotti in inglese. Nessuna modifica funzionale.",
+                "es": "Corrección: todos los mensajes de registro en alemán traducidos al inglés. Sin cambios funcionales.",
+                "pl": "Poprawka: wszystkie niemieckie komunikaty dziennika przetłumaczono na angielski. Brak zmian funkcjonalnych.",
+                "zh-cn": "修复：所有德语日志消息已翻译为英文。无功能更改。",
+                "uk": "Виправлення: усі німецькі повідомлення журналу перекладено англійською. Без функціональних змін."
+            },
             "1.0.0": {
                 "de": "Erstes stabiles 1.0.0-Release: Der Adapter läuft seit mehreren Release-Zyklen zuverlässig mit der SEMS+-Gateway-API im produktiven Einsatz. Dieses Release enthält nur Metadaten-Änderungen - common.news-Übersetzungen für 0.1.15-0.1.19 korrigiert (einige Sprachen waren unübersetzte Kopien des englischen Texts), einen Buy-Me-a-Coffee-Link neben dem PayPal-Spenden-Badge ergänzt und Copyright-/Autoren-Metadaten vereinheitlicht. Keine funktionalen Änderungen.",
                 "en": "First stable 1.0.0 release: the adapter has been running reliably against the SEMS+ gateway API in production for several release cycles. This release is metadata only - fixed common.news translations (0.1.15-0.1.19, some were untranslated copies of the English text), added a Buy Me a Coffee link next to the PayPal donate badge, and standardized copyright/author metadata. No functional changes.",
@@ -80,19 +93,6 @@
                 "pl": "Kolejna poprawka wersjonowania API GoodWe: getMonitorDetail() teraz próbuje kolejno v3, v2 I v1 (nie tylko v3->v2), ponieważ GoodWe używa różnych wersji API dla tego samego endpointu w zależności od konta/backendu. Loguje też pełny adres URL żądania w trybie debug, aby ułatwić diagnozowanie.",
                 "zh-cn": "进一步修复 GoodWe API 版本问题：getMonitorDetail() 现在依次尝试 v3、v2 和 v1（而不仅仅是 v3->v2），因为 GoodWe 针对同一端点会根据账户/后端使用不同的 API 版本。调试模式下现在还会记录完整的请求 URL，便于诊断。",
                 "uk": "Ще одне виправлення версіонування API GoodWe: тепер getMonitorDetail() послідовно пробує v3, v2 І v1 (а не лише v3->v2), оскільки GoodWe використовує різні версії API для того самого ендпоінту залежно від облікового запису/бекенду. Також у режимі debug тепер логується повна URL-адреса запиту для спрощення діагностики."
-            },
-            "0.1.14": {
-                "en": "fix: GetMonitorDetailByPowerstationId returned 404 (\"Route Not Found\") for accounts whose SEMS+ login is rejected and falls back to the legacy CrossLogin API - that backend uses the \"v2\" API path instead of \"v3\". The adapter now automatically retries with the v2 path on a detected 404, and error messages now surface the actual error_msg field instead of \"unbekannter Fehler\"",
-                "de": "Fix: GetMonitorDetailByPowerstationId lieferte 404 (\"Route Not Found\") fuer Konten, deren SEMS+-Login abgelehnt wird und die auf die Legacy-CrossLogin-API zurueckfallen - dieses Backend nutzt den \"v2\"-API-Pfad statt \"v3\". Der Adapter versucht bei erkanntem 404 jetzt automatisch den v2-Pfad, und Fehlermeldungen zeigen jetzt das tatsaechliche error_msg-Feld statt \"unbekannter Fehler\"",
-                "ru": "исправление: GetMonitorDetailByPowerstationId возвращал 404 для учётных записей с резервным входом через устаревший API - теперь используется путь v2",
-                "pt": "correcao: GetMonitorDetailByPowerstationId retornava 404 para contas com login de reserva na API legada - agora usa o caminho v2",
-                "nl": "fix: GetMonitorDetailByPowerstationId gaf 404 voor accounts met fallback-login op de legacy API - gebruikt nu het v2-pad",
-                "fr": "correction : GetMonitorDetailByPowerstationId renvoyait une 404 pour les comptes utilisant la connexion de secours a l'API historique - utilise desormais le chemin v2",
-                "it": "correzione: GetMonitorDetailByPowerstationId restituiva 404 per gli account con login di fallback sull'API legacy - ora usa il percorso v2",
-                "es": "correccion: GetMonitorDetailByPowerstationId devolvia 404 para cuentas con inicio de sesion de respaldo en la API heredada - ahora usa la ruta v2",
-                "pl": "poprawka: GetMonitorDetailByPowerstationId zwracal 404 dla kont z zapasowym logowaniem do starszego API - teraz uzywana jest sciezka v2",
-                "uk": "виправлення: GetMonitorDetailByPowerstationId повертав 404 для облікових записів із резервним входом через застарілий API - тепер використовується шлях v2",
-                "zh-cn": "修复:对于回退到旧版登录 API 的账户,GetMonitorDetailByPowerstationId 返回 404 - 现在改用 v2 路径"
             }
         },
         "titleLang": {

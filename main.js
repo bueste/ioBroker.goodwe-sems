@@ -43,7 +43,7 @@ class GoodweSems extends utils.Adapter {
 
         if (!this.config.account || !this.config.password) {
             this.log.error(
-                "SEMS-Zugangsdaten fehlen (Benutzer/Passwort). Bitte in der Instanzkonfiguration eintragen und die Instanz danach neu starten.",
+                "SEMS credentials are missing (username/password). Please enter them in the instance configuration and restart the instance afterwards.",
             );
             return;
         }
@@ -51,8 +51,8 @@ class GoodweSems extends utils.Adapter {
         this.basePollIntervalSec = Math.max(MIN_POLL_INTERVAL_SEC, Number(this.config.pollInterval) || 300);
         if (Number(this.config.pollInterval) && Number(this.config.pollInterval) < MIN_POLL_INTERVAL_SEC) {
             this.log.warn(
-                `Konfiguriertes Poll-Intervall (${this.config.pollInterval}s) liegt unter dem Minimum von ${MIN_POLL_INTERVAL_SEC}s ` +
-                    `und wurde zum Schutz vor SEMS-Rate-Limits auf ${this.basePollIntervalSec}s angehoben.`,
+                `Configured poll interval (${this.config.pollInterval}s) is below the minimum of ${MIN_POLL_INTERVAL_SEC}s ` +
+                    `and was raised to ${this.basePollIntervalSec}s to protect against SEMS rate limits.`,
             );
         }
         this.maxConsecutiveErrors = Math.max(1, Number(this.config.maxConsecutiveErrors) || 3);
@@ -79,7 +79,7 @@ class GoodweSems extends utils.Adapter {
 
         await this.setStateAsync("info.activePollInterval", this.basePollIntervalSec, true);
         this.log.info(
-            `GoodWe SEMS Adapter gestartet. Poll-Intervall: ${this.basePollIntervalSec}s, Konto: ${this._maskAccount(this.config.account)}.`,
+            `GoodWe SEMS adapter started. Poll interval: ${this.basePollIntervalSec}s, account: ${this._maskAccount(this.config.account)}.`,
         );
 
         this._schedulePoll(0);
@@ -94,7 +94,7 @@ class GoodweSems extends utils.Adapter {
             }
             callback();
         } catch (error) {
-            this.log.error(`Fehler beim Beenden des Adapters: ${error.message}`);
+            this.log.error(`Error while shutting down the adapter: ${error.message}`);
             callback();
         }
     }
@@ -111,7 +111,7 @@ class GoodweSems extends utils.Adapter {
                 // _pollCycle already handles its own errors; this is a last-resort
                 // safety net so a programming mistake can never silently kill the
                 // polling loop.
-                this.log.error(`Unbehandelter Fehler im Poll-Zyklus: ${error.stack || error.message}`);
+                this.log.error(`Unhandled error in poll cycle: ${error.stack || error.message}`);
                 this._schedulePoll(this.basePollIntervalSec * 1000);
             });
         }, delayMs);
@@ -146,7 +146,7 @@ class GoodweSems extends utils.Adapter {
             await this.setStateAsync("info.activePollInterval", this.basePollIntervalSec, true);
 
             this.log.debug(
-                `Poll-Zyklus erfolgreich (${Date.now() - startedAt} ms), nächster Abruf in ${this.basePollIntervalSec}s.`,
+                `Poll cycle successful (${Date.now() - startedAt} ms), next poll in ${this.basePollIntervalSec}s.`,
             );
             this._schedulePoll(this.basePollIntervalSec * 1000);
         } catch (error) {
@@ -162,21 +162,21 @@ class GoodweSems extends utils.Adapter {
         const configuredId = (this.config.powerStationId || "").trim();
         if (configuredId) {
             this.stationId = configuredId;
-            this.log.debug(`Verwende in der Konfiguration hinterlegte powerStationId: ${configuredId}`);
+            this.log.debug(`Using powerStationId from the configuration: ${configuredId}`);
             return;
         }
 
-        this.log.info("Keine powerStationId konfiguriert - versuche automatische Erkennung über das SEMS-Konto.");
+        this.log.info("No powerStationId configured - attempting automatic discovery via the SEMS account.");
         const stations = await this.api.getOwnedPowerStations();
         if (!stations.length) {
             throw new SemsProtocolError(
-                "Automatische Anlagen-Erkennung lieferte keine Anlage für dieses SEMS-Konto. Bitte powerStationId manuell in der Instanzkonfiguration eintragen (aus der SEMS-Portal-URL nach dem Login).",
+                "Automatic plant discovery returned no plant for this SEMS account. Please enter powerStationId manually in the instance configuration (from the SEMS portal URL after login).",
             );
         }
         if (stations.length > 1) {
             this.log.warn(
-                `Es wurden ${stations.length} Anlagen auf diesem SEMS-Konto gefunden. Verwende die erste (${stations[0].id}). ` +
-                    "Für eine bestimmte Anlage bitte powerStationId manuell in der Instanzkonfiguration setzen.",
+                `Found ${stations.length} plants on this SEMS account. Using the first one (${stations[0].id}). ` +
+                    "To use a specific plant, set powerStationId manually in the instance configuration.",
             );
         }
         this.stationId = stations[0].id;
@@ -259,7 +259,7 @@ class GoodweSems extends utils.Adapter {
         let nextDelaySec = this.basePollIntervalSec;
 
         if (error instanceof SemsRateLimitError) {
-            this.log.warn(`SEMS-Portal Rate-Limit erreicht: ${error.message}`);
+            this.log.warn(`SEMS portal rate limit reached: ${error.message}`);
             await this.setStateAsync("info.rateLimited", true, true);
             nextDelaySec = error.retryAfterSeconds;
             await this.notifier.notify(
@@ -269,7 +269,7 @@ class GoodweSems extends utils.Adapter {
                     "Falls das öfter vorkommt, das Poll-Intervall in der Instanzkonfiguration erhöhen.",
             );
         } else if (error instanceof SemsAuthError) {
-            this.log.error(`SEMS-Login fehlgeschlagen: ${error.message}`);
+            this.log.error(`SEMS login failed: ${error.message}`);
             nextDelaySec = Math.min(
                 this.basePollIntervalSec * Math.pow(2, Math.min(this.consecutiveErrors, 5)),
                 MAX_BACKOFF_SEC,
@@ -281,14 +281,14 @@ class GoodweSems extends utils.Adapter {
                     "Bitte Benutzername/Passwort in der Instanzkonfiguration prüfen.",
             );
         } else if (error instanceof SemsNetworkError || error instanceof SemsProtocolError) {
-            this.log.warn(`SEMS-API-Fehler: ${error.message}`);
+            this.log.warn(`SEMS API error: ${error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
             nextDelaySec = Math.min(
                 this.basePollIntervalSec * Math.pow(1.5, Math.min(this.consecutiveErrors, 6)),
                 MAX_BACKOFF_SEC / 2,
             );
         } else {
-            this.log.error(`Unerwarteter Fehler im Poll-Zyklus: ${error.stack || error.message}`);
+            this.log.error(`Unexpected error in poll cycle: ${error.stack || error.message}`);
             await this.setStateAsync("info.rateLimited", false, true);
             nextDelaySec = Math.min(this.basePollIntervalSec * 2, MAX_BACKOFF_SEC / 2);
             await this.notifier.notify("adapterError", "Unerwarteter Adapterfehler", error.message);
