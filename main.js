@@ -90,7 +90,7 @@ class GoodweSems extends utils.Adapter {
         } else if (configuredPollInterval > MAX_POLL_INTERVAL_SEC) {
             this.log.warn(
                 `Configured poll interval (${this.config.pollInterval}s) exceeds the maximum of ${MAX_POLL_INTERVAL_SEC}s ` +
-                    `and was capped to ${this.basePollIntervalSec}s (Node.js setTimeout() would otherwise wrap and fire immediately).`,
+                    `and was capped to ${this.basePollIntervalSec}s (an unbounded Node.js timer delay would otherwise wrap and fire immediately).`,
             );
         }
         this.maxConsecutiveErrors = Math.max(1, Number(this.config.maxConsecutiveErrors) || 3);
