@@ -65,8 +65,37 @@ class GoodweSems extends utils.Adapter {
         }
     }
 
+    /**
+     * Force-corrects the common.role of existing Station.Latitude/Longitude objects from the
+     * incompatible "value.gps" (reserved for a combined "longitude;latitude" string, e.g.
+     * "5.56;43.45" per the official state roles reference) to the correct "value.gps.latitude"/
+     * "value.gps.longitude" roles, which are the ones designed for separate numeric values.
+     * These states are created via setObjectNotExistsAsync (see _ensureState), which never
+     * updates an already-existing object, so an installation upgrading from <=1.0.6 would
+     * otherwise keep the incompatible role forever.
+     */
+    async _migrateStationGpsRoles() {
+        const fixes = [
+            ["Station.Latitude", "value.gps.latitude"],
+            ["Station.Longitude", "value.gps.longitude"],
+        ];
+        for (const [id, correctRole] of fixes) {
+            try {
+                const obj = await this.getObjectAsync(id);
+                if (obj && obj.common && obj.common.role !== correctRole) {
+                    await this.extendObjectAsync(id, { common: { role: correctRole } });
+                    this.log.info(`Migration: corrected ${id} role to "${correctRole}".`);
+                }
+            } catch (error) {
+                // Never let a migration failure block adapter startup.
+                this.log.warn(`Migration of ${id} role failed (non-fatal): ${error.message}`);
+            }
+        }
+    }
+
     async onReady() {
         await this._migrateActivePollIntervalUnit();
+        await this._migrateStationGpsRoles();
         await this.setStateAsync("info.connection", false, true);
         this.startTs = Date.now();
 
