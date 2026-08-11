@@ -153,6 +153,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     ### **WORK IN PROGRESS**
 -->
 
+### 1.0.6 (2026-08-11)
+
+- Fix both findings from the follow-up review: added a default ("en") for the notificationLanguage select (was blank on fresh installs) and added pushoverUserKey to encryptedNative/protectedNative alongside pushoverApiToken for encryption at rest. No code changes needed - js-controller handles the encryption migration automatically.
+
 ### 1.0.5 (2026-08-09)
 
 - Fix E5005 (false positive): a log message describing why the poll interval was capped contained the literal text "setTimeout(" as part of an explanatory sentence, which the checker's text-based scan flagged as if it were real code. The only actual setTimeout() call in the codebase was already this.setTimeout() (adapter-managed) - verified by running the checker's exact detection regex against every source file. Reworded the log message without changing its meaning. No functional changes.

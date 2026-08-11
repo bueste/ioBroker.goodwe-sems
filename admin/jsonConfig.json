@@ -181,6 +181,7 @@
                     "type": "select",
                     "label": "notificationLanguage",
                     "help": "notificationLanguageHelp",
+                    "default": "en",
                     "newLine": true,
                     "options": [
                         { "value": "en", "label": "notificationLanguageEn" },
