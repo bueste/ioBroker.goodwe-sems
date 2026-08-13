@@ -1,301 +1,301 @@
 {
-    "common": {
-        "name": "goodwe-sems",
-        "version": "1.0.7",
-        "news": {
-            "1.0.7": {
-                "de": "Behebt E1009: Station.Latitude/Longitude nutzten die Rolle \"value.gps\", die laut offizieller State-Roles-Referenz für einen kombinierten \"longitude;latitude\"-String (z. B. \"5.56;43.45\") reserviert ist und common.type \"number\" nicht unterstützt. Auf die korrekten Rollen \"value.gps.latitude\"/\"value.gps.longitude\" umgestellt, die für separate numerische Koordinatenwerte vorgesehen sind. Explizite Startup-Migration ergänzt (diese States werden über setObjectNotExistsAsync erzeugt, das bestehende Objekte nie aktualisiert), damit bereits laufende Installationen die korrigierte Rolle erhalten, nicht nur Neuinstallationen. Verifiziert gegen einen echten Objekt-Dump: beide Objekte zeigen aktuell die inkompatible Rolle und würden durch die Migration korrigiert.",
-                "en": "Fix E1009: Station.Latitude/Longitude used role \"value.gps\", which per the official state roles reference is reserved for a combined \"longitude;latitude\" string (e.g. \"5.56;43.45\") and does not support common.type \"number\". Switched to the correct \"value.gps.latitude\"/\"value.gps.longitude\" roles, which are designed for separate numeric coordinate values. Added an explicit startup migration (these states are created via setObjectNotExistsAsync, which never updates an existing object), so already-running installations get the corrected role, not just fresh installs. Verified against a live object dump: both objects currently show the incompatible role and would be corrected by the migration.",
-                "ru": "Исправлена ошибка E1009: Station.Latitude/Longitude использовали роль \"value.gps\", предназначенную для комбинированной строки. Переключено на правильные роли \"value.gps.latitude\"/\"value.gps.longitude\". Добавлена явная миграция при запуске.",
-                "pt": "Corrigido E1009: Station.Latitude/Longitude usavam o papel \"value.gps\", reservado para uma string combinada. Alterado para os papéis corretos \"value.gps.latitude\"/\"value.gps.longitude\". Adicionada migração explícita no arranque.",
-                "nl": "E1009 opgelost: Station.Latitude/Longitude gebruikten de rol \"value.gps\", gereserveerd voor een gecombineerde string. Overgeschakeld naar de juiste rollen \"value.gps.latitude\"/\"value.gps.longitude\". Expliciete opstartmigratie toegevoegd.",
-                "fr": "Correction de E1009 : Station.Latitude/Longitude utilisaient le rôle \"value.gps\", réservé à une chaîne combinée. Passage aux rôles corrects \"value.gps.latitude\"/\"value.gps.longitude\". Ajout d'une migration explicite au démarrage.",
-                "it": "Corretto E1009: Station.Latitude/Longitude utilizzavano il ruolo \"value.gps\", riservato a una stringa combinata. Passato ai ruoli corretti \"value.gps.latitude\"/\"value.gps.longitude\". Aggiunta migrazione esplicita all'avvio.",
-                "es": "Corregido E1009: Station.Latitude/Longitude usaban el rol \"value.gps\", reservado para una cadena combinada. Cambiado a los roles correctos \"value.gps.latitude\"/\"value.gps.longitude\". Se añadió una migración explícita al inicio.",
-                "pl": "Naprawiono E1009: Station.Latitude/Longitude używały roli \"value.gps\", zarezerwowanej dla połączonego ciągu znaków. Przełączono na poprawne role \"value.gps.latitude\"/\"value.gps.longitude\". Dodano jawną migrację przy starcie.",
-                "zh-cn": "修复了 E1009：Station.Latitude/Longitude 使用了保留给组合字符串的 \"value.gps\" 角色。已切换为正确的 \"value.gps.latitude\"/\"value.gps.longitude\" 角色。已添加显式启动迁移。",
-                "uk": "Виправлено E1009: Station.Latitude/Longitude використовували роль \"value.gps\", зарезервовану для комбінованого рядка. Перемкнено на правильні ролі \"value.gps.latitude\"/\"value.gps.longitude\". Додано явну міграцію під час запуску."
-            },
-            "1.0.6": {
-                "de": "Behebt beide Befunde aus dem Folge-Review: \"default\": \"en\" beim notificationLanguage-Select in admin/jsonConfig.json ergänzt sowie einen passenden Default in der nativen Konfiguration (war bei Neuinstallationen leer, obwohl der Code bereits korrekt auf Englisch zurückfiel). pushoverUserKey zu encryptedNative/protectedNative ergänzt, analog zu pushoverApiToken - der Pushover-User-Key ist persönliche Kontodaten und verdient Verschlüsselung im Ruhezustand. Keine Codeänderungen nötig: js-controller entschlüsselt encryptedNative-Felder bereits automatisch beim Adapterstart in this.config (derselbe Mechanismus, auf den pushoverApiToken bereits setzt), sodass bestehende Klartext-Werte bei Updates von <=1.0.5 durch die Standard-js-controller-Verschlüsselungsmigration beim nächsten Konfigurations-Speichern behandelt werden.",
-                "en": "Fix both findings from the follow-up review: added \"default\": \"en\" to the notificationLanguage select in admin/jsonConfig.json and a matching default in the native config (was blank on fresh installs, though the code already fell back to English correctly). Added pushoverUserKey to encryptedNative/protectedNative alongside pushoverApiToken, consistent with how the API token is already handled - the Pushover user key is personal account data and warrants encryption at rest. No code changes needed: js-controller already auto-decrypts encryptedNative fields into this.config at adapter startup (same mechanism pushoverApiToken already relies on), so existing plain-text values from installations upgrading from <=1.0.5 are handled by the standard js-controller encryption migration on the next config save.",
-                "ru": "Исправлены оба замечания из повторного обзора: добавлено значение по умолчанию \"en\" для notificationLanguage и добавлен pushoverUserKey в encryptedNative/protectedNative для шифрования в состоянии покоя. Изменений кода не требуется.",
-                "pt": "Corrigidos ambos os pontos da revisão de acompanhamento: adicionado valor predefinido \"en\" para notificationLanguage e adicionado pushoverUserKey a encryptedNative/protectedNative para encriptação em repouso. Não são necessárias alterações de código.",
-                "nl": "Beide bevindingen uit de vervolgreview verholpen: standaardwaarde \"en\" toegevoegd voor notificationLanguage en pushoverUserKey toegevoegd aan encryptedNative/protectedNative voor versleuteling in rust. Geen codewijzigingen nodig.",
-                "fr": "Correction des deux points du contrôle de suivi : ajout de la valeur par défaut \"en\" pour notificationLanguage et ajout de pushoverUserKey à encryptedNative/protectedNative pour le chiffrement au repos. Aucun changement de code nécessaire.",
-                "it": "Corretti entrambi i rilievi della revisione di follow-up: aggiunto valore predefinito \"en\" per notificationLanguage e aggiunto pushoverUserKey a encryptedNative/protectedNative per la crittografia a riposo. Nessuna modifica al codice necessaria.",
-                "es": "Se corrigieron ambos hallazgos de la revisión de seguimiento: se añadió el valor predeterminado \"en\" para notificationLanguage y se añadió pushoverUserKey a encryptedNative/protectedNative para cifrado en reposo. No se necesitan cambios de código.",
-                "pl": "Naprawiono oba ustalenia z ponownego przeglądu: dodano wartość domyślną \"en\" dla notificationLanguage oraz dodano pushoverUserKey do encryptedNative/protectedNative w celu szyfrowania danych spoczywających. Zmiany w kodzie nie są potrzebne.",
-                "zh-cn": "修复了后续审查中的两个问题：为 notificationLanguage 添加了默认值 \"en\"，并将 pushoverUserKey 添加到 encryptedNative/protectedNative 以实现静态加密。无需更改代码。",
-                "uk": "Виправлено обидва зауваження повторного огляду: додано значення за замовчуванням \"en\" для notificationLanguage та додано pushoverUserKey до encryptedNative/protectedNative для шифрування в стані спокою. Змін коду не потрібно."
-            },
-            "1.0.5": {
-                "de": "Behebt E5005 (Fehlalarm): eine Log-Meldung, die erklärt, warum das Poll-Intervall gekappt wurde, enthielt den wörtlichen Text \"setTimeout(\" als Teil eines erklärenden Satzes, was der textbasierte Scan des Checkers (korrekt darauf ausgelegt, echte nackte setTimeout()-Aufrufe zu erkennen, aber bei dieser speziellen Regel nicht String-Literal-bewusst) als vermeintlichen echten Code markiert hat. Der einzige tatsächliche setTimeout()-Aufruf im Code war bereits this.setTimeout() (vom Adapter verwaltet, wird beim Unload automatisch aufgeräumt) - verifiziert, indem die exakte Erkennungs-Regex des Checkers gegen jede Quelldatei laufen gelassen wurde. Log-Meldung umformuliert, um den wörtlichen Teilstring zu entfernen, ohne die Aussage zu ändern. Keine funktionalen Änderungen.",
-                "en": "Fix E5005 (false positive): a log message describing why the poll interval was capped contained the literal text \"setTimeout(\" as part of an explanatory sentence, which the checker's text-based scan (correctly designed to catch actual bare setTimeout() calls, but not string-literal-aware for this specific rule) flagged as if it were real code. The only actual setTimeout() call in the codebase was already this.setTimeout() (adapter-managed, cleaned up automatically on unload) - verified by running the checker's exact detection regex against every source file. Reworded the log message to remove the literal substring without changing its meaning. No functional changes.",
-                "ru": "Исправлен ложный E5005: сообщение журнала переформулировано, чтобы избежать буквального совпадения с текстовым сканером. Функциональных изменений нет.",
-                "pt": "Corrigido falso positivo E5005: mensagem de log reformulada para evitar correspondência literal com o scanner de texto. Sem alterações funcionais.",
-                "nl": "Vals-positieve E5005 opgelost: logbericht herschreven om letterlijke overeenkomst met de tekstscanner te vermijden. Geen functionele wijzigingen.",
-                "fr": "Correction du faux positif E5005 : message de journal reformulé pour éviter une correspondance littérale avec le scanner de texte. Aucun changement fonctionnel.",
-                "it": "Corretto falso positivo E5005: messaggio di log riformulato per evitare la corrispondenza letterale con lo scanner di testo. Nessuna modifica funzionale.",
-                "es": "Corregido falso positivo E5005: mensaje de registro reformulado para evitar la coincidencia literal con el escáner de texto. Sin cambios funcionales.",
-                "pl": "Naprawiono fałszywie pozytywny wynik E5005: przeformułowano komunikat dziennika, aby uniknąć dosłownego dopasowania w skanerze tekstu. Brak zmian funkcjonalnych.",
-                "zh-cn": "修复了 E5005 误报：重新措辞了日志消息以避免与文本扫描器的字面匹配。无功能性更改。",
-                "uk": "Виправлено хибнопозитивний результат E5005: переформульовано повідомлення журналу, щоб уникнути буквального збігу з текстовим сканером. Без функціональних змін."
-            },
-            "1.0.4": {
-                "de": "Behebt E3009 (26 Fehler des automatischen Objektstruktur-Checks): die pro-Inverter-Untergruppen AC_L1-3, PV1-4 und Battery (z. B. Inverters.<sn>.AC_L1.Voltage) wurden nur als Blatt-States erzeugt, ohne das erforderliche Zwischen-Channel-Objekt für die AC_L1/PV1/...-Gruppierungsebene selbst. _applyMonitorDetail() legt jetzt für jede Untergruppe, die tatsächlich mindestens einen gemappten State hat, einen Channel an - nach demselben präsenzbasierten Muster, das bereits für EVCharger genutzt wird. Keine Migration nötig: das sind neue Objekte, keine geänderten Eigenschaften bestehender Objekte, und _applyMonitorDetail() läuft bei jedem Poll-Zyklus (nicht nur beim ersten Start), sodass bereits laufende Installationen sich beim nächsten Poll nach dem Update selbst heilen. Verifiziert gegen eine echte Tages-API-Antwort mit 2 Invertern: 0 fehlende Zwischen-Objekte (vorher 26). Keine funktionalen Regressionen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch.",
-                "en": "Fix E3009 (26 errors from the automated Object Structure Check): the per-inverter AC_L1-3, PV1-4 and Battery sub-groups (e.g. Inverters.<sn>.AC_L1.Voltage) were only ever created as leaf states, without the required intermediate channel object for the AC_L1/PV1/... grouping level itself. _applyMonitorDetail() now ensures a channel for each sub-group that actually has at least one mapped state, mirroring the presence-driven pattern already used for EVCharger. No migration needed: these are new objects, not changed properties of existing ones, and _applyMonitorDetail() runs on every poll cycle (not just on first start), so already-running installations self-heal on their very next poll after upgrading. Verified against a live daytime API response with 2 inverters: 0 missing intermediate objects (was 26). No functional regressions; all 45 unit tests and 57 package-consistency tests pass unchanged.",
-                "ru": "Исправлена ошибка E3009 (26 ошибок автоматической проверки структуры объектов): добавлены недостающие промежуточные объекты-каналы для групп AC_L1-3, PV1-4 и Battery на инвертор. Миграция не требуется. Без функциональных регрессий.",
-                "pt": "Corrigido E3009 (26 erros da verificação automática da estrutura de objetos): adicionados os objetos-canal intermédios em falta para os grupos AC_L1-3, PV1-4 e Battery por inversor. Não é necessária migração. Sem regressões funcionais.",
-                "nl": "E3009 opgelost (26 fouten van de automatische objectstructuurcontrole): ontbrekende tussenliggende kanaalobjecten toegevoegd voor de AC_L1-3-, PV1-4- en Battery-groepen per omvormer. Geen migratie nodig. Geen functionele regressies.",
-                "fr": "Correction de E3009 (26 erreurs du contrôle automatique de structure d'objets) : ajout des objets-canaux intermédiaires manquants pour les groupes AC_L1-3, PV1-4 et Battery par onduleur. Aucune migration nécessaire. Aucune régression fonctionnelle.",
-                "it": "Corretto E3009 (26 errori del controllo automatico della struttura degli oggetti): aggiunti gli oggetti canale intermedi mancanti per i gruppi AC_L1-3, PV1-4 e Battery per inverter. Nessuna migrazione necessaria. Nessuna regressione funzionale.",
-                "es": "Corregido E3009 (26 errores de la comprobación automática de estructura de objetos): se añadieron los objetos canal intermedios que faltaban para los grupos AC_L1-3, PV1-4 y Battery por inversor. No se necesita migración. Sin regresiones funcionales.",
-                "pl": "Naprawiono E3009 (26 błędów automatycznej kontroli struktury obiektów): dodano brakujące pośrednie obiekty kanałowe dla grup AC_L1-3, PV1-4 i Battery na falownik. Migracja nie jest potrzebna. Brak regresji funkcjonalnych.",
-                "zh-cn": "修复了 E3009（自动对象结构检查中的 26 个错误）：为每个逆变器的 AC_L1-3、PV1-4 和 Battery 子组添加了缺失的中间通道对象。无需迁移。无功能性回归。",
-                "uk": "Виправлено E3009 (26 помилок автоматичної перевірки структури об'єктів): додано відсутні проміжні об'єкти-канали для груп AC_L1-3, PV1-4 та Battery на інвертор. Міграція не потрібна. Без функціональних регресій."
-            },
-            "1.0.3": {
-                "de": "Nur Doku: basierend auf einer echten Tages-API-Antwort dokumentiert, dass der von diesem Adapter genutzte SEMS+-Gateway-Endpunkt (GetMonitorDetailByPowerstationId) bei keinem Konto einen Stations-Zeitstempel oder Monats-Erzeugungs-/Einkommens-/Währungsfelder liefert - das ist eine dauerhafte Lücke der API selbst, kein Symptom eines unvollständigen/nächtlichen Objekt-Dumps wie im Review zuvor angenommen. Batterie-/PowerFlow-States werden korrekterweise nur erzeugt, wenn das Portal diese Daten für die Anlage tatsächlich meldet. Keine Codeänderungen.",
-                "en": "Docs only: documented, based on a live daytime API response, that the SEMS+ gateway endpoint used by this adapter (GetMonitorDetailByPowerstationId) never returns a station timestamp or month-to-date generation/income/currency fields for any account - these are a permanent gap in the API itself, not a symptom of an incomplete/nighttime object dump as previously assumed during review. Battery/PowerFlow states are correctly created only when the portal actually reports that data for the plant. No code changes.",
-                "ru": "Только документация: задокументировано на основе реального дневного ответа API, что используемая конечная точка SEMS+ никогда не возвращает временную метку станции или данные о доходе/валюте за месяц. Изменений кода нет.",
-                "pt": "Apenas documentação: documentado, com base numa resposta real diurna da API, que o endpoint SEMS+ usado por este adaptador nunca devolve um timestamp da estação ou campos de geração/rendimento/moeda mensal. Sem alterações de código.",
-                "nl": "Alleen documentatie: gedocumenteerd, op basis van een echte daglicht-API-respons, dat het door deze adapter gebruikte SEMS+-eindpunt nooit een stationstijdstempel of maand-tot-datum opwek-/inkomsten-/valutavelden retourneert. Geen codewijzigingen.",
-                "fr": "Documentation uniquement : documenté, sur la base d'une réponse API réelle en journée, que le point de terminaison SEMS+ utilisé par cet adaptateur ne renvoie jamais d'horodatage de station ni de champs de génération/revenu/devise mensuels. Aucun changement de code.",
-                "it": "Solo documentazione: documentato, sulla base di una risposta API reale diurna, che l'endpoint SEMS+ utilizzato da questo adattatore non restituisce mai un timestamp della stazione né campi di generazione/reddito/valuta mensili. Nessuna modifica al codice.",
-                "es": "Solo documentación: documentado, basándose en una respuesta real diurna de la API, que el endpoint SEMS+ utilizado por este adaptador nunca devuelve una marca de tiempo de la estación ni campos de generación/ingresos/moneda mensuales. Sin cambios de código.",
-                "pl": "Tylko dokumentacja: udokumentowano, na podstawie rzeczywistej dziennej odpowiedzi API, że punkt końcowy SEMS+ używany przez ten adapter nigdy nie zwraca znacznika czasu stacji ani miesięcznych pól generacji/dochodu/waluty. Brak zmian w kodzie.",
-                "zh-cn": "仅文档：基于真实的白天 API 响应记录，此适配器使用的 SEMS+ 网关端点永远不会返回站点时间戳或月度发电量/收入/货币字段。无代码更改。",
-                "uk": "Лише документація: задокументовано на основі реальної денної відповіді API, що кінцева точка SEMS+, яку використовує цей адаптер, ніколи не повертає часову мітку станції або місячні поля генерації/доходу/валюти. Без змін у коді."
-            },
-            "1.0.2": {
-                "de": "Behebt alle Befunde aus dem Folge-Review: 6 zuvor übersehene deutsche Log-Meldungen in lib/semsApi.js übersetzt (nutzten this.log(level, message)-Aufrufsyntax statt this.log.<level>(), wonach der frühere Übersetzungsdurchgang nicht gesucht hatte) sowie ein zweites, doppeltes Vorkommen einer deutschen SemsAuthError-Meldung; _maskAccount() gibt jetzt immer den englischen Fallback \"(not set)\" zurück statt Deutsch, da das Ergebnis in eine englische Log-Zeile einfliesst. Echten Mehrsprachen-Support für Pushover-Benachrichtigungstexte implementiert: eine neue notificationLanguage-Konfigurationsoption (Englisch/Deutsch, Standard Englisch) wählt zwischen EN/DE-Vorlagen für alle 4 Benachrichtigungskategorien, erfüllt damit die Anforderung, dass aller nutzerseitiger Text standardmässig auf Englisch verfügbar sein muss, erlaubt aber weiterhin Deutsch für die Zielgruppe dieses Adapters. Harte Obergrenze (86400s/1 Tag) für das Poll-Intervall ergänzt, um einen Integer-Overflow bei Node.js setTimeout() zu verhindern (Werte über ca. 24,8 Tage laufen still über und lösen sofort aus), falls ausserhalb der bestehenden UI-Grenze (60-3600s) je ein Extremwert gesetzt würde. Einheit von info.activePollInterval von \"s\" auf die von der value.interval-Rolle exakt geforderte Zeichenkette \"sec\" korrigiert (die Rolle selbst, sowie value.battery für Battery.SOC, sind beide offiziell dokumentierte Rollen und wurden nicht geändert). Keine funktionalen Regressionen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch, zusätzlich eine neue eigenständige Verifikation der Poll-Intervall-Deckelung gegen 7 Grenzfälle inklusive des exakten Node.js-setTimeout-Overflow-Schwellenwerts.",
-                "en": "Fix all findings from the follow-up manual review: translated 6 previously missed German log messages in lib/semsApi.js (they used this.log(level, message) call syntax instead of this.log.<level>(), which the earlier translation pass had not searched for) plus a second, duplicate occurrence of a German SemsAuthError message; _maskAccount() now always returns the English \"(not set)\" fallback instead of German, since its result flows into an English log line. Implemented proper multi-language support for Pushover notification text: a new notificationLanguage config option (English/German, default English) selects between EN/DE templates for all 4 notification categories, satisfying the requirement that all user-facing text be available in English by default while still allowing German for this adapter's target audience. Added a hard ceiling (86400s/1 day) on the poll interval to prevent a Node.js setTimeout() integer overflow (values beyond ~24.8 days silently wrap and fire immediately) if an extreme value were ever set outside the admin UI's existing 60-3600s range. Corrected the unit of info.activePollInterval from \"s\" to the exact string \"sec\" required by the value.interval role definition (the role itself, and value.battery for Battery.SOC, are both officially documented roles and were not changed). The unit fix is additionally applied via an explicit migration on every adapter start (js-controller does not reliably re-sync instanceObjects common properties on update across all versions in the field), so already-running installations get corrected, not just fresh installs. No functional regressions; all 45 unit tests and 57 package-consistency tests pass unchanged, plus a new standalone verification of the poll-interval clamping logic against 7 boundary cases including the exact Node.js setTimeout overflow threshold.",
-                "ru": "Исправлены все замечания последующего обзора: переведены пропущенные немецкие сообщения журнала, реализована многоязычная поддержка push-уведомлений, добавлен верхний предел интервала опроса для защиты от переполнения setTimeout. Без функциональных регрессий.",
-                "pt": "Corrigidos todos os pontos da revisão de acompanhamento: mensagens de log em alemão em falta traduzidas, implementado suporte multilíngue para notificações push, adicionado limite superior ao intervalo de sondagem para proteger contra overflow do setTimeout. Sem regressões funcionais.",
-                "nl": "Alle bevindingen uit de vervolgreview verholpen: ontbrekende Duitse logberichten vertaald, meertalige ondersteuning voor pushmeldingen geïmplementeerd, bovengrens voor pollinterval toegevoegd ter bescherming tegen setTimeout-overflow. Geen functionele regressies.",
-                "fr": "Correction de tous les points du contrôle de suivi : messages de journal allemands manquants traduits, prise en charge multilingue des notifications push implémentée, plafond ajouté à l'intervalle d'interrogation pour se protéger contre un débordement de setTimeout. Aucune régression fonctionnelle.",
-                "it": "Corretti tutti i rilievi della revisione di follow-up: tradotti i messaggi di log in tedesco mancanti, implementato il supporto multilingue per le notifiche push, aggiunto un tetto massimo all'intervallo di polling per proteggere da un overflow di setTimeout. Nessuna regressione funzionale.",
-                "es": "Se corrigieron todos los hallazgos de la revisión de seguimiento: se tradujeron los mensajes de registro en alemán faltantes, se implementó soporte multiidioma para las notificaciones push, se añadió un límite superior al intervalo de sondeo para proteger contra un desbordamiento de setTimeout. Sin regresiones funcionales.",
-                "pl": "Naprawiono wszystkie uwagi z ponownego przeglądu: przetłumaczono brakujące niemieckie komunikaty dziennika, zaimplementowano wsparcie wielojęzyczne dla powiadomień push, dodano górny limit interwału odpytywania chroniący przed przepełnieniem setTimeout. Brak regresji funkcjonalnych.",
-                "zh-cn": "修复了后续审查中的所有问题：翻译了遗漏的德语日志消息，为推送通知实现了多语言支持，为轮询间隔添加了上限以防止 setTimeout 溢出。无功能性回归。",
-                "uk": "Виправлено всі зауваження повторного огляду: перекладено пропущені німецькі повідомлення журналу, реалізовано багатомовну підтримку push-сповіщень, додано верхню межу інтервалу опитування для захисту від переповнення setTimeout. Без функціональних регресій."
-            },
-            "1.0.1": {
-                "de": "Fix: Alle deutschen Log-Meldungen ins Englische übersetzt (this.log.*()-Aufrufe in main.js, das interne Log-Callback in lib/semsApi.js sowie lib/notify.js) - ein realer Review eines Schwester-Adapters (zeptrion) hat diese Fehlerklasse aufgedeckt, daher hier proaktiv geprüft und behoben statt auf Review-Feedback zu warten. Die interne Pushover-Log-Zeile in Notifier.notify() bettet den (bewusst deutschen) Push-Titel/-Text nicht mehr in den Log-Eintrag ein. Zudem die zugrundeliegenden SemsAuthError-/SemsProtocolError-/SemsNetworkError-Meldungen ins Englische übersetzt, da diese über error.message in Log-Zeilen landen. Der eigentliche Pushover-Push-Text (Titel/Nachricht an notify()) bleibt bewusst Deutsch, passend zur Schweizerdeutsch-sprachigen Zielgruppe des Adapters - nur die ioBroker-Log-Ausgabe selbst musste geändert werden. Keine funktionalen Änderungen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch.",
-                "en": "Fix: translated all German log messages to English (this.log.*() calls in main.js, the internal log callback in lib/semsApi.js, and lib/notify.js) - a real-world review of a sibling adapter (zeptrion) surfaced this class of issue, so it was proactively checked and fixed here before submission rather than waiting for review feedback. The internal Pushover notification log line in Notifier.notify() no longer embeds the (intentionally German-language) push title/message into the log entry. Also translated the underlying SemsAuthError/SemsProtocolError/SemsNetworkError messages to English, since those flow into log lines via error.message. The actual Pushover push notification text (title/message passed to notify()) intentionally stays German, matching the adapter's Swiss German-speaking target audience - only the ioBroker log output itself needed to change. No functional changes; all 45 unit tests and 57 package-consistency tests pass unchanged.",
-                "ru": "Исправление: все немецкие сообщения журнала переведены на английский язык. Функциональных изменений нет.",
-                "pt": "Correção: todas as mensagens de log em alemão foram traduzidas para inglês. Sem alterações funcionais.",
-                "nl": "Fix: alle Duitse logberichten vertaald naar het Engels. Geen functionele wijzigingen.",
-                "fr": "Correction : tous les messages de journal en allemand traduits en anglais. Aucun changement fonctionnel.",
-                "it": "Correzione: tutti i messaggi di log in tedesco tradotti in inglese. Nessuna modifica funzionale.",
-                "es": "Corrección: todos los mensajes de registro en alemán traducidos al inglés. Sin cambios funcionales.",
-                "pl": "Poprawka: wszystkie niemieckie komunikaty dziennika przetłumaczono na angielski. Brak zmian funkcjonalnych.",
-                "zh-cn": "修复：所有德语日志消息已翻译为英文。无功能更改。",
-                "uk": "Виправлення: усі німецькі повідомлення журналу перекладено англійською. Без функціональних змін."
-            }
-        },
-        "titleLang": {
-            "en": "GoodWe SEMS Portal",
-            "de": "GoodWe SEMS Portal",
-            "ru": "GoodWe SEMS Portal",
-            "pt": "GoodWe SEMS Portal",
-            "nl": "GoodWe SEMS Portal",
-            "fr": "GoodWe SEMS Portal",
-            "it": "GoodWe SEMS Portal",
-            "es": "GoodWe SEMS Portal",
-            "pl": "GoodWe SEMS Portal",
-            "uk": "GoodWe SEMS Portal",
-            "zh-cn": "GoodWe SEMS 门户"
-        },
-        "desc": {
-            "en": "Reads inverter, battery and power-flow data from the GoodWe SEMS Portal cloud for installations that have no local/LAN access to the inverter.",
-            "de": "Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem GoodWe-SEMS-Portal (Cloud) für Anlagen ohne lokalen/LAN-Zugriff auf den Wechselrichter.",
-            "ru": "Считывает данные инвертора, батареи и потоков энергии из облачного портала GoodWe SEMS для установок без локального доступа к инвертору.",
-            "pt": "Lê dados do inversor, bateria e fluxo de energia do portal SEMS da GoodWe na nuvem para instalações sem acesso local/LAN ao inversor.",
-            "nl": "Leest omvormer-, batterij- en energiestroomgegevens uit het GoodWe SEMS-portaal (cloud) voor installaties zonder lokale/LAN-toegang tot de omvormer.",
-            "fr": "Lit les données de l'onduleur, de la batterie et des flux d'énergie depuis le portail cloud GoodWe SEMS pour les installations sans accès local/LAN à l'onduleur.",
-            "it": "Legge i dati dell'inverter, della batteria e del flusso di energia dal portale cloud GoodWe SEMS per impianti senza accesso locale/LAN all'inverter.",
-            "es": "Lee datos del inversor, la batería y el flujo de energía desde el portal en la nube GoodWe SEMS para instalaciones sin acceso local/LAN al inversor.",
-            "pl": "Odczytuje dane falownika, baterii i przepływu energii z chmury portalu GoodWe SEMS dla instalacji bez lokalnego dostępu do falownika.",
-            "uk": "Зчитує дані інвертора, батареї та потоків енергії з хмарного порталу GoodWe SEMS для установок без локального доступу до інвертора.",
-            "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
-        },
-        "authors": [
-            "Stefan Bühler"
-        ],
-        "keywords": [
-            "goodwe",
-            "sems",
-            "semsportal",
-            "inverter",
-            "solar",
-            "pv",
-            "photovoltaik",
-            "battery"
-        ],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "goodwe-sems.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
-        "readme": "https://github.com/bueste/ioBroker.goodwe-sems/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "energy",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "tier": 3,
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=6.0.11"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=7.6.20"
-            }
-        ]
+  "common": {
+    "name": "goodwe-sems",
+    "version": "1.0.7",
+    "news": {
+      "1.0.7": {
+        "de": "Behebt E1009: Station.Latitude/Longitude nutzten die Rolle \"value.gps\", die laut offizieller State-Roles-Referenz für einen kombinierten \"longitude;latitude\"-String (z. B. \"5.56;43.45\") reserviert ist und common.type \"number\" nicht unterstützt. Auf die korrekten Rollen \"value.gps.latitude\"/\"value.gps.longitude\" umgestellt, die für separate numerische Koordinatenwerte vorgesehen sind. Explizite Startup-Migration ergänzt (diese States werden über setObjectNotExistsAsync erzeugt, das bestehende Objekte nie aktualisiert), damit bereits laufende Installationen die korrigierte Rolle erhalten, nicht nur Neuinstallationen. Verifiziert gegen einen echten Objekt-Dump: beide Objekte zeigen aktuell die inkompatible Rolle und würden durch die Migration korrigiert.",
+        "en": "Fix E1009: Station.Latitude/Longitude used role \"value.gps\", which per the official state roles reference is reserved for a combined \"longitude;latitude\" string (e.g. \"5.56;43.45\") and does not support common.type \"number\". Switched to the correct \"value.gps.latitude\"/\"value.gps.longitude\" roles, which are designed for separate numeric coordinate values. Added an explicit startup migration (these states are created via setObjectNotExistsAsync, which never updates an existing object), so already-running installations get the corrected role, not just fresh installs. Verified against a live object dump: both objects currently show the incompatible role and would be corrected by the migration.",
+        "ru": "Исправлена ошибка E1009: Station.Latitude/Longitude использовали роль \"value.gps\", предназначенную для комбинированной строки. Переключено на правильные роли \"value.gps.latitude\"/\"value.gps.longitude\". Добавлена явная миграция при запуске.",
+        "pt": "Corrigido E1009: Station.Latitude/Longitude usavam o papel \"value.gps\", reservado para uma string combinada. Alterado para os papéis corretos \"value.gps.latitude\"/\"value.gps.longitude\". Adicionada migração explícita no arranque.",
+        "nl": "E1009 opgelost: Station.Latitude/Longitude gebruikten de rol \"value.gps\", gereserveerd voor een gecombineerde string. Overgeschakeld naar de juiste rollen \"value.gps.latitude\"/\"value.gps.longitude\". Expliciete opstartmigratie toegevoegd.",
+        "fr": "Correction de E1009 : Station.Latitude/Longitude utilisaient le rôle \"value.gps\", réservé à une chaîne combinée. Passage aux rôles corrects \"value.gps.latitude\"/\"value.gps.longitude\". Ajout d'une migration explicite au démarrage.",
+        "it": "Corretto E1009: Station.Latitude/Longitude utilizzavano il ruolo \"value.gps\", riservato a una stringa combinata. Passato ai ruoli corretti \"value.gps.latitude\"/\"value.gps.longitude\". Aggiunta migrazione esplicita all'avvio.",
+        "es": "Corregido E1009: Station.Latitude/Longitude usaban el rol \"value.gps\", reservado para una cadena combinada. Cambiado a los roles correctos \"value.gps.latitude\"/\"value.gps.longitude\". Se añadió una migración explícita al inicio.",
+        "pl": "Naprawiono E1009: Station.Latitude/Longitude używały roli \"value.gps\", zarezerwowanej dla połączonego ciągu znaków. Przełączono na poprawne role \"value.gps.latitude\"/\"value.gps.longitude\". Dodano jawną migrację przy starcie.",
+        "zh-cn": "修复了 E1009：Station.Latitude/Longitude 使用了保留给组合字符串的 \"value.gps\" 角色。已切换为正确的 \"value.gps.latitude\"/\"value.gps.longitude\" 角色。已添加显式启动迁移。",
+        "uk": "Виправлено E1009: Station.Latitude/Longitude використовували роль \"value.gps\", зарезервовану для комбінованого рядка. Перемкнено на правильні ролі \"value.gps.latitude\"/\"value.gps.longitude\". Додано явну міграцію під час запуску."
+      },
+      "1.0.6": {
+        "de": "Behebt beide Befunde aus dem Folge-Review: \"default\": \"en\" beim notificationLanguage-Select in admin/jsonConfig.json ergänzt sowie einen passenden Default in der nativen Konfiguration (war bei Neuinstallationen leer, obwohl der Code bereits korrekt auf Englisch zurückfiel). pushoverUserKey zu encryptedNative/protectedNative ergänzt, analog zu pushoverApiToken - der Pushover-User-Key ist persönliche Kontodaten und verdient Verschlüsselung im Ruhezustand. Keine Codeänderungen nötig: js-controller entschlüsselt encryptedNative-Felder bereits automatisch beim Adapterstart in this.config (derselbe Mechanismus, auf den pushoverApiToken bereits setzt), sodass bestehende Klartext-Werte bei Updates von <=1.0.5 durch die Standard-js-controller-Verschlüsselungsmigration beim nächsten Konfigurations-Speichern behandelt werden.",
+        "en": "Fix both findings from the follow-up review: added \"default\": \"en\" to the notificationLanguage select in admin/jsonConfig.json and a matching default in the native config (was blank on fresh installs, though the code already fell back to English correctly). Added pushoverUserKey to encryptedNative/protectedNative alongside pushoverApiToken, consistent with how the API token is already handled - the Pushover user key is personal account data and warrants encryption at rest. No code changes needed: js-controller already auto-decrypts encryptedNative fields into this.config at adapter startup (same mechanism pushoverApiToken already relies on), so existing plain-text values from installations upgrading from <=1.0.5 are handled by the standard js-controller encryption migration on the next config save.",
+        "ru": "Исправлены оба замечания из повторного обзора: добавлено значение по умолчанию \"en\" для notificationLanguage и добавлен pushoverUserKey в encryptedNative/protectedNative для шифрования в состоянии покоя. Изменений кода не требуется.",
+        "pt": "Corrigidos ambos os pontos da revisão de acompanhamento: adicionado valor predefinido \"en\" para notificationLanguage e adicionado pushoverUserKey a encryptedNative/protectedNative para encriptação em repouso. Não são necessárias alterações de código.",
+        "nl": "Beide bevindingen uit de vervolgreview verholpen: standaardwaarde \"en\" toegevoegd voor notificationLanguage en pushoverUserKey toegevoegd aan encryptedNative/protectedNative voor versleuteling in rust. Geen codewijzigingen nodig.",
+        "fr": "Correction des deux points du contrôle de suivi : ajout de la valeur par défaut \"en\" pour notificationLanguage et ajout de pushoverUserKey à encryptedNative/protectedNative pour le chiffrement au repos. Aucun changement de code nécessaire.",
+        "it": "Corretti entrambi i rilievi della revisione di follow-up: aggiunto valore predefinito \"en\" per notificationLanguage e aggiunto pushoverUserKey a encryptedNative/protectedNative per la crittografia a riposo. Nessuna modifica al codice necessaria.",
+        "es": "Se corrigieron ambos hallazgos de la revisión de seguimiento: se añadió el valor predeterminado \"en\" para notificationLanguage y se añadió pushoverUserKey a encryptedNative/protectedNative para cifrado en reposo. No se necesitan cambios de código.",
+        "pl": "Naprawiono oba ustalenia z ponownego przeglądu: dodano wartość domyślną \"en\" dla notificationLanguage oraz dodano pushoverUserKey do encryptedNative/protectedNative w celu szyfrowania danych spoczywających. Zmiany w kodzie nie są potrzebne.",
+        "zh-cn": "修复了后续审查中的两个问题：为 notificationLanguage 添加了默认值 \"en\"，并将 pushoverUserKey 添加到 encryptedNative/protectedNative 以实现静态加密。无需更改代码。",
+        "uk": "Виправлено обидва зауваження повторного огляду: додано значення за замовчуванням \"en\" для notificationLanguage та додано pushoverUserKey до encryptedNative/protectedNative для шифрування в стані спокою. Змін коду не потрібно."
+      },
+      "1.0.5": {
+        "de": "Behebt E5005 (Fehlalarm): eine Log-Meldung, die erklärt, warum das Poll-Intervall gekappt wurde, enthielt den wörtlichen Text \"setTimeout(\" als Teil eines erklärenden Satzes, was der textbasierte Scan des Checkers (korrekt darauf ausgelegt, echte nackte setTimeout()-Aufrufe zu erkennen, aber bei dieser speziellen Regel nicht String-Literal-bewusst) als vermeintlichen echten Code markiert hat. Der einzige tatsächliche setTimeout()-Aufruf im Code war bereits this.setTimeout() (vom Adapter verwaltet, wird beim Unload automatisch aufgeräumt) - verifiziert, indem die exakte Erkennungs-Regex des Checkers gegen jede Quelldatei laufen gelassen wurde. Log-Meldung umformuliert, um den wörtlichen Teilstring zu entfernen, ohne die Aussage zu ändern. Keine funktionalen Änderungen.",
+        "en": "Fix E5005 (false positive): a log message describing why the poll interval was capped contained the literal text \"setTimeout(\" as part of an explanatory sentence, which the checker's text-based scan (correctly designed to catch actual bare setTimeout() calls, but not string-literal-aware for this specific rule) flagged as if it were real code. The only actual setTimeout() call in the codebase was already this.setTimeout() (adapter-managed, cleaned up automatically on unload) - verified by running the checker's exact detection regex against every source file. Reworded the log message to remove the literal substring without changing its meaning. No functional changes.",
+        "ru": "Исправлен ложный E5005: сообщение журнала переформулировано, чтобы избежать буквального совпадения с текстовым сканером. Функциональных изменений нет.",
+        "pt": "Corrigido falso positivo E5005: mensagem de log reformulada para evitar correspondência literal com o scanner de texto. Sem alterações funcionais.",
+        "nl": "Vals-positieve E5005 opgelost: logbericht herschreven om letterlijke overeenkomst met de tekstscanner te vermijden. Geen functionele wijzigingen.",
+        "fr": "Correction du faux positif E5005 : message de journal reformulé pour éviter une correspondance littérale avec le scanner de texte. Aucun changement fonctionnel.",
+        "it": "Corretto falso positivo E5005: messaggio di log riformulato per evitare la corrispondenza letterale con lo scanner di testo. Nessuna modifica funzionale.",
+        "es": "Corregido falso positivo E5005: mensaje de registro reformulado para evitar la coincidencia literal con el escáner de texto. Sin cambios funcionales.",
+        "pl": "Naprawiono fałszywie pozytywny wynik E5005: przeformułowano komunikat dziennika, aby uniknąć dosłownego dopasowania w skanerze tekstu. Brak zmian funkcjonalnych.",
+        "zh-cn": "修复了 E5005 误报：重新措辞了日志消息以避免与文本扫描器的字面匹配。无功能性更改。",
+        "uk": "Виправлено хибнопозитивний результат E5005: переформульовано повідомлення журналу, щоб уникнути буквального збігу з текстовим сканером. Без функціональних змін."
+      },
+      "1.0.4": {
+        "de": "Behebt E3009 (26 Fehler des automatischen Objektstruktur-Checks): die pro-Inverter-Untergruppen AC_L1-3, PV1-4 und Battery (z. B. Inverters.<sn>.AC_L1.Voltage) wurden nur als Blatt-States erzeugt, ohne das erforderliche Zwischen-Channel-Objekt für die AC_L1/PV1/...-Gruppierungsebene selbst. _applyMonitorDetail() legt jetzt für jede Untergruppe, die tatsächlich mindestens einen gemappten State hat, einen Channel an - nach demselben präsenzbasierten Muster, das bereits für EVCharger genutzt wird. Keine Migration nötig: das sind neue Objekte, keine geänderten Eigenschaften bestehender Objekte, und _applyMonitorDetail() läuft bei jedem Poll-Zyklus (nicht nur beim ersten Start), sodass bereits laufende Installationen sich beim nächsten Poll nach dem Update selbst heilen. Verifiziert gegen eine echte Tages-API-Antwort mit 2 Invertern: 0 fehlende Zwischen-Objekte (vorher 26). Keine funktionalen Regressionen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch.",
+        "en": "Fix E3009 (26 errors from the automated Object Structure Check): the per-inverter AC_L1-3, PV1-4 and Battery sub-groups (e.g. Inverters.<sn>.AC_L1.Voltage) were only ever created as leaf states, without the required intermediate channel object for the AC_L1/PV1/... grouping level itself. _applyMonitorDetail() now ensures a channel for each sub-group that actually has at least one mapped state, mirroring the presence-driven pattern already used for EVCharger. No migration needed: these are new objects, not changed properties of existing ones, and _applyMonitorDetail() runs on every poll cycle (not just on first start), so already-running installations self-heal on their very next poll after upgrading. Verified against a live daytime API response with 2 inverters: 0 missing intermediate objects (was 26). No functional regressions; all 45 unit tests and 57 package-consistency tests pass unchanged.",
+        "ru": "Исправлена ошибка E3009 (26 ошибок автоматической проверки структуры объектов): добавлены недостающие промежуточные объекты-каналы для групп AC_L1-3, PV1-4 и Battery на инвертор. Миграция не требуется. Без функциональных регрессий.",
+        "pt": "Corrigido E3009 (26 erros da verificação automática da estrutura de objetos): adicionados os objetos-canal intermédios em falta para os grupos AC_L1-3, PV1-4 e Battery por inversor. Não é necessária migração. Sem regressões funcionais.",
+        "nl": "E3009 opgelost (26 fouten van de automatische objectstructuurcontrole): ontbrekende tussenliggende kanaalobjecten toegevoegd voor de AC_L1-3-, PV1-4- en Battery-groepen per omvormer. Geen migratie nodig. Geen functionele regressies.",
+        "fr": "Correction de E3009 (26 erreurs du contrôle automatique de structure d'objets) : ajout des objets-canaux intermédiaires manquants pour les groupes AC_L1-3, PV1-4 et Battery par onduleur. Aucune migration nécessaire. Aucune régression fonctionnelle.",
+        "it": "Corretto E3009 (26 errori del controllo automatico della struttura degli oggetti): aggiunti gli oggetti canale intermedi mancanti per i gruppi AC_L1-3, PV1-4 e Battery per inverter. Nessuna migrazione necessaria. Nessuna regressione funzionale.",
+        "es": "Corregido E3009 (26 errores de la comprobación automática de estructura de objetos): se añadieron los objetos canal intermedios que faltaban para los grupos AC_L1-3, PV1-4 y Battery por inversor. No se necesita migración. Sin regresiones funcionales.",
+        "pl": "Naprawiono E3009 (26 błędów automatycznej kontroli struktury obiektów): dodano brakujące pośrednie obiekty kanałowe dla grup AC_L1-3, PV1-4 i Battery na falownik. Migracja nie jest potrzebna. Brak regresji funkcjonalnych.",
+        "zh-cn": "修复了 E3009（自动对象结构检查中的 26 个错误）：为每个逆变器的 AC_L1-3、PV1-4 和 Battery 子组添加了缺失的中间通道对象。无需迁移。无功能性回归。",
+        "uk": "Виправлено E3009 (26 помилок автоматичної перевірки структури об'єктів): додано відсутні проміжні об'єкти-канали для груп AC_L1-3, PV1-4 та Battery на інвертор. Міграція не потрібна. Без функціональних регресій."
+      },
+      "1.0.3": {
+        "de": "Nur Doku: basierend auf einer echten Tages-API-Antwort dokumentiert, dass der von diesem Adapter genutzte SEMS+-Gateway-Endpunkt (GetMonitorDetailByPowerstationId) bei keinem Konto einen Stations-Zeitstempel oder Monats-Erzeugungs-/Einkommens-/Währungsfelder liefert - das ist eine dauerhafte Lücke der API selbst, kein Symptom eines unvollständigen/nächtlichen Objekt-Dumps wie im Review zuvor angenommen. Batterie-/PowerFlow-States werden korrekterweise nur erzeugt, wenn das Portal diese Daten für die Anlage tatsächlich meldet. Keine Codeänderungen.",
+        "en": "Docs only: documented, based on a live daytime API response, that the SEMS+ gateway endpoint used by this adapter (GetMonitorDetailByPowerstationId) never returns a station timestamp or month-to-date generation/income/currency fields for any account - these are a permanent gap in the API itself, not a symptom of an incomplete/nighttime object dump as previously assumed during review. Battery/PowerFlow states are correctly created only when the portal actually reports that data for the plant. No code changes.",
+        "ru": "Только документация: задокументировано на основе реального дневного ответа API, что используемая конечная точка SEMS+ никогда не возвращает временную метку станции или данные о доходе/валюте за месяц. Изменений кода нет.",
+        "pt": "Apenas documentação: documentado, com base numa resposta real diurna da API, que o endpoint SEMS+ usado por este adaptador nunca devolve um timestamp da estação ou campos de geração/rendimento/moeda mensal. Sem alterações de código.",
+        "nl": "Alleen documentatie: gedocumenteerd, op basis van een echte daglicht-API-respons, dat het door deze adapter gebruikte SEMS+-eindpunt nooit een stationstijdstempel of maand-tot-datum opwek-/inkomsten-/valutavelden retourneert. Geen codewijzigingen.",
+        "fr": "Documentation uniquement : documenté, sur la base d'une réponse API réelle en journée, que le point de terminaison SEMS+ utilisé par cet adaptateur ne renvoie jamais d'horodatage de station ni de champs de génération/revenu/devise mensuels. Aucun changement de code.",
+        "it": "Solo documentazione: documentato, sulla base di una risposta API reale diurna, che l'endpoint SEMS+ utilizzato da questo adattatore non restituisce mai un timestamp della stazione né campi di generazione/reddito/valuta mensili. Nessuna modifica al codice.",
+        "es": "Solo documentación: documentado, basándose en una respuesta real diurna de la API, que el endpoint SEMS+ utilizado por este adaptador nunca devuelve una marca de tiempo de la estación ni campos de generación/ingresos/moneda mensuales. Sin cambios de código.",
+        "pl": "Tylko dokumentacja: udokumentowano, na podstawie rzeczywistej dziennej odpowiedzi API, że punkt końcowy SEMS+ używany przez ten adapter nigdy nie zwraca znacznika czasu stacji ani miesięcznych pól generacji/dochodu/waluty. Brak zmian w kodzie.",
+        "zh-cn": "仅文档：基于真实的白天 API 响应记录，此适配器使用的 SEMS+ 网关端点永远不会返回站点时间戳或月度发电量/收入/货币字段。无代码更改。",
+        "uk": "Лише документація: задокументовано на основі реальної денної відповіді API, що кінцева точка SEMS+, яку використовує цей адаптер, ніколи не повертає часову мітку станції або місячні поля генерації/доходу/валюти. Без змін у коді."
+      },
+      "1.0.2": {
+        "de": "Behebt alle Befunde aus dem Folge-Review: 6 zuvor übersehene deutsche Log-Meldungen in lib/semsApi.js übersetzt (nutzten this.log(level, message)-Aufrufsyntax statt this.log.<level>(), wonach der frühere Übersetzungsdurchgang nicht gesucht hatte) sowie ein zweites, doppeltes Vorkommen einer deutschen SemsAuthError-Meldung; _maskAccount() gibt jetzt immer den englischen Fallback \"(not set)\" zurück statt Deutsch, da das Ergebnis in eine englische Log-Zeile einfliesst. Echten Mehrsprachen-Support für Pushover-Benachrichtigungstexte implementiert: eine neue notificationLanguage-Konfigurationsoption (Englisch/Deutsch, Standard Englisch) wählt zwischen EN/DE-Vorlagen für alle 4 Benachrichtigungskategorien, erfüllt damit die Anforderung, dass aller nutzerseitiger Text standardmässig auf Englisch verfügbar sein muss, erlaubt aber weiterhin Deutsch für die Zielgruppe dieses Adapters. Harte Obergrenze (86400s/1 Tag) für das Poll-Intervall ergänzt, um einen Integer-Overflow bei Node.js setTimeout() zu verhindern (Werte über ca. 24,8 Tage laufen still über und lösen sofort aus), falls ausserhalb der bestehenden UI-Grenze (60-3600s) je ein Extremwert gesetzt würde. Einheit von info.activePollInterval von \"s\" auf die von der value.interval-Rolle exakt geforderte Zeichenkette \"sec\" korrigiert (die Rolle selbst, sowie value.battery für Battery.SOC, sind beide offiziell dokumentierte Rollen und wurden nicht geändert). Keine funktionalen Regressionen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch, zusätzlich eine neue eigenständige Verifikation der Poll-Intervall-Deckelung gegen 7 Grenzfälle inklusive des exakten Node.js-setTimeout-Overflow-Schwellenwerts.",
+        "en": "Fix all findings from the follow-up manual review: translated 6 previously missed German log messages in lib/semsApi.js (they used this.log(level, message) call syntax instead of this.log.<level>(), which the earlier translation pass had not searched for) plus a second, duplicate occurrence of a German SemsAuthError message; _maskAccount() now always returns the English \"(not set)\" fallback instead of German, since its result flows into an English log line. Implemented proper multi-language support for Pushover notification text: a new notificationLanguage config option (English/German, default English) selects between EN/DE templates for all 4 notification categories, satisfying the requirement that all user-facing text be available in English by default while still allowing German for this adapter's target audience. Added a hard ceiling (86400s/1 day) on the poll interval to prevent a Node.js setTimeout() integer overflow (values beyond ~24.8 days silently wrap and fire immediately) if an extreme value were ever set outside the admin UI's existing 60-3600s range. Corrected the unit of info.activePollInterval from \"s\" to the exact string \"sec\" required by the value.interval role definition (the role itself, and value.battery for Battery.SOC, are both officially documented roles and were not changed). The unit fix is additionally applied via an explicit migration on every adapter start (js-controller does not reliably re-sync instanceObjects common properties on update across all versions in the field), so already-running installations get corrected, not just fresh installs. No functional regressions; all 45 unit tests and 57 package-consistency tests pass unchanged, plus a new standalone verification of the poll-interval clamping logic against 7 boundary cases including the exact Node.js setTimeout overflow threshold.",
+        "ru": "Исправлены все замечания последующего обзора: переведены пропущенные немецкие сообщения журнала, реализована многоязычная поддержка push-уведомлений, добавлен верхний предел интервала опроса для защиты от переполнения setTimeout. Без функциональных регрессий.",
+        "pt": "Corrigidos todos os pontos da revisão de acompanhamento: mensagens de log em alemão em falta traduzidas, implementado suporte multilíngue para notificações push, adicionado limite superior ao intervalo de sondagem para proteger contra overflow do setTimeout. Sem regressões funcionais.",
+        "nl": "Alle bevindingen uit de vervolgreview verholpen: ontbrekende Duitse logberichten vertaald, meertalige ondersteuning voor pushmeldingen geïmplementeerd, bovengrens voor pollinterval toegevoegd ter bescherming tegen setTimeout-overflow. Geen functionele regressies.",
+        "fr": "Correction de tous les points du contrôle de suivi : messages de journal allemands manquants traduits, prise en charge multilingue des notifications push implémentée, plafond ajouté à l'intervalle d'interrogation pour se protéger contre un débordement de setTimeout. Aucune régression fonctionnelle.",
+        "it": "Corretti tutti i rilievi della revisione di follow-up: tradotti i messaggi di log in tedesco mancanti, implementato il supporto multilingue per le notifiche push, aggiunto un tetto massimo all'intervallo di polling per proteggere da un overflow di setTimeout. Nessuna regressione funzionale.",
+        "es": "Se corrigieron todos los hallazgos de la revisión de seguimiento: se tradujeron los mensajes de registro en alemán faltantes, se implementó soporte multiidioma para las notificaciones push, se añadió un límite superior al intervalo de sondeo para proteger contra un desbordamiento de setTimeout. Sin regresiones funcionales.",
+        "pl": "Naprawiono wszystkie uwagi z ponownego przeglądu: przetłumaczono brakujące niemieckie komunikaty dziennika, zaimplementowano wsparcie wielojęzyczne dla powiadomień push, dodano górny limit interwału odpytywania chroniący przed przepełnieniem setTimeout. Brak regresji funkcjonalnych.",
+        "zh-cn": "修复了后续审查中的所有问题：翻译了遗漏的德语日志消息，为推送通知实现了多语言支持，为轮询间隔添加了上限以防止 setTimeout 溢出。无功能性回归。",
+        "uk": "Виправлено всі зауваження повторного огляду: перекладено пропущені німецькі повідомлення журналу, реалізовано багатомовну підтримку push-сповіщень, додано верхню межу інтервалу опитування для захисту від переповнення setTimeout. Без функціональних регресій."
+      },
+      "1.0.1": {
+        "de": "Fix: Alle deutschen Log-Meldungen ins Englische übersetzt (this.log.*()-Aufrufe in main.js, das interne Log-Callback in lib/semsApi.js sowie lib/notify.js) - ein realer Review eines Schwester-Adapters (zeptrion) hat diese Fehlerklasse aufgedeckt, daher hier proaktiv geprüft und behoben statt auf Review-Feedback zu warten. Die interne Pushover-Log-Zeile in Notifier.notify() bettet den (bewusst deutschen) Push-Titel/-Text nicht mehr in den Log-Eintrag ein. Zudem die zugrundeliegenden SemsAuthError-/SemsProtocolError-/SemsNetworkError-Meldungen ins Englische übersetzt, da diese über error.message in Log-Zeilen landen. Der eigentliche Pushover-Push-Text (Titel/Nachricht an notify()) bleibt bewusst Deutsch, passend zur Schweizerdeutsch-sprachigen Zielgruppe des Adapters - nur die ioBroker-Log-Ausgabe selbst musste geändert werden. Keine funktionalen Änderungen; alle 45 Unit-Tests und 57 Package-Konsistenz-Tests laufen unverändert durch.",
+        "en": "Fix: translated all German log messages to English (this.log.*() calls in main.js, the internal log callback in lib/semsApi.js, and lib/notify.js) - a real-world review of a sibling adapter (zeptrion) surfaced this class of issue, so it was proactively checked and fixed here before submission rather than waiting for review feedback. The internal Pushover notification log line in Notifier.notify() no longer embeds the (intentionally German-language) push title/message into the log entry. Also translated the underlying SemsAuthError/SemsProtocolError/SemsNetworkError messages to English, since those flow into log lines via error.message. The actual Pushover push notification text (title/message passed to notify()) intentionally stays German, matching the adapter's Swiss German-speaking target audience - only the ioBroker log output itself needed to change. No functional changes; all 45 unit tests and 57 package-consistency tests pass unchanged.",
+        "ru": "Исправление: все немецкие сообщения журнала переведены на английский язык. Функциональных изменений нет.",
+        "pt": "Correção: todas as mensagens de log em alemão foram traduzidas para inglês. Sem alterações funcionais.",
+        "nl": "Fix: alle Duitse logberichten vertaald naar het Engels. Geen functionele wijzigingen.",
+        "fr": "Correction : tous les messages de journal en allemand traduits en anglais. Aucun changement fonctionnel.",
+        "it": "Correzione: tutti i messaggi di log in tedesco tradotti in inglese. Nessuna modifica funzionale.",
+        "es": "Corrección: todos los mensajes de registro en alemán traducidos al inglés. Sin cambios funcionales.",
+        "pl": "Poprawka: wszystkie niemieckie komunikaty dziennika przetłumaczono na angielski. Brak zmian funkcjonalnych.",
+        "zh-cn": "修复：所有德语日志消息已翻译为英文。无功能更改。",
+        "uk": "Виправлення: усі німецькі повідомлення журналу перекладено англійською. Без функціональних змін."
+      }
     },
-    "native": {
-        "account": "",
-        "password": "",
-        "powerStationId": "",
-        "pollInterval": 300,
-        "requestTimeout": 15,
-        "maxConsecutiveErrors": 3,
-        "pushoverMode": "none",
-        "pushoverInstance": "pushover.0",
-        "pushoverUserKey": "",
-        "pushoverApiToken": "",
-        "pushoverPriority": 0,
-        "notificationLanguage": "en",
-        "notifyOnLoginFailure": true,
-        "notifyOnRateLimit": true,
-        "notifyOnStationOffline": true,
-        "notifyOnAdapterError": true,
-        "stationOfflineMinutes": 30,
-        "debugRawResponse": false
+    "titleLang": {
+      "en": "GoodWe SEMS Portal",
+      "de": "GoodWe SEMS Portal",
+      "ru": "GoodWe SEMS Portal",
+      "pt": "GoodWe SEMS Portal",
+      "nl": "GoodWe SEMS Portal",
+      "fr": "GoodWe SEMS Portal",
+      "it": "GoodWe SEMS Portal",
+      "es": "GoodWe SEMS Portal",
+      "pl": "GoodWe SEMS Portal",
+      "uk": "GoodWe SEMS Portal",
+      "zh-cn": "GoodWe SEMS 门户"
     },
-    "encryptedNative": [
-        "password",
-        "pushoverApiToken",
-        "pushoverUserKey"
+    "desc": {
+      "en": "Reads inverter, battery and power-flow data from the GoodWe SEMS Portal cloud for installations that have no local/LAN access to the inverter.",
+      "de": "Liest Wechselrichter-, Batterie- und Energiefluss-Daten aus dem GoodWe-SEMS-Portal (Cloud) für Anlagen ohne lokalen/LAN-Zugriff auf den Wechselrichter.",
+      "ru": "Считывает данные инвертора, батареи и потоков энергии из облачного портала GoodWe SEMS для установок без локального доступа к инвертору.",
+      "pt": "Lê dados do inversor, bateria e fluxo de energia do portal SEMS da GoodWe na nuvem para instalações sem acesso local/LAN ao inversor.",
+      "nl": "Leest omvormer-, batterij- en energiestroomgegevens uit het GoodWe SEMS-portaal (cloud) voor installaties zonder lokale/LAN-toegang tot de omvormer.",
+      "fr": "Lit les données de l'onduleur, de la batterie et des flux d'énergie depuis le portail cloud GoodWe SEMS pour les installations sans accès local/LAN à l'onduleur.",
+      "it": "Legge i dati dell'inverter, della batteria e del flusso di energia dal portale cloud GoodWe SEMS per impianti senza accesso locale/LAN all'inverter.",
+      "es": "Lee datos del inversor, la batería y el flujo de energía desde el portal en la nube GoodWe SEMS para instalaciones sin acceso local/LAN al inversor.",
+      "pl": "Odczytuje dane falownika, baterii i przepływu energii z chmury portalu GoodWe SEMS dla instalacji bez lokalnego dostępu do falownika.",
+      "uk": "Зчитує дані інвертора, батареї та потоків енергії з хмарного порталу GoodWe SEMS для установок без локального доступу до інвертора.",
+      "zh-cn": "为无法本地访问逆变器的装置从 GoodWe SEMS 云端门户读取逆变器、电池和功率流数据。"
+    },
+    "authors": [
+      "Stefan Bühler"
     ],
-    "protectedNative": [
-        "password",
-        "pushoverApiToken",
-        "pushoverUserKey"
+    "keywords": [
+      "goodwe",
+      "sems",
+      "semsportal",
+      "inverter",
+      "solar",
+      "pv",
+      "photovoltaik",
+      "battery"
     ],
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "SEMS Portal reachable",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.lastSuccess",
-            "type": "state",
-            "common": {
-                "role": "value.time",
-                "name": "Timestamp of last successful poll",
-                "type": "number",
-                "read": true,
-                "write": false,
-                "def": 0
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.lastError",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Last error message",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": ""
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.consecutiveErrors",
-            "type": "state",
-            "common": {
-                "role": "value",
-                "name": "Number of consecutive failed polls",
-                "type": "number",
-                "read": true,
-                "write": false,
-                "def": 0
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.rateLimited",
-            "type": "state",
-            "common": {
-                "role": "indicator",
-                "name": "SEMS Portal is currently rate-limiting this account",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.activePollInterval",
-            "type": "state",
-            "common": {
-                "role": "value.interval",
-                "name": "Currently active poll interval (seconds, incl. backoff)",
-                "type": "number",
-                "unit": "sec",
-                "read": true,
-                "write": false,
-                "def": 300
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.rawResponse",
-            "type": "state",
-            "common": {
-                "role": "json",
-                "name": "Raw last SEMS API response (debug, disabled by default)",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": "",
-                "expert": true
-            },
-            "native": {}
-        }
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "goodwe-sems.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.goodwe-sems/main/admin/goodwe-sems.png",
+    "readme": "https://github.com/bueste/ioBroker.goodwe-sems/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "energy",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "tier": 3,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.8.23"
+      }
     ]
+  },
+  "native": {
+    "account": "",
+    "password": "",
+    "powerStationId": "",
+    "pollInterval": 300,
+    "requestTimeout": 15,
+    "maxConsecutiveErrors": 3,
+    "pushoverMode": "none",
+    "pushoverInstance": "pushover.0",
+    "pushoverUserKey": "",
+    "pushoverApiToken": "",
+    "pushoverPriority": 0,
+    "notificationLanguage": "en",
+    "notifyOnLoginFailure": true,
+    "notifyOnRateLimit": true,
+    "notifyOnStationOffline": true,
+    "notifyOnAdapterError": true,
+    "stationOfflineMinutes": 30,
+    "debugRawResponse": false
+  },
+  "encryptedNative": [
+    "password",
+    "pushoverApiToken",
+    "pushoverUserKey"
+  ],
+  "protectedNative": [
+    "password",
+    "pushoverApiToken",
+    "pushoverUserKey"
+  ],
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "SEMS Portal reachable",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastSuccess",
+      "type": "state",
+      "common": {
+        "role": "value.time",
+        "name": "Timestamp of last successful poll",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastError",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Last error message",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.consecutiveErrors",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of consecutive failed polls",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.rateLimited",
+      "type": "state",
+      "common": {
+        "role": "indicator",
+        "name": "SEMS Portal is currently rate-limiting this account",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.activePollInterval",
+      "type": "state",
+      "common": {
+        "role": "value.interval",
+        "name": "Currently active poll interval (seconds, incl. backoff)",
+        "type": "number",
+        "unit": "sec",
+        "read": true,
+        "write": false,
+        "def": 300
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.rawResponse",
+      "type": "state",
+      "common": {
+        "role": "json",
+        "name": "Raw last SEMS API response (debug, disabled by default)",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": "",
+        "expert": true
+      },
+      "native": {}
+    }
+  ]
 }
