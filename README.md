@@ -153,6 +153,10 @@ Pull requests are welcome, especially to add further fields delivered by the por
     ### **WORK IN PROGRESS**
 -->
 
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires admin >= 7.8.23 now.
+
 ### 1.0.7 (2026-08-11)
 
 - Fix E1009: Station.Latitude/Longitude used role "value.gps" (reserved for a combined "lon;lat" string) instead of the correct "value.gps.latitude"/"value.gps.longitude" roles, which support numeric values. Added an explicit startup migration so already-running installations get the corrected role, not just fresh installs.
