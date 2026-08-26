@@ -130,6 +130,7 @@ class GoodweSems extends utils.Adapter {
             account: this.config.account,
             password: this.config.password,
             requestTimeoutMs: Math.max(5, Number(this.config.requestTimeout) || 15) * 1000,
+            enableBattery: !!this.config.enableBattery,
             log: (level, message) => {
                 if (typeof this.log[level] === "function") {
                     this.log[level](message);

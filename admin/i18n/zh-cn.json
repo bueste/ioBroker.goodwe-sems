@@ -44,5 +44,7 @@
     "notificationLanguage": "通知语言",
     "notificationLanguageHelp": "Pushover 推送通知标题/正文使用的语言。无论此设置如何，ioBroker 日志条目始终为英文。",
     "notificationLanguageEn": "英语",
-    "notificationLanguageDe": "德语"
+    "notificationLanguageDe": "德语",
+    "enableBattery": "获取电池数据（实验性）",
+    "enableBatteryHelp": "通过 GoodWe 未文档化的网页门户 API 获取电池的充电状态、功率、电压、电流和温度（使用与上方相同的登录凭据）。这是通过逆向工程获得的非官方接口 - 默认关闭。"
 }

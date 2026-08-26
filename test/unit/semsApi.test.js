@@ -352,4 +352,153 @@ describe("lib/semsApi SemsApi", () => {
         expect(caught.message).to.include("账号登录异常");
         expect(fetchStub.callCount).to.equal(4);
     });
+
+    it("getMonitorDetail() fetches per-inverter battery telemetry when enableBattery is on", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: { name: "Test Station", pvCapacity: 8.74, status: "1" },
+            }),
+        );
+        fetchStub.onCall(2).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: {
+                    total: 1,
+                    deviceDetailList: [
+                        {
+                            deviceType: "INVERTER",
+                            statusDetailList: [
+                                {
+                                    detailMap: {
+                                        SN123: { sn: "SN123", name: "GW8K-ET", deviceType: "INVERTER", status: 5 },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }),
+        );
+        fetchStub.onCall(3).resolves(
+            jsonResponse(200, { code: "00000", description: "成功", data: [{ code: "ac", factors: [{ code: "pAc", data: "0.481" }] }] }),
+        );
+        fetchStub.onCall(4).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: [{ code: "telecounting_today", factors: [{ code: "proPvStatsToday", data: "34.9" }] }],
+            }),
+        );
+        // relatedDevices() - one attached BAT_SYS device, matching real captured traffic exactly.
+        fetchStub.onCall(5).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: [{ sn: "VD200100198000ETU229W3397", name: "BAT1", type: "BAT_SYS", status: 7, soc: 90.0 }],
+            }),
+        );
+        // BAT_SYS telemetry() - real field names/units confirmed from captured browser traffic.
+        fetchStub.onCall(6).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: [
+                    {
+                        code: "runtime",
+                        factors: [
+                            { code: "soc", data: "90" },
+                            { code: "pBat", data: "0.66927" },
+                            { code: "voltage", data: "318.7" },
+                            { code: "a", data: "2.1" },
+                            { code: "batSysTemp", data: "25.5" },
+                            { code: "aMaxChar", data: "10" },
+                            { code: "aMaxDischar", data: "25" },
+                        ],
+                    },
+                ],
+            }),
+        );
+
+        const api = new SemsApi({
+            account: "test@example.com",
+            password: "s3cret",
+            requestTimeoutMs: 1000,
+            log: noopLog,
+            enableBattery: true,
+        });
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        expect(fetchStub.callCount).to.equal(7);
+        expect(fetchStub.getCall(5).args[0]).to.include("/relatedDevices");
+        expect(fetchStub.getCall(6).args[0]).to.include("VD200100198000ETU229W3397");
+        expect(fetchStub.getCall(6).args[0]).to.include("/telemetry");
+
+        expect(detail.inverter[0].battery).to.deep.equal({
+            soc: 90,
+            power: 0.66927,
+            voltage: 318.7,
+            current: 2.1,
+            temperature: 25.5,
+            maxChargeCurrent: 10,
+            maxDischargeCurrent: 25,
+        });
+    });
+
+    it("getMonitorDetail() never calls relatedDevices/battery telemetry when enableBattery is off (default)", async () => {
+        fetchStub.onCall(0).resolves(
+            jsonResponse(200, {
+                code: 0,
+                msg: "success",
+                api: "https://eu-gateway.semsportal.com/sems",
+                data: { uid: "u1", token: "t1", timestamp: 1 },
+            }),
+        );
+        fetchStub.onCall(1).resolves(
+            jsonResponse(200, { code: "00000", description: "成功", data: { name: "Test Station", status: "1" } }),
+        );
+        fetchStub.onCall(2).resolves(
+            jsonResponse(200, {
+                code: "00000",
+                description: "成功",
+                data: {
+                    total: 1,
+                    deviceDetailList: [
+                        {
+                            deviceType: "INVERTER",
+                            statusDetailList: [
+                                {
+                                    detailMap: {
+                                        SN123: { sn: "SN123", name: "GW8K-ET", deviceType: "INVERTER", status: 5 },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }),
+        );
+        fetchStub.onCall(3).resolves(jsonResponse(200, { code: "00000", description: "成功", data: [] }));
+        fetchStub.onCall(4).resolves(jsonResponse(200, { code: "00000", description: "成功", data: [] }));
+
+        const api = newApi(); // enableBattery not set -> defaults to false
+        await api.login();
+        const detail = await api.getMonitorDetail("station-1");
+
+        // Exactly 5 calls (login + basic/info + device list + telemetry + telecounting) - no
+        // relatedDevices/battery-telemetry calls at all when the feature is off.
+        expect(fetchStub.callCount).to.equal(5);
+        expect(detail.inverter[0].battery).to.equal(undefined);
+    });
 });

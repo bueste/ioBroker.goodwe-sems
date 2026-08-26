@@ -44,5 +44,7 @@
     "notificationLanguage": "Język powiadomień",
     "notificationLanguageHelp": "Język tytułu/treści powiadomień push Pushover. Wpisy dziennika ioBroker są zawsze w języku angielskim, niezależnie od tego ustawienia.",
     "notificationLanguageEn": "Angielski",
-    "notificationLanguageDe": "Niemiecki"
+    "notificationLanguageDe": "Niemiecki",
+    "enableBattery": "Pobieraj dane baterii (eksperymentalne)",
+    "enableBatteryHelp": "Pobiera stan naładowania, moc, napięcie, prąd i temperaturę baterii poprzez nieudokumentowane API portalu webowego GoodWe (te same dane logowania co powyżej). To nieoficjalny punkt końcowy uzyskany metodą inżynierii wstecznej - domyślnie wyłączone."
 }

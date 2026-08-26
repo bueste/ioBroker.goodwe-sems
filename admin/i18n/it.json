@@ -44,5 +44,7 @@
     "notificationLanguage": "Lingua delle notifiche",
     "notificationLanguageHelp": "Lingua per titolo/testo delle notifiche push Pushover. Le voci di log di ioBroker sono sempre in inglese, indipendentemente da questa impostazione.",
     "notificationLanguageEn": "Inglese",
-    "notificationLanguageDe": "Tedesco"
+    "notificationLanguageDe": "Tedesco",
+    "enableBattery": "Recupera dati della batteria (sperimentale)",
+    "enableBatteryHelp": "Recupera stato di carica, potenza, tensione, corrente e temperatura della batteria tramite l'API non documentata del portale web GoodWe (stesse credenziali di cui sopra). Endpoint non ufficiale ottenuto tramite reverse engineering - disattivato per impostazione predefinita."
 }

@@ -127,6 +127,17 @@
                     "md": 6,
                     "lg": 6,
                     "xl": 6
+                },
+                "enableBattery": {
+                    "type": "checkbox",
+                    "label": "enableBattery",
+                    "help": "enableBatteryHelp",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 8,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
                 }
             }
         },

@@ -73,7 +73,6 @@ describe("lib/mapping", () => {
                 pvStatus: 1,
                 betteryStatus: -1,
             },
-            soc: { power: "76", status: 1 },
             isEvCharge: false,
             inverter: [
                 {
@@ -85,7 +84,6 @@ describe("lib/mapping", () => {
                     eday: 6.1,
                     etotal: 4821.3,
                     tempperature: 41.2,
-                    soc: 76,
                     invert_full: {
                         vpv1: 320.5,
                         ipv1: 4.1,
@@ -94,8 +92,15 @@ describe("lib/mapping", () => {
                         vac1: 231.2,
                         iac1: 6.2,
                         fac1: 50.01,
-                        vbattery1: 52.3,
-                        ibattery1: -1.1,
+                    },
+                    battery: {
+                        soc: 76,
+                        power: 0.5,
+                        voltage: 318.2,
+                        current: 1.6,
+                        temperature: 24.1,
+                        maxChargeCurrent: 10,
+                        maxDischargeCurrent: 25,
                     },
                 },
                 {
@@ -118,13 +123,12 @@ describe("lib/mapping", () => {
             ],
         };
 
-        it("maps station/KPI/powerflow/battery level fields", () => {
+        it("maps station/KPI/powerflow fields", () => {
             const { points } = mapMonitorDetail(fixture);
             expect(findPoint(points, "Station.Name").value).to.equal("Testanlage Schwiegervater");
             expect(findPoint(points, "KPI.CurrentPower").value).to.equal(3450);
             expect(findPoint(points, "KPI.TodayGeneration").value).to.equal(12.3);
             expect(findPoint(points, "PowerFlow.Battery").value).to.equal(-500);
-            expect(findPoint(points, "Battery.SOC").value).to.equal(76);
         });
 
         it("does not create an EVCharger section when absent", () => {
@@ -139,6 +143,9 @@ describe("lib/mapping", () => {
             expect(findPoint(points, "Inverters.9020KETU229W0002.CurrentPower").value).to.equal(1730);
             expect(findPoint(points, "Inverters.9020KETU229W0001.PV1.Voltage").value).to.equal(320.5);
             expect(findPoint(points, "Inverters.9020KETU229W0001.Battery.SOC").value).to.equal(76);
+            expect(findPoint(points, "Inverters.9020KETU229W0001.Battery.Power").value).to.equal(0.5);
+            expect(findPoint(points, "Inverters.9020KETU229W0001.Battery.Voltage").value).to.equal(318.2);
+            expect(findPoint(points, "Inverters.9020KETU229W0001.Battery.MaxChargeCurrent").value).to.equal(10);
             // inverter 2 has no battery telemetry in the fixture -> must be skipped, not written as null/0
             expect(findPoint(points, "Inverters.9020KETU229W0002.Battery.SOC")).to.equal(undefined);
         });

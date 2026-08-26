@@ -44,5 +44,7 @@
     "notificationLanguage": "Meldingstaal",
     "notificationLanguageHelp": "Taal voor titel/tekst van Pushover-pushmeldingen. ioBroker-logregels zijn altijd Engels, ongeacht deze instelling.",
     "notificationLanguageEn": "Engels",
-    "notificationLanguageDe": "Duits"
+    "notificationLanguageDe": "Duits",
+    "enableBattery": "Batterijgegevens ophalen (experimenteel)",
+    "enableBatteryHelp": "Haalt laadtoestand, vermogen, spanning, stroom en temperatuur van de batterij op via GoodWe's ongedocumenteerde webportaal-API (dezelfde login als hierboven). Dit is een via reverse engineering achterhaald, niet-officieel eindpunt - standaard uitgeschakeld."
 }

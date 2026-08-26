@@ -44,5 +44,7 @@
     "notificationLanguage": "Notification language",
     "notificationLanguageHelp": "Language used for Pushover push notification title/body. ioBroker log entries are always English regardless of this setting.",
     "notificationLanguageEn": "English",
-    "notificationLanguageDe": "German"
+    "notificationLanguageDe": "German",
+    "enableBattery": "Fetch battery data (experimental)",
+    "enableBatteryHelp": "Retrieves battery state of charge, power, voltage, current and temperature via GoodWe's undocumented web-portal API (same login as above, no extra credentials needed). This is a reverse-engineered, unofficial endpoint that GoodWe could change or block without notice - off by default. Only relevant if your plant has a battery."
 }

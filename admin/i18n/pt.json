@@ -44,5 +44,7 @@
     "notificationLanguage": "Idioma das notificações",
     "notificationLanguageHelp": "Idioma para o título/corpo das notificações push do Pushover. As entradas de log do ioBroker são sempre em inglês, independentemente desta definição.",
     "notificationLanguageEn": "Inglês",
-    "notificationLanguageDe": "Alemão"
+    "notificationLanguageDe": "Alemão",
+    "enableBattery": "Obter dados da bateria (experimental)",
+    "enableBatteryHelp": "Obtém o estado de carga, potência, tensão, corrente e temperatura da bateria através da API não documentada do portal web da GoodWe (mesmo login que acima). Endpoint não oficial obtido por engenharia reversa - desativado por defeito."
 }

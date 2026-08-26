@@ -44,5 +44,7 @@
     "notificationLanguage": "Benachrichtigungssprache",
     "notificationLanguageHelp": "Sprache für Titel/Text der Pushover-Push-Benachrichtigungen. ioBroker-Log-Einträge sind unabhängig von dieser Einstellung immer Englisch.",
     "notificationLanguageEn": "Englisch",
-    "notificationLanguageDe": "Deutsch"
+    "notificationLanguageDe": "Deutsch",
+    "enableBattery": "Batteriedaten abrufen (experimentell)",
+    "enableBatteryHelp": "Ruft Ladezustand, Leistung, Spannung, Strom und Temperatur der Batterie über GoodWes undokumentierte Web-Portal-API ab (gleicher Login wie oben, keine zusätzlichen Zugangsdaten nötig). Das ist ein per Reverse-Engineering ermittelter, inoffizieller Endpunkt, den GoodWe jederzeit ohne Ankündigung ändern oder sperren könnte - standardmäßig deaktiviert. Nur relevant, falls deine Anlage eine Batterie hat."
 }

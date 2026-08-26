@@ -44,5 +44,7 @@
     "notificationLanguage": "Langue des notifications",
     "notificationLanguageHelp": "Langue du titre/corps des notifications push Pushover. Les entrées du journal ioBroker sont toujours en anglais, indépendamment de ce réglage.",
     "notificationLanguageEn": "Anglais",
-    "notificationLanguageDe": "Allemand"
+    "notificationLanguageDe": "Allemand",
+    "enableBattery": "Récupérer les données de la batterie (expérimental)",
+    "enableBatteryHelp": "Récupère l'état de charge, la puissance, la tension, le courant et la température de la batterie via l'API non documentée du portail web de GoodWe (même identifiants que ci-dessus). Il s'agit d'un point de terminaison non officiel obtenu par rétro-ingénierie - désactivé par défaut."
 }
