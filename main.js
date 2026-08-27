@@ -93,9 +93,46 @@ class GoodweSems extends utils.Adapter {
         }
     }
 
+    /**
+     * Removes the leftover top-level "Battery" channel from installations that were created
+     * before v1.0.8. That channel was always empty in practice - the states it was meant to
+     * hold (Battery.SOC/Status) read from a gateway field that was never actually populated, so
+     * push() never created them, but the channel container itself WAS unconditionally created on
+     * every poll (see _applyMonitorDetail(), now fixed to no longer do so). Battery data now
+     * lives per-inverter instead (Inverters.<sn>.Battery.*, opt-in via "enableBattery"). Since
+     * _ensureChannel() only creates objects and never removes them, an already-running
+     * installation would otherwise keep this empty, orphaned channel forever. Deletion only
+     * proceeds if the channel is confirmed to have no child objects, as a safety check against
+     * removing anything unexpected.
+     */
+    async _migrateRemoveEmptyBatteryChannel() {
+        try {
+            const obj = await this.getObjectAsync("Battery");
+            if (!obj) {
+                return;
+            }
+            const children = await this.getObjectListAsync({
+                startkey: `${this.namespace}.Battery.`,
+                endkey: `${this.namespace}.Battery.\u9999`,
+            });
+            if (children && children.rows && children.rows.length > 0) {
+                this.log.warn(
+                    `Migration: found unexpected child objects under "Battery", leaving it in place (non-fatal).`,
+                );
+                return;
+            }
+            await this.delObjectAsync("Battery");
+            this.log.info('Migration: removed the empty, no-longer-used top-level "Battery" channel.');
+        } catch (error) {
+            // Never let a migration failure block adapter startup.
+            this.log.warn(`Migration removing the empty "Battery" channel failed (non-fatal): ${error.message}`);
+        }
+    }
+
     async onReady() {
         await this._migrateActivePollIntervalUnit();
         await this._migrateStationGpsRoles();
+        await this._migrateRemoveEmptyBatteryChannel();
         await this.setStateAsync("info.connection", false, true);
         this.startTs = Date.now();
 
@@ -262,7 +299,6 @@ class GoodweSems extends utils.Adapter {
         await this._ensureChannel("Station", "Station information");
         await this._ensureChannel("KPI", "Key performance indicators");
         await this._ensureChannel("PowerFlow", "Current plant power flow");
-        await this._ensureChannel("Battery", "Overall battery state");
 
         const hasEvCharger = points.some(p => p.id.startsWith("EVCharger."));
         if (hasEvCharger) {
