@@ -1,8 +1,8 @@
 {
   "name": "iobroker.goodwe-sems",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "ioBroker adapter to read GoodWe inverter data from the SEMS Portal cloud API (for installations without local/LAN access to the inverter).",
-  "author": "Stefan Bühler <stefan.buehler46@gmail.com>",
+  "author": "Stefan Bühler <iobroker@mailcarrier.ch>",
   "homepage": "https://github.com/bueste/ioBroker.goodwe-sems",
   "funding": {
     "type": "buymeacoffee",
